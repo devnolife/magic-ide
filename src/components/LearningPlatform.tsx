@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { CodeEditor } from './CodeEditor';
 import { ListVisualizer } from './ListVisualizer';
+import { BackToDashboard } from './dashboard/BackToDashboard';
 import { Separator } from '@/components/ui/separator';
 import { Card } from '@/components/ui/card';
 import { PythonListParser } from '@/lib/pythonParser';
@@ -137,6 +138,8 @@ export function LearningPlatform() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="mx-auto max-w-7xl">
+        {/* Back to Dashboard Button */}
+        <BackToDashboard className="mb-6" />
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold tracking-tight">Python List Learning Platform</h1>

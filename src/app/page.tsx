@@ -1,5 +1,5 @@
-import { LearningPlatform } from '@/components/LearningPlatform';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return <LearningPlatform />;
+  redirect('/dashboard');
 }

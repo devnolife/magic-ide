@@ -211,8 +211,8 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
             <Card
               key={lesson.id}
               className={`transition-all hover:shadow-lg ${lesson.completed
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-gray-200 hover:border-blue-300'
+                ? 'border-green-200 bg-green-50'
+                : 'border-gray-200 hover:border-blue-300'
                 }`}
             >
               <CardContent className="p-6">
