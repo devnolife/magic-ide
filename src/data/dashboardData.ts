@@ -5,10 +5,9 @@ export interface Chapter {
   description: string;
   icon: string;
   progress: number;
-  status: 'not-started' | 'in-progress' | 'completed' | 'locked';
+  status: 'not-started' | 'in-progress' | 'completed';
   estimatedTime: string;
   href: string;
-  prerequisites?: number[];
 }
 
 export interface UserStats {
@@ -38,66 +37,72 @@ export interface Activity {
 // Sample data
 export const chaptersData: Chapter[] = [
   {
-    id: 1,
+    id: 0,
     title: "Dasar-Dasar Pemrograman",
-    description: "Memahami konsep dasar sebelum coding",
+    description: "Memahami konsep fundamental sebelum memulai coding",
     icon: "🧠",
-    progress: 100,
-    status: 'completed',
+    progress: 0,
+    status: 'not-started',
     estimatedTime: "30 menit",
-    href: "/chapter/1"
+    href: "/chapter0"
+  },
+  {
+    id: 1,
+    title: "Python Lists & Arrays",
+    description: "Pelajari operasi dasar pada list Python dengan visualisasi interaktif",
+    icon: "📝",
+    progress: 0,
+    status: 'not-started',
+    estimatedTime: "45 menit",
+    href: "/chapter1"
   },
   {
     id: 2,
-    title: "Variabel dan Tipe Data",
-    description: "Belajar menyimpan dan mengelola data",
+    title: "Advanced List Operations",
+    description: "Operasi list lanjutan: slicing, comprehension, dan nested lists",
     icon: "📦",
-    progress: 75,
-    status: 'in-progress',
+    progress: 0,
+    status: 'not-started',
     estimatedTime: "45 menit",
-    href: "/chapter/2",
-    prerequisites: [1]
+    href: "/chapter2"
   },
   {
     id: 3,
-    title: "List dan Array",
-    description: "Mengelola kumpulan data dengan visualisasi",
+    title: "List Algorithms",
+    description: "Algoritma dasar menggunakan Python lists",
     icon: "📋",
-    progress: 20,
-    status: 'in-progress',
+    progress: 0,
+    status: 'not-started',
     estimatedTime: "60 menit",
-    href: "/chapter/3",
-    prerequisites: [2]
+    href: "/chapter3"
   },
   {
     id: 4,
-    title: "Pengulangan (Loop)",
-    description: "Otomatisasi dengan perulangan",
+    title: "Data Structures",
+    description: "Eksplorasi struktur data kompleks dengan Python",
     icon: "🔄",
     progress: 0,
-    status: 'locked',
+    status: 'not-started',
     estimatedTime: "50 menit",
-    href: "/chapter/4",
-    prerequisites: [3]
+    href: "/chapter4"
   },
   {
     id: 5,
-    title: "Fungsi",
-    description: "Membuat kode yang dapat digunakan kembali",
+    title: "Advanced Python",
+    description: "Teknik lanjutan dan optimisasi dalam Python programming",
     icon: "⚡",
     progress: 0,
-    status: 'locked',
+    status: 'not-started',
     estimatedTime: "55 menit",
-    href: "/chapter/5",
-    prerequisites: [4]
+    href: "/chapter5"
   }
 ];
 
 export const userStatsData: UserStats = {
-  totalTime: "12 jam 30 menit",
-  streak: 5,
-  completedChapters: 1,
-  totalChapters: 5,
+  totalTime: "0 menit",
+  streak: 0,
+  completedChapters: 0,
+  totalChapters: 6,
   points: 1250,
   level: "Pemula",
   nextLevelPoints: 500
@@ -180,8 +185,7 @@ export const getStatusCounts = () => {
     all: chaptersData.length,
     'not-started': 0,
     'in-progress': 0,
-    completed: 0,
-    locked: 0
+    completed: 0
   };
 
   chaptersData.forEach(chapter => {

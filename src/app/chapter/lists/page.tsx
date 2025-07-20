@@ -4,7 +4,7 @@ import React from 'react';
 import { ListContainer } from '@/components/lists/ListContainer';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
-export default function Chapter1Page() {
+export default function ListsChapterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="p-4">

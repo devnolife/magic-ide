@@ -59,8 +59,8 @@ export function ChapterGrid() {
             key={filter.value}
             variant={activeFilter === filter.value ? "default" : "outline"}
             className={`cursor-pointer transition-all ${activeFilter === filter.value
-                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                : 'bg-white/50 backdrop-blur-sm border-white/20 hover:bg-white/70'
+              ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+              : 'bg-white/50 backdrop-blur-sm border-white/20 hover:bg-white/70'
               }`}
             onClick={() => setActiveFilter(filter.value)}
           >
@@ -93,7 +93,7 @@ export function ChapterGrid() {
       <div className="mt-12 p-6 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl shadow-xl">
         <div className="text-center">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Ringkasan Progress</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="grid grid-cols-3 gap-4 text-sm">
             <div>
               <div className="text-2xl font-bold text-green-600">{statusCounts.completed}</div>
               <div className="text-gray-600">Selesai</div>
@@ -105,10 +105,6 @@ export function ChapterGrid() {
             <div>
               <div className="text-2xl font-bold text-gray-600">{statusCounts['not-started']}</div>
               <div className="text-gray-600">Belum Dimulai</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-yellow-600">{statusCounts.locked}</div>
-              <div className="text-gray-600">Terkunci</div>
             </div>
           </div>
         </div>

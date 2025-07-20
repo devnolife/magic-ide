@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Clock, ArrowRight, Lock } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Chapter } from '@/data/dashboardData';
@@ -21,14 +21,10 @@ export function ChapterCard({ chapter, index }: ChapterCardProps) {
         return <Badge className="bg-green-100 text-green-800 border-green-200">Selesai</Badge>;
       case 'in-progress':
         return <Badge className="bg-blue-100 text-blue-800 border-blue-200">Sedang Berjalan</Badge>;
-      case 'locked':
-        return <Badge className="bg-gray-100 text-gray-600 border-gray-200">Terkunci</Badge>;
       default:
         return <Badge className="bg-gray-100 text-gray-600 border-gray-200">Belum Dimulai</Badge>;
     }
   };
-
-  const isAccessible = chapter.status !== 'locked';
 
   return (
     <motion.div
@@ -40,7 +36,7 @@ export function ChapterCard({ chapter, index }: ChapterCardProps) {
       <Card className={`
         h-full bg-white/70 backdrop-blur-md border-white/20 shadow-xl 
         transition-all duration-300 hover:shadow-2xl hover:scale-105
-        ${!isAccessible ? 'opacity-60' : 'cursor-pointer'}
+        cursor-pointer
       `}>
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between">
@@ -51,7 +47,6 @@ export function ChapterCard({ chapter, index }: ChapterCardProps) {
                 <p className="text-sm text-gray-600 mt-1">{chapter.description}</p>
               </div>
             </div>
-            {!isAccessible && <Lock className="w-5 h-5 text-gray-400" />}
           </div>
         </CardHeader>
 
@@ -78,20 +73,13 @@ export function ChapterCard({ chapter, index }: ChapterCardProps) {
         </CardContent>
 
         <CardFooter className="pt-4">
-          {isAccessible ? (
-            <Link href={chapter.href} className="w-full">
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                {chapter.status === 'completed' ? 'Review' :
-                  chapter.status === 'in-progress' ? 'Lanjutkan' : 'Mulai'}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-          ) : (
-            <Button disabled className="w-full">
-              <Lock className="w-4 h-4 mr-2" />
-              Terkunci
+          <Link href={chapter.href} className="w-full">
+            <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+              {chapter.status === 'completed' ? 'Review' :
+                chapter.status === 'in-progress' ? 'Lanjutkan' : 'Mulai'}
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-          )}
+          </Link>
         </CardFooter>
       </Card>
     </motion.div>
