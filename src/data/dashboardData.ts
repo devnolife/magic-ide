@@ -58,13 +58,13 @@ export const chaptersData: Chapter[] = [
   },
   {
     id: 2,
-    title: "Advanced List Operations",
-    description: "Operasi list lanjutan: slicing, comprehension, dan nested lists",
-    icon: "📦",
+    title: "Advanced List Mastery",
+    description: "Master wizard techniques: comprehensions, nested lists, and grandmaster secrets",
+    icon: "🧙‍♂️",
     progress: 0,
     status: 'not-started',
-    estimatedTime: "45 menit",
-    href: "/chapter2"
+    estimatedTime: "55 menit",
+    href: "/chapter/2"
   },
   {
     id: 3,
