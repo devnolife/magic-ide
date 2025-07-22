@@ -64,7 +64,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "55 menit",
-    href: "/chapter/2"
+    href: "/chapter2"
   },
   {
     id: 3,

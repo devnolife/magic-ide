@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -302,9 +303,11 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
                 Anda telah menguasai dasar-dasar pemrograman.
                 Siap melanjutkan ke Chapter 2: Python Lists?
               </p>
-              <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600">
-                Lanjut ke Chapter 2 →
-              </Button>
+              <Link href="/chapter2">
+                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600">
+                  Lanjut ke Chapter 2 →
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
