@@ -125,11 +125,11 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-            <Crown className="w-6 h-6 text-white" />
+            <Crown className="w-6 h-6 text-gray-800" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">👑 Grandmaster Wizard Secrets</h2>
-            <p className="text-yellow-200">Ancient techniques from the master wizards</p>
+            <h2 className="text-2xl font-bold text-gray-800">👑 Grandmaster Wizard Secrets</h2>
+            <p className="text-yellow-600">Ancient techniques from the master wizards</p>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
               variant={activeTechnique === technique.id ? "default" : "outline"}
               className={`h-auto p-4 w-full ${activeTechnique === technique.id
                   ? 'bg-gradient-to-r from-yellow-600 to-orange-600 border-yellow-400'
-                  : 'bg-gray-800/50 border-gray-600 text-gray-300'
+                  : 'bg-white border-gray-600 text-gray-300'
                 }`}
               onClick={() => setActiveTechnique(technique.id)}
             >
@@ -163,9 +163,9 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
       <Tabs value={activeTechnique} onValueChange={setActiveTechnique}>
         <TabsContent value="stack" className="space-y-4">
           {/* Stack Visualization */}
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-purple-400" />
                 Magical Stack Tower
               </CardTitle>
@@ -174,13 +174,13 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Stack Visualization */}
                 <div>
-                  <h4 className="text-white font-semibold mb-3">Spell Stack (LIFO)</h4>
+                  <h4 className="text-gray-800 font-semibold mb-3">Spell Stack (LIFO)</h4>
                   <div className="bg-purple-900/30 border-2 border-purple-500 rounded-lg p-4 min-h-[200px] flex flex-col-reverse items-center justify-start">
                     <AnimatePresence>
                       {magicStack.map((spell, index) => (
                         <motion.div
                           key={`${spell}-${index}`}
-                          className="w-full max-w-xs bg-purple-600 border border-purple-400 rounded-lg p-3 mb-2 text-center text-white font-semibold"
+                          className="w-full max-w-xs bg-purple-600 border border-purple-400 rounded-lg p-3 mb-2 text-center text-gray-800 font-semibold"
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -20 }}
@@ -199,7 +199,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
 
                 {/* Stack Controls */}
                 <div>
-                  <h4 className="text-white font-semibold mb-3">Stack Operations</h4>
+                  <h4 className="text-gray-800 font-semibold mb-3">Stack Operations</h4>
                   <div className="space-y-3">
                     <div className="flex gap-2">
                       <Button
@@ -231,8 +231,8 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                     </Button>
                   </div>
 
-                  <div className="mt-4 p-3 bg-purple-500/20 rounded-lg">
-                    <div className="text-purple-200 text-sm">
+                  <div className="mt-4 p-3 bg-blue-500/20 rounded-lg">
+                    <div className="text-purple-600 text-sm">
                       <strong>Current Top:</strong> {magicStack[magicStack.length - 1] || 'None'}
                       <br />
                       <strong>Stack Size:</strong> {magicStack.length}
@@ -246,9 +246,9 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="queue" className="space-y-4">
           {/* Queue Visualization */}
-          <Card className="bg-gray-800/50 border-blue-500/30">
+          <Card className="bg-white border-blue-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <ArrowLeftRight className="w-5 h-5 text-blue-400" />
                 Spell Casting Queue
               </CardTitle>
@@ -257,7 +257,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
               <div className="space-y-6">
                 {/* Queue Visualization */}
                 <div>
-                  <h4 className="text-white font-semibold mb-3">Queue Pipeline (FIFO)</h4>
+                  <h4 className="text-gray-800 font-semibold mb-3">Queue Pipeline (FIFO)</h4>
                   <div className="bg-blue-900/30 border-2 border-blue-500 rounded-lg p-4 min-h-[100px]">
                     <div className="flex items-center gap-2 overflow-x-auto">
                       <div className="text-green-400 font-semibold whitespace-nowrap">IN →</div>
@@ -265,7 +265,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                         {spellQueue.map((spell, index) => (
                           <motion.div
                             key={`${spell}-${index}`}
-                            className="bg-blue-600 border border-blue-400 rounded-lg px-4 py-2 text-white font-semibold whitespace-nowrap"
+                            className="bg-blue-600 border border-blue-400 rounded-lg px-4 py-2 text-gray-800 font-semibold whitespace-nowrap"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
@@ -286,7 +286,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                 {/* Queue Controls */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="text-white font-semibold mb-3">Queue Operations</h4>
+                    <h4 className="text-gray-800 font-semibold mb-3">Queue Operations</h4>
                     <div className="space-y-2">
                       <Button
                         onClick={() => enqueue('Lightning')}
@@ -311,9 +311,9 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                   </div>
 
                   <div>
-                    <h4 className="text-white font-semibold mb-3">Queue Status</h4>
+                    <h4 className="text-gray-800 font-semibold mb-3">Queue Status</h4>
                     <div className="p-3 bg-blue-500/20 rounded-lg">
-                      <div className="text-blue-200 text-sm space-y-1">
+                      <div className="text-blue-600 text-sm space-y-1">
                         <div><strong>Next to Cast:</strong> {spellQueue[0] || 'None'}</div>
                         <div><strong>Queue Length:</strong> {spellQueue.length}</div>
                         <div><strong>Last Added:</strong> {spellQueue[spellQueue.length - 1] || 'None'}</div>
@@ -328,9 +328,9 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="two-pointer" className="space-y-4">
           {/* Two Pointer Technique */}
-          <Card className="bg-gray-800/50 border-yellow-500/30">
+          <Card className="bg-white border-yellow-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Target className="w-5 h-5 text-yellow-400" />
                 Two Pointer Spell Technique
               </CardTitle>
@@ -338,7 +338,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
             <CardContent>
               <div className="space-y-4">
                 <div className="text-center">
-                  <div className="text-yellow-200 mb-2">Find two numbers that sum to: {targetSum}</div>
+                  <div className="text-yellow-600 mb-2">Find two numbers that sum to: {targetSum}</div>
                   <input
                     type="range"
                     min="5"
@@ -356,7 +356,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                     {twoPointerData.map((num, index) => (
                       <motion.div
                         key={index}
-                        className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center font-bold text-white relative ${index === leftPointer
+                        className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center font-bold text-gray-800 relative ${index === leftPointer
                             ? 'bg-green-600 border-green-400'
                             : index === rightPointer
                               ? 'bg-red-600 border-red-400'
@@ -376,7 +376,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                   </div>
 
                   <div className="mt-4 text-center">
-                    <div className="text-white mb-2">
+                    <div className="text-gray-800 mb-2">
                       Current Sum: {twoPointerData[leftPointer]} + {twoPointerData[rightPointer]} = {twoPointerData[leftPointer] + twoPointerData[rightPointer]}
                     </div>
                     {twoPointerData[leftPointer] + twoPointerData[rightPointer] === targetSum && (
@@ -416,16 +416,16 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="sliding-window" className="space-y-4">
           {/* Sliding Window */}
-          <Card className="bg-gray-800/50 border-green-500/30">
+          <Card className="bg-white border-green-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Target className="w-5 h-5 text-green-400" />
                 Sliding Window Technique
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="text-center text-green-200">
+                <div className="text-center text-green-600">
                   Window Size: {slidingWindow.size} | Current Sum: {getWindowSum()}
                 </div>
 
@@ -435,7 +435,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                     {windowData.map((num, index) => (
                       <motion.div
                         key={index}
-                        className={`w-10 h-10 rounded border-2 flex items-center justify-center font-bold text-white ${index >= slidingWindow.start && index < slidingWindow.start + slidingWindow.size
+                        className={`w-10 h-10 rounded border-2 flex items-center justify-center font-bold text-gray-800 ${index >= slidingWindow.start && index < slidingWindow.start + slidingWindow.size
                             ? 'bg-green-600 border-green-400 scale-110'
                             : 'bg-gray-600 border-gray-500'
                           }`}
@@ -448,7 +448,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                   </div>
 
                   <div className="mt-4 text-center">
-                    <div className="text-green-200">
+                    <div className="text-green-600">
                       Window: [{windowData.slice(slidingWindow.start, slidingWindow.start + slidingWindow.size).join(', ')}]
                     </div>
                   </div>
@@ -497,3 +497,5 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
     </div>
   );
 }
+
+

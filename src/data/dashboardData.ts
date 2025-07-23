@@ -39,7 +39,7 @@ export const chaptersData: Chapter[] = [
   {
     id: 0,
     title: "Dasar-Dasar Pemrograman",
-    description: "Memahami konsep fundamental sebelum memulai coding",
+    description: "Memahami konsep fundamental programming, variabel, tipe data, dan operasi dasar",
     icon: "🧠",
     progress: 0,
     status: 'not-started',
@@ -48,18 +48,18 @@ export const chaptersData: Chapter[] = [
   },
   {
     id: 1,
-    title: "Python Lists & Arrays",
-    description: "Pelajari operasi dasar pada list Python dengan visualisasi interaktif",
+    title: "Pengenalan Python Lists",
+    description: "Pelajari cara membuat, mengakses, dan memanipulasi list Python dengan mudah",
     icon: "📝",
     progress: 0,
     status: 'not-started',
     estimatedTime: "45 menit",
-    href: "/chapter1"
+    href: "/chapter/lists"
   },
   {
     id: 2,
-    title: "Advanced List Mastery",
-    description: "Master wizard techniques: comprehensions, nested lists, and grandmaster secrets",
+    title: "Teknik Lanjutan Lists",
+    description: "Kuasai list comprehension, nested lists, dan metode-metode canggih lainnya",
     icon: "🧙‍♂️",
     progress: 0,
     status: 'not-started',
@@ -68,32 +68,32 @@ export const chaptersData: Chapter[] = [
   },
   {
     id: 3,
-    title: "List Algorithms",
-    description: "Algoritma dasar menggunakan Python lists",
-    icon: "📋",
+    title: "Dictionary & Objects",
+    description: "Eksplorasi dictionary Python, nested objects, dan manipulasi data terstruktur",
+    icon: "📚",
     progress: 0,
     status: 'not-started',
-    estimatedTime: "60 menit",
+    estimatedTime: "50 menit",
     href: "/chapter3"
   },
   {
     id: 4,
-    title: "Data Structures",
-    description: "Eksplorasi struktur data kompleks dengan Python",
+    title: "Loops & Iterasi",
+    description: "Pelajari for loops, while loops, nested loops, dan teknik iterasi efisien",
     icon: "🔄",
     progress: 0,
     status: 'not-started',
-    estimatedTime: "50 menit",
+    estimatedTime: "45 menit",
     href: "/chapter4"
   },
   {
     id: 5,
-    title: "Advanced Python",
-    description: "Teknik lanjutan dan optimisasi dalam Python programming",
-    icon: "⚡",
+    title: "Project & Challenge",
+    description: "Terapkan semua yang telah dipelajari dalam project nyata dan tantangan coding",
+    icon: "🏆",
     progress: 0,
     status: 'not-started',
-    estimatedTime: "55 menit",
+    estimatedTime: "60 menit",
     href: "/chapter5"
   }
 ];
@@ -110,28 +110,28 @@ export const userStatsData: UserStats = {
 
 export const achievementsData: Achievement[] = [
   {
-    name: "First Steps",
+    name: "Langkah Pertama",
     description: "Menyelesaikan chapter pertama",
     icon: "👶",
     earned: true,
     category: 'milestone'
   },
   {
-    name: "Code Explorer",
+    name: "Penjelajah Kode",
     description: "Mencoba 10 contoh kode",
     icon: "🔍",
     earned: true,
     category: 'skill'
   },
   {
-    name: "Speed Learner",
+    name: "Pembelajar Cepat",
     description: "Menyelesaikan chapter dalam 1 hari",
     icon: "⚡",
     earned: false,
     category: 'special'
   },
   {
-    name: "Consistency King",
+    name: "Raja Konsistensi",
     description: "Belajar 7 hari berturut-turut",
     icon: "👑",
     earned: false,
@@ -158,9 +158,11 @@ export const recentActivityData: Activity[] = [
 ];
 
 export const tipsData: string[] = [
-  "💡 Tip: Praktikkan kode setiap hari untuk hasil terbaik!",
-  "🎯 Fokus: Pahami konsep dasar sebelum lanjut ke topik advanced",
-  "🔥 Motivasi: Kamu sudah 20% menuju menjadi Python developer!"
+  "💡 Tips: Praktikkan kode setiap hari untuk hasil terbaik!",
+  "🎯 Fokus: Pahami konsep dasar sebelum lanjut ke topik lanjutan",
+  "🔥 Motivasi: Kamu sudah melangkah menuju Python developer handal!",
+  "📚 Belajar: Jangan ragu untuk eksperimen dengan kode sendiri",
+  "⚡ Efisien: Gunakan fitur visualisasi untuk memahami konsep lebih cepat"
 ];
 
 // Helper functions

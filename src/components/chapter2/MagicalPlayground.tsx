@@ -87,7 +87,7 @@ export function MagicalPlayground() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Lanjutan': return 'bg-blue-500';
-      case 'Ahli': return 'bg-purple-500';
+      case 'Ahli': return 'bg-white0';
       case 'Master': return 'bg-gradient-to-r from-yellow-400 to-orange-500';
       default: return 'bg-gray-500';
     }
@@ -118,7 +118,7 @@ export function MagicalPlayground() {
               <Button
                 onClick={() => setSelectedChallenge(null)}
                 variant="outline"
-                className="border-purple-400 text-purple-600 hover:bg-purple-50"
+                className="border-purple-400 text-purple-600 hover:bg-white"
               >
                 Kembali ke Tantangan
               </Button>
@@ -136,7 +136,7 @@ export function MagicalPlayground() {
                 <p className="text-purple-600 text-lg">{challenge?.description}</p>
               </div>
 
-              <div className="bg-purple-50 border border-purple-300 rounded-lg p-6">
+              <div className="bg-white border border-purple-300 rounded-lg p-6">
                 <h4 className="text-gray-800 font-semibold mb-4">Detail Tantangan</h4>
                 <div className="text-purple-700 space-y-2">
                   <div>📈 <strong>Kesulitan:</strong> {challenge?.difficulty}</div>
@@ -169,7 +169,7 @@ export function MagicalPlayground() {
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
           <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-            <Target className="w-8 h-8 text-white" />
+            <Target className="w-8 h-8 text-gray-800" />
           </div>
           <div>
             <h2 className="text-3xl font-bold text-gray-800">🎮 Playground Magis Master</h2>
@@ -196,16 +196,16 @@ export function MagicalPlayground() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4 bg-white border border-purple-300">
-          <TabsTrigger value="challenges" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-700">
+          <TabsTrigger value="challenges" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800 text-purple-700">
             🏆 Tantangan
           </TabsTrigger>
-          <TabsTrigger value="achievements" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-700">
+          <TabsTrigger value="achievements" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800 text-purple-700">
             🏅 Pencapaian
           </TabsTrigger>
-          <TabsTrigger value="leaderboard" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-700">
+          <TabsTrigger value="leaderboard" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800 text-purple-700">
             👥 Papan Skor
           </TabsTrigger>
-          <TabsTrigger value="sandbox" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-700">
+          <TabsTrigger value="sandbox" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800 text-purple-700">
             🔬 Sandbox
           </TabsTrigger>
         </TabsList>
@@ -230,7 +230,7 @@ export function MagicalPlayground() {
                           <p className="text-purple-600 text-sm mt-1">{challenge.description}</p>
                         </div>
                       </div>
-                      <Badge className={`${getDifficultyColor(challenge.difficulty)} text-white border-0`}>
+                      <Badge className={`${getDifficultyColor(challenge.difficulty)} text-gray-800 border-0`}>
                         {challenge.difficulty}
                       </Badge>
                     </div>
@@ -265,7 +265,7 @@ export function MagicalPlayground() {
                 animate={{ opacity: 1, y: 0 }}
                 className={`p-4 rounded-lg border-2 ${achievement.earned
                   ? 'bg-green-500/20 border-green-400'
-                  : 'bg-gray-800/50 border-gray-600'
+                  : 'bg-white border-gray-600'
                   }`}
               >
                 <div className="flex items-center gap-3">
@@ -291,9 +291,9 @@ export function MagicalPlayground() {
         </TabsContent>
 
         <TabsContent value="leaderboard" className="space-y-4">
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Users className="w-5 h-5 text-purple-400" />
                 Global Wizard Rankings
               </CardTitle>
@@ -304,21 +304,21 @@ export function MagicalPlayground() {
                   <motion.div
                     key={entry.rank}
                     className={`flex items-center gap-4 p-3 rounded-lg ${entry.name === 'You'
-                      ? 'bg-purple-500/20 border border-purple-400'
-                      : 'bg-gray-700/50'
+                      ? 'bg-white0/20 border border-purple-400'
+                      : 'bg-white'
                       }`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${entry.rank <= 3
-                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800'
                       : 'bg-gray-600 text-gray-300'
                       }`}>
                       {entry.rank}
                     </div>
                     <div className="flex-1">
-                      <div className={`font-semibold ${entry.name === 'You' ? 'text-purple-300' : 'text-white'}`}>
+                      <div className={`font-semibold ${entry.name === 'You' ? 'text-purple-300' : 'text-gray-800'}`}>
                         {entry.name}
                       </div>
                       <div className="text-sm text-gray-400">{entry.level}</div>
@@ -337,9 +337,9 @@ export function MagicalPlayground() {
         </TabsContent>
 
         <TabsContent value="sandbox" className="space-y-4">
-          <Card className="bg-gray-800/50 border-green-500/30">
+          <Card className="bg-white border-green-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Brain className="w-5 h-5 text-green-400" />
                 Free Practice Sandbox
               </CardTitle>
@@ -348,7 +348,7 @@ export function MagicalPlayground() {
               <div className="text-center space-y-6">
                 <div className="text-6xl">🔬</div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-2">Experimental Laboratory</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Experimental Laboratory</h3>
                   <p className="text-green-200">Practice advanced list techniques in a safe environment</p>
                 </div>
 
@@ -380,3 +380,4 @@ export function MagicalPlayground() {
     </div>
   );
 }
+

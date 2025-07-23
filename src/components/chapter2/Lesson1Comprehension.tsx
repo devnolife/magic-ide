@@ -102,7 +102,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-            <Beaker className="w-6 h-6 text-white" />
+            <Beaker className="w-6 h-6 text-gray-800" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-gray-800">🔮 Laboratorium Generator Mantra</h2>
@@ -114,13 +114,13 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
       {/* Comprehension Stage Selector */}
       <Tabs value={comprehensionStage} onValueChange={(value) => setComprehensionStage(value as any)}>
         <TabsList className="grid w-full grid-cols-3 bg-gray-100">
-          <TabsTrigger value="basic" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+          <TabsTrigger value="basic" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
             Mantra Dasar
           </TabsTrigger>
-          <TabsTrigger value="filtered" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+          <TabsTrigger value="filtered" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
             Sihir Filter
           </TabsTrigger>
-          <TabsTrigger value="nested" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+          <TabsTrigger value="nested" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
             Dimensi Nested
           </TabsTrigger>
         </TabsList>
@@ -129,7 +129,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           {/* Spell Forge Interface */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Raw Materials */}
-            <Card className="bg-blue-50 border-blue-200">
+            <Card className="bg-white border-blue-200">
               <CardHeader>
                 <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-blue-600" />
@@ -141,7 +141,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                   {inputData.map((item, index) => (
                     <motion.div
                       key={index}
-                      className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-lg flex items-center justify-center text-white font-mono"
+                      className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-lg flex items-center justify-center text-gray-800 font-mono"
                       whileHover={{ scale: 1.1 }}
                       animate={isAnimating ? {
                         x: [0, 100, 200, 300],
@@ -176,9 +176,9 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
             </Card>
 
             {/* Transformation Furnace */}
-            <Card className="bg-gray-800/50 border-orange-500/30">
+            <Card className="bg-white border-orange-500/30">
               <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center gap-2">
+                <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <Wand2 className="w-5 h-5 text-orange-400" />
                   Transformation Furnace
                 </CardTitle>
@@ -218,12 +218,12 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           </div>
 
           {/* Spell Forge Controls */}
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="text-white">
-                    <div className="text-sm text-purple-200 mb-1">Spell Formula:</div>
+                  <div className="text-gray-800">
+                    <div className="text-sm text-purple-600 mb-1">Spell Formula:</div>
                     <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg">
                       {getComprehensionCode()}
                     </code>
@@ -263,9 +263,9 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <Card className="bg-gray-800/50 border-green-500/30">
+                <Card className="bg-white border-green-500/30">
                   <CardHeader>
-                    <CardTitle className="text-lg text-white flex items-center gap-2">
+                    <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-green-400" />
                       Magical Artifacts
                     </CardTitle>
@@ -275,7 +275,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                       {getTransformedData().map((item, index) => (
                         <motion.div
                           key={index}
-                          className="px-4 py-2 bg-green-500/20 border border-green-400 rounded-lg text-white font-mono"
+                          className="px-4 py-2 bg-blue-500/20 border border-green-400 rounded-lg text-gray-800 font-mono"
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.1 }}
@@ -295,9 +295,9 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           {/* Filtered Magic Interface */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Transform Selection */}
-            <Card className="bg-gray-800/50 border-orange-500/30">
+            <Card className="bg-white border-orange-500/30">
               <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center gap-2">
+                <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <Wand2 className="w-5 h-5 text-orange-400" />
                   Transformation
                 </CardTitle>
@@ -323,9 +323,9 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
             </Card>
 
             {/* Condition Filter */}
-            <Card className="bg-gray-800/50 border-blue-500/30">
+            <Card className="bg-white border-blue-500/30">
               <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center gap-2">
+                <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <Filter className="w-5 h-5 text-blue-400" />
                   Magical Filters
                 </CardTitle>
@@ -352,10 +352,10 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           </div>
 
           {/* Filtered Results Preview */}
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-sm text-purple-200 mb-2">Combined Spell Formula:</div>
+                <div className="text-sm text-purple-600 mb-2">Combined Spell Formula:</div>
                 <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg">
                   {getComprehensionCode()}
                 </code>
@@ -375,16 +375,16 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="nested" className="space-y-4">
           {/* Nested Comprehension */}
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-purple-400" />
                 Dimensional Matrix Magic
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center space-y-4">
-                <p className="text-purple-200">
+                <p className="text-purple-600">
                   Create magical grids with nested comprehensions
                 </p>
                 <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg block">
@@ -416,3 +416,5 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
     </div>
   );
 }
+
+

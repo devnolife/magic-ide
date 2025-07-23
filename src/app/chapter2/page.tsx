@@ -6,9 +6,9 @@ import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
 export default function Chapter2Page() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 relative">
+    <div className="min-h-screen bg-white relative">
       {/* Magical particle pattern background */}
-      <div className="absolute inset-0 opacity-30">
+      <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
         <div className="absolute top-32 left-40 w-1 h-1 bg-blue-500 rounded-full animate-bounce"></div>
         <div className="absolute top-28 left-60 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
@@ -35,7 +35,7 @@ export default function Chapter2Page() {
               </div>
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent mb-3">
-              ✨ Penguasaan List Lanjutan
+              ✨ Master List Wizardry
             </h1>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-2">
               Akademi Penyihir Master - Rahasia kuno manipulasi list Python tingkat lanjut

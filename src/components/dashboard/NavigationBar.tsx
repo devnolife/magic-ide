@@ -42,7 +42,7 @@ export function NavigationBar() {
             </Button>
             <Button variant="ghost" className="font-medium">
               <Trophy className="w-4 h-4 mr-2" />
-              Leaderboard
+              Papan Skor
             </Button>
             <Button variant="ghost" className="font-medium">
               <HelpCircle className="w-4 h-4 mr-2" />
@@ -88,7 +88,7 @@ export function NavigationBar() {
               </Avatar>
               <div className="hidden md:block">
                 <Button variant="ghost" size="sm" className="font-medium">
-                  Halo, Learner!
+                  Halo, Pelajar!
                 </Button>
               </div>
             </div>

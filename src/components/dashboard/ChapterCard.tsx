@@ -75,7 +75,7 @@ export function ChapterCard({ chapter, index }: ChapterCardProps) {
         <CardFooter className="pt-4">
           <Link href={chapter.href} className="w-full">
             <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-              {chapter.status === 'completed' ? 'Review' :
+              {chapter.status === 'completed' ? 'Tinjau Ulang' :
                 chapter.status === 'in-progress' ? 'Lanjutkan' : 'Mulai'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

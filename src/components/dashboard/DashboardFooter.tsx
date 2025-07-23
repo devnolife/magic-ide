@@ -26,7 +26,7 @@ export function DashboardFooter() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">Quick Links</h4>
+            <h4 className="font-semibold text-gray-900">Tautan Cepat</h4>
             <div className="space-y-2 text-sm">
               <div><Button variant="link" className="h-auto p-0">Dashboard</Button></div>
               <div><Button variant="link" className="h-auto p-0">Semua Chapter</Button></div>
@@ -37,18 +37,18 @@ export function DashboardFooter() {
 
           {/* Learning */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">Belajar</h4>
+            <h4 className="font-semibold text-gray-900">Materi Belajar</h4>
             <div className="space-y-2 text-sm">
               <div><Button variant="link" className="h-auto p-0">Dasar-Dasar Python</Button></div>
-              <div><Button variant="link" className="h-auto p-0">Data Structures</Button></div>
-              <div><Button variant="link" className="h-auto p-0">Algorithms</Button></div>
-              <div><Button variant="link" className="h-auto p-0">Practice Problems</Button></div>
+              <div><Button variant="link" className="h-auto p-0">Struktur Data</Button></div>
+              <div><Button variant="link" className="h-auto p-0">Algoritma</Button></div>
+              <div><Button variant="link" className="h-auto p-0">Latihan Soal</Button></div>
             </div>
           </div>
 
           {/* Community */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">Community</h4>
+            <h4 className="font-semibold text-gray-900">Komunitas</h4>
             <div className="flex space-x-2">
               <Button variant="outline" size="icon" className="bg-white/50 backdrop-blur-sm border-white/20">
                 <Github className="w-4 h-4" />
@@ -67,12 +67,12 @@ export function DashboardFooter() {
 
         <div className="flex flex-col md:flex-row md:items-center md:justify-between text-sm text-gray-600">
           <div className="flex items-center space-x-1">
-            <span>Made with</span>
+            <span>Dibuat dengan</span>
             <Heart className="w-4 h-4 text-red-500 fill-current" />
-            <span>for Python learners</span>
+            <span>untuk pembelajar Python</span>
           </div>
           <div className="mt-2 md:mt-0">
-            © 2025 Python Learning Hub. All rights reserved.
+            © 2025 Python Learning Hub. Semua hak dilindungi.
           </div>
         </div>
       </div>

@@ -139,11 +139,11 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
+            <BookOpen className="w-6 h-6 text-gray-800" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">📜 Advanced Spellbook Arsenal</h2>
-            <p className="text-purple-200">Master powerful methods from the ancient grimoires</p>
+            <h2 className="text-2xl font-bold text-gray-800">📜 Advanced Spellbook Arsenal</h2>
+            <p className="text-purple-600">Master powerful methods from the ancient grimoires</p>
           </div>
         </div>
       </div>
@@ -167,9 +167,9 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
         <TabsContent value="methods" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Method Selector */}
-            <Card className="bg-gray-800/50 border-purple-500/30">
+            <Card className="bg-white border-purple-500/30">
               <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center gap-2">
+                <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <Zap className="w-5 h-5 text-purple-400" />
                   Spell Method Selector
                 </CardTitle>
@@ -191,7 +191,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                         onClick={() => setSelectedMethod(method.id)}
                       >
                         <div className="flex items-start gap-3 w-full">
-                          <div className="p-2 bg-purple-500/20 rounded-lg text-purple-300">
+                          <div className="p-2 bg-blue-500/20 rounded-lg text-purple-300">
                             {method.icon}
                           </div>
                           <div className="flex-1 text-left">
@@ -215,9 +215,9 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
             </Card>
 
             {/* Current Spellbook */}
-            <Card className="bg-gray-800/50 border-blue-500/30">
+            <Card className="bg-white border-blue-500/30">
               <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center gap-2">
+                <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-blue-400" />
                   Current Spellbook
                 </CardTitle>
@@ -229,7 +229,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                       {spellBook.map((spell, index) => (
                         <motion.div
                           key={`${spell}-${index}`}
-                          className="px-3 py-2 bg-blue-600/20 border border-blue-400 rounded-lg text-blue-200"
+                          className="px-3 py-2 bg-blue-600/20 border border-blue-400 rounded-lg text-blue-600"
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.1 }}
@@ -268,7 +268,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                   </div>
 
                   {selectedMethod && (
-                    <div className="text-sm text-purple-200 bg-purple-500/20 p-3 rounded-lg">
+                    <div className="text-sm text-purple-600 bg-blue-500/20 p-3 rounded-lg">
                       <strong>Selected Method:</strong> {listMethods.find(m => m.id === selectedMethod)?.name}
                       <br />
                       <strong>Description:</strong> {listMethods.find(m => m.id === selectedMethod)?.description}
@@ -289,9 +289,9 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <Card className="bg-gray-800/50 border-green-500/30">
+                <Card className="bg-white border-green-500/30">
                   <CardHeader>
-                    <CardTitle className="text-lg text-white flex items-center gap-2">
+                    <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                       <Copy className="w-5 h-5 text-green-400" />
                       Transformation Chronicle
                     </CardTitle>
@@ -300,10 +300,10 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Before */}
                       <div>
-                        <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <h4 className="text-gray-800 font-semibold mb-3 flex items-center gap-2">
                           📖 Before Casting
                         </h4>
-                        <div className="bg-red-500/20 border border-red-400 rounded-lg p-4">
+                        <div className="bg-blue-500/20 border border-red-400 rounded-lg p-4">
                           <div className="flex flex-wrap gap-2">
                             {beforeState.map((spell, index) => (
                               <div
@@ -319,15 +319,15 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
 
                       {/* After */}
                       <div>
-                        <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <h4 className="text-gray-800 font-semibold mb-3 flex items-center gap-2">
                           ✨ After Casting
                         </h4>
-                        <div className="bg-green-500/20 border border-green-400 rounded-lg p-4">
+                        <div className="bg-blue-500/20 border border-green-400 rounded-lg p-4">
                           <div className="flex flex-wrap gap-2">
                             {spellBook.map((spell, index) => (
                               <motion.div
                                 key={index}
-                                className="px-3 py-2 bg-green-600/20 border border-green-400 rounded text-green-200"
+                                className="px-3 py-2 bg-green-600/20 border border-green-400 rounded text-green-600"
                                 initial={{ opacity: 0, scale: 0 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.1 }}
@@ -351,16 +351,16 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="chains" className="space-y-4">
           {/* Method Chaining */}
-          <Card className="bg-gray-800/50 border-yellow-500/30">
+          <Card className="bg-white border-yellow-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-400" />
                 Advanced Method Combinations
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="bg-yellow-500/20 border border-yellow-400 rounded-lg p-4">
+                <div className="bg-blue-500/20 border border-yellow-400 rounded-lg p-4">
                   <h4 className="text-yellow-300 font-semibold mb-3">Pattern Multiplication Magic</h4>
                   <code className="block bg-black/50 p-3 rounded text-green-400 mb-3">
                     pattern = [1, 0] * 5  # Result: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
@@ -369,7 +369,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                     {[1, 0, 1, 0, 1, 0, 1, 0, 1, 0].map((num, index) => (
                       <motion.div
                         key={index}
-                        className={`w-8 h-8 rounded flex items-center justify-center text-white font-bold ${num === 1 ? 'bg-yellow-500' : 'bg-gray-600'
+                        className={`w-8 h-8 rounded flex items-center justify-center text-gray-800 font-bold ${num === 1 ? 'bg-white0' : 'bg-gray-600'
                           }`}
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -381,7 +381,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                   </div>
                 </div>
 
-                <div className="bg-purple-500/20 border border-purple-400 rounded-lg p-4">
+                <div className="bg-blue-500/20 border border-purple-400 rounded-lg p-4">
                   <h4 className="text-purple-300 font-semibold mb-3">Enumerate Spell</h4>
                   <code className="block bg-black/50 p-3 rounded text-green-400 mb-3">
                     {'for index, spell in enumerate(["Fire", "Water", "Earth"]):'}
@@ -397,10 +397,10 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.2 }}
                       >
-                        <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="w-8 h-8 bg-white0 rounded-full flex items-center justify-center text-gray-800 font-bold">
                           {index}
                         </div>
-                        <div className="text-purple-200">Spell {index}: {spell}</div>
+                        <div className="text-purple-600">Spell {index}: {spell}</div>
                       </motion.div>
                     ))}
                   </div>
@@ -412,9 +412,9 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="performance" className="space-y-4">
           {/* Performance Analysis */}
-          <Card className="bg-gray-800/50 border-orange-500/30">
+          <Card className="bg-white border-orange-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <MemoryStick className="w-5 h-5 text-orange-400" />
                 Performance Crystal Analysis
               </CardTitle>
@@ -423,7 +423,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Time Complexity */}
                 <div>
-                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+                  <h4 className="text-gray-800 font-semibold mb-4 flex items-center gap-2">
                     <Timer className="w-4 h-4" />
                     Time Complexity
                   </h4>
@@ -435,7 +435,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                       >
                         <div className="flex items-center gap-2">
                           <div className="text-purple-300">{method.icon}</div>
-                          <span className="text-white">{method.name}</span>
+                          <span className="text-gray-800">{method.name}</span>
                         </div>
                         <Badge className={`${getComplexityColor(method.complexity)} bg-gray-800 border-0`}>
                           {method.complexity}
@@ -447,18 +447,18 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
 
                 {/* Memory Usage */}
                 <div>
-                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+                  <h4 className="text-gray-800 font-semibold mb-4 flex items-center gap-2">
                     <MemoryStick className="w-4 h-4" />
                     Memory Considerations
                   </h4>
                   <div className="space-y-3">
-                    <div className="bg-green-500/20 border border-green-400 p-3 rounded-lg">
+                    <div className="bg-blue-500/20 border border-green-400 p-3 rounded-lg">
                       <div className="text-green-300 font-semibold mb-1">Efficient</div>
-                      <div className="text-green-200 text-sm">append(), clear(), extend()</div>
+                      <div className="text-green-600 text-sm">append(), clear(), extend()</div>
                     </div>
-                    <div className="bg-yellow-500/20 border border-yellow-400 p-3 rounded-lg">
+                    <div className="bg-blue-500/20 border border-yellow-400 p-3 rounded-lg">
                       <div className="text-yellow-300 font-semibold mb-1">Moderate</div>
-                      <div className="text-yellow-200 text-sm">copy(), sort()</div>
+                      <div className="text-yellow-600 text-sm">copy(), sort()</div>
                     </div>
                     <div className="bg-orange-500/20 border border-orange-400 p-3 rounded-lg">
                       <div className="text-orange-300 font-semibold mb-1">Memory Tips</div>
@@ -485,3 +485,5 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
     </div>
   );
 }
+
+

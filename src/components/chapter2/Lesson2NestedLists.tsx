@@ -82,11 +82,11 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <GitBranch className="w-6 h-6 text-white" />
+            <GitBranch className="w-6 h-6 text-gray-800" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">🌌 Dimensional Portal Academy</h2>
-            <p className="text-blue-200">Navigate through nested dimensions and matrix realms</p>
+            <h2 className="text-2xl font-bold text-gray-800">🌌 Dimensional Portal Academy</h2>
+            <p className="text-blue-600">Navigate through nested dimensions and matrix realms</p>
           </div>
         </div>
       </div>
@@ -129,9 +129,9 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="visualization" className="space-y-4">
           {/* Master Scroll Holder */}
-          <Card className="bg-gray-800/50 border-purple-500/30">
+          <Card className="bg-white border-purple-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Scroll className="w-5 h-5 text-purple-400" />
                 Master Scroll Collection
               </CardTitle>
@@ -150,13 +150,13 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                       onClick={() => toggleScroll(scrollIndex)}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="w-8 h-8 bg-white0 rounded-full flex items-center justify-center text-gray-800 font-bold">
                           {scrollIndex}
                         </div>
-                        <span className="text-white font-semibold">
+                        <span className="text-gray-800 font-semibold">
                           {selectedData === 'spells' ? `Spell Scroll ${scrollIndex}` : `Matrix Row ${scrollIndex}`}
                         </span>
-                        <Badge variant="secondary" className="bg-purple-500/20 text-purple-200">
+                        <Badge variant="secondary" className="bg-blue-500/20 text-purple-600">
                           {scroll.length} items
                         </Badge>
                       </div>
@@ -180,10 +180,10 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                               <motion.div
                                 key={itemIndex}
                                 className={`px-3 py-2 rounded-lg border cursor-pointer transition-all ${selectedCoordinate?.[0] === scrollIndex && selectedCoordinate?.[1] === itemIndex
-                                  ? 'bg-yellow-500/20 border-yellow-400 text-yellow-300'
+                                  ? 'bg-blue-500/20 border-yellow-400 text-yellow-300'
                                   : foundCoordinate?.[0] === scrollIndex && foundCoordinate?.[1] === itemIndex
-                                    ? 'bg-green-500/20 border-green-400 text-green-300 animate-pulse'
-                                    : 'bg-blue-500/20 border-blue-400 text-blue-200 hover:bg-blue-500/30'
+                                    ? 'bg-blue-500/20 border-green-400 text-green-300 animate-pulse'
+                                    : 'bg-blue-500/20 border-blue-400 text-blue-600 hover:bg-white0/30'
                                   }`}
                                 onClick={() => setSelectedCoordinate([scrollIndex, itemIndex])}
                                 whileHover={{ scale: 1.05 }}
@@ -208,9 +208,9 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="navigation" className="space-y-4">
           {/* Coordinate Compass */}
-          <Card className="bg-gray-800/50 border-blue-500/30">
+          <Card className="bg-white border-blue-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Compass className="w-5 h-5 text-blue-400" />
                 Dimensional Coordinate System
               </CardTitle>
@@ -219,7 +219,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Coordinate Selector */}
                 <div>
-                  <h4 className="text-white font-semibold mb-3">Navigate to Coordinates:</h4>
+                  <h4 className="text-gray-800 font-semibold mb-3">Navigate to Coordinates:</h4>
                   <div className="grid grid-cols-4 gap-2">
                     {getCurrentData().map((scroll, scrollIndex) => (
                       scroll.map((item, itemIndex) => (
@@ -244,19 +244,19 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
                 {/* Selected Item Display */}
                 <div>
-                  <h4 className="text-white font-semibold mb-3">Current Selection:</h4>
+                  <h4 className="text-gray-800 font-semibold mb-3">Current Selection:</h4>
                   {selectedCoordinate ? (
                     <Card className="bg-blue-500/20 border-blue-400">
                       <CardContent className="p-4">
                         <div className="text-center">
-                          <div className="text-sm text-blue-200 mb-2">Coordinates:</div>
+                          <div className="text-sm text-blue-600 mb-2">Coordinates:</div>
                           <code className="bg-black/50 px-3 py-1 rounded text-blue-300">
                             [{selectedCoordinate[0]}][{selectedCoordinate[1]}]
                           </code>
-                          <div className="text-lg font-bold text-white mt-3">
+                          <div className="text-lg font-bold text-gray-800 mt-3">
                             {getCurrentData()[selectedCoordinate[0]][selectedCoordinate[1]]}
                           </div>
-                          <div className="text-sm text-blue-200 mt-2">
+                          <div className="text-sm text-blue-600 mt-2">
                             Access with: data[{selectedCoordinate[0]}][{selectedCoordinate[1]}]
                           </div>
                         </div>
@@ -277,9 +277,9 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="search" className="space-y-4">
           {/* Spell Searcher */}
-          <Card className="bg-gray-800/50 border-green-500/30">
+          <Card className="bg-white border-green-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Search className="w-5 h-5 text-green-400" />
                 Dimensional Spell Detector
               </CardTitle>
@@ -292,7 +292,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                     value={searchTarget}
                     onChange={(e) => setSearchTarget(e.target.value)}
                     placeholder={selectedData === 'spells' ? 'Search for spells...' : 'Search matrix values...'}
-                    className="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                    className="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-800 placeholder-gray-400 focus:border-green-500 focus:outline-none"
                   />
                   <Button
                     onClick={() => findSpell(searchTarget)}
@@ -308,14 +308,14 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-green-500/20 border border-green-400 rounded-lg p-4"
+                    className="bg-blue-500/20 border border-green-400 rounded-lg p-4"
                   >
                     <div className="text-center">
                       <div className="text-green-300 font-semibold mb-2">🎯 Found!</div>
                       <code className="bg-black/50 px-3 py-1 rounded text-green-400">
                         Location: [{foundCoordinate[0]}][{foundCoordinate[1]}]
                       </code>
-                      <div className="text-white mt-2">
+                      <div className="text-gray-800 mt-2">
                         Value: <strong>{getCurrentData()[foundCoordinate[0]][foundCoordinate[1]]}</strong>
                       </div>
                     </div>
@@ -340,9 +340,9 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="flatten" className="space-y-4">
           {/* Dimension Flattener */}
-          <Card className="bg-gray-800/50 border-orange-500/30">
+          <Card className="bg-white border-orange-500/30">
             <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-orange-400" />
                 Dimensional Merger
               </CardTitle>
@@ -372,7 +372,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                     >
                       {/* Original Structure */}
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Original Nested Structure:</h4>
+                        <h4 className="text-gray-800 font-semibold mb-2">Original Nested Structure:</h4>
                         <div className="bg-gray-900/50 p-3 rounded-lg">
                           {getCurrentData().map((row, index) => (
                             <div key={index} className="mb-2">
@@ -385,7 +385,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
                       {/* Flattened Result */}
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Flattened Result:</h4>
+                        <h4 className="text-gray-800 font-semibold mb-2">Flattened Result:</h4>
                         <div className="bg-orange-500/20 border border-orange-400 p-4 rounded-lg">
                           <div className="flex flex-wrap gap-2">
                             {getFlattenedData().map((item, index) => (
@@ -430,3 +430,5 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
     </div>
   );
 }
+
+

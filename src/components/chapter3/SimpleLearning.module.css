@@ -1,0 +1,518 @@
+/* Simplified Dictionary Learning Container Styles */
+
+.learningContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  border-radius: 4px;
+  transition: width 0.7s ease-out;
+}
+
+.stepContainer {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px;
+  margin: 24px 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stepContainer:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+}
+
+.stepContainer.active {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.stepContainer.completed {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stepNumber {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.stepNumber.completed {
+  background: #10b981;
+}
+
+.stepNumber.inactive {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.stepTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.stepDescription {
+  font-size: 16px;
+  color: #64748b;
+  margin: 8px 0 0 0;
+  line-height: 1.5;
+}
+
+.conceptDemo {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.codeExample {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: auto;
+  position: relative;
+}
+
+.codeExample.large {
+  font-size: 16px;
+  padding: 24px;
+}
+
+.visualOutput {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dictionaryVisual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.keyValuePair {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.keyValuePair:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.keyValuePair.highlighted {
+  background: #dbeafe;
+  border: 2px solid #3b82f6;
+  animation: pulse 1.5s ease-in-out;
+}
+
+.key {
+  background: #3b82f6;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+}
+
+.arrow {
+  font-size: 20px;
+  color: #64748b;
+  font-weight: bold;
+}
+
+.value {
+  background: #10b981;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+}
+
+.interactiveArea {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  margin: 24px 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.interactiveArea:hover {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.interactiveArea.active {
+  border-color: #3b82f6;
+  border-style: solid;
+  background: #eff6ff;
+}
+
+.actionButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actionButton:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.actionButton:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.successButton {
+  background: #10b981;
+}
+
+.successButton:hover {
+  background: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+}
+
+.navigationControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.navButton {
+  background: #ffffff;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navButton:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.navButton:disabled {
+  border-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.completionBadge {
+  background: #10b981;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  animation: bounceIn 0.6s ease-out;
+}
+
+.hintBox {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  color: #92400e;
+}
+
+.errorBox {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  color: #dc2626;
+}
+
+.successBox {
+  background: #d1fae5;
+  border: 1px solid #10b981;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  color: #065f46;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slideInUp {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.slideInUpDelay1 {
+  animation: slideInUp 0.5s ease-out;
+  animation-delay: 0.5s;
+  animation-fill-mode: both;
+}
+
+.slideInUpDelay2 {
+  animation: slideInUp 0.5s ease-out;
+  animation-delay: 0.6s;
+  animation-fill-mode: both;
+}
+
+.slideInUpDelay3 {
+  animation: slideInUp 0.5s ease-out;
+  animation-delay: 0.7s;
+  animation-fill-mode: both;
+}
+
+.progressFillWidth {
+  transition: width 0.7s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .learningContainer {
+    padding: 16px;
+  }
+
+  .stepContainer {
+    padding: 24px;
+  }
+
+  .stepTitle {
+    font-size: 20px;
+  }
+
+  .stepDescription {
+    font-size: 14px;
+  }
+
+  .keyValuePair {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+  }
+
+  .navigationControls {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .codeExample {
+    font-size: 12px;
+    padding: 16px;
+  }
+
+  .actionButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepHeader {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .stepNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .stepTitle {
+    font-size: 18px;
+  }
+
+  .interactiveArea {
+    padding: 24px 16px;
+  }
+}
+
+/* Touch-friendly interactions for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .actionButton {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .navButton {
+    min-height: 44px;
+  }
+
+  .keyValuePair {
+    min-height: 44px;
+    padding: 16px;
+  }
+
+  .interactiveArea {
+    min-height: 88px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stepContainer {
+    border-width: 3px;
+  }
+
+  .keyValuePair {
+    border: 2px solid #1e293b;
+  }
+
+  .key, .value {
+    border: 2px solid #ffffff;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .stepContainer:hover {
+    transform: none;
+  }
+
+  .keyValuePair:hover {
+    transform: none;
+  }
+
+  .actionButton:hover {
+    transform: none;
+  }
+}
