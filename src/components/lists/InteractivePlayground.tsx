@@ -21,6 +21,7 @@ import {
   Award
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { CodeEditor } from '@/components/CodeEditor';
 
 interface LessonProps {
   onComplete?: () => void;
@@ -158,6 +159,24 @@ export function InteractivePlayground({ onComplete }: LessonProps) {
 
   // Free play mode state
   const [freePlayList, setFreePlayList] = useState<any[]>([]);
+  const [codeInput, setCodeInput] = useState(`# Python List Operations Playground
+# Create a list and try different operations
+
+my_list = [1, 2, 3]
+print("Initial list:", my_list)
+
+# Add elements
+my_list.append(4)
+my_list.insert(0, 0)
+
+# Remove elements
+my_list.remove(2)
+
+# Sort and reverse
+my_list.sort()
+my_list.reverse()
+
+print("Final list:", my_list)`);
 
   useEffect(() => {
     checkAchievements();
@@ -308,6 +327,143 @@ export function InteractivePlayground({ onComplete }: LessonProps) {
     const listCode = `my_list = [${freePlayList.map(item => JSON.stringify(item)).join(', ')}]`;
     setFreePlayLists(prev => [...prev, listCode]);
     toast.success('List saved to gallery!');
+  };
+
+  const runCode = () => {
+    try {
+      // Simple code execution simulation for list operations
+      const lines = codeInput.split('\n').filter(line => line.trim() && !line.trim().startsWith('#'));
+      let currentList: any[] = [];
+      let listVariableName = 'my_list';
+
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+
+        // Handle list creation with different variable names
+        if (trimmedLine.includes('=') && trimmedLine.includes('[')) {
+          const parts = trimmedLine.split('=');
+          if (parts.length >= 2) {
+            listVariableName = parts[0].trim();
+            const match = trimmedLine.match(/\[(.*?)\]/);
+            if (match) {
+              const itemsStr = match[1];
+              if (itemsStr.trim()) {
+                const items = itemsStr.split(',').map(item => {
+                  const cleaned = item.trim().replace(/^['"]|['"]$/g, '');
+                  return isNaN(Number(cleaned)) ? cleaned : Number(cleaned);
+                });
+                currentList = items;
+              } else {
+                currentList = [];
+              }
+            }
+          }
+        }
+
+        // Handle operations on the list variable
+        if (trimmedLine.includes(`${listVariableName}.append(`)) {
+          const match = trimmedLine.match(/\.append\((.*?)\)/);
+          if (match) {
+            const value = match[1].trim().replace(/^['"]|['"]$/g, '');
+            const parsedValue = isNaN(Number(value)) ? value : Number(value);
+            currentList.push(parsedValue);
+          }
+        }
+
+        if (trimmedLine.includes(`${listVariableName}.remove(`)) {
+          const match = trimmedLine.match(/\.remove\((.*?)\)/);
+          if (match) {
+            const value = match[1].trim().replace(/^['"]|['"]$/g, '');
+            const parsedValue = isNaN(Number(value)) ? value : Number(value);
+            const index = currentList.indexOf(parsedValue);
+            if (index > -1) currentList.splice(index, 1);
+          }
+        }
+
+        if (trimmedLine.includes(`${listVariableName}.insert(`)) {
+          const match = trimmedLine.match(/\.insert\((.*?)\)/);
+          if (match) {
+            const args = match[1].split(',').map(arg => arg.trim());
+            if (args.length >= 2) {
+              const index = parseInt(args[0]);
+              const value = args[1].replace(/^['"]|['"]$/g, '');
+              const parsedValue = isNaN(Number(value)) ? value : Number(value);
+              if (!isNaN(index)) {
+                currentList.splice(index, 0, parsedValue);
+              }
+            }
+          }
+        }
+
+        if (trimmedLine.includes(`${listVariableName}.pop(`)) {
+          const match = trimmedLine.match(/\.pop\((.*?)\)/);
+          if (match && match[1].trim()) {
+            const index = parseInt(match[1].trim());
+            if (!isNaN(index) && index >= 0 && index < currentList.length) {
+              currentList.splice(index, 1);
+            }
+          } else if (trimmedLine.includes(`${listVariableName}.pop()`)) {
+            currentList.pop();
+          }
+        }
+
+        if (trimmedLine.includes(`${listVariableName}.sort()`)) {
+          currentList.sort((a, b) => {
+            if (typeof a === 'number' && typeof b === 'number') {
+              return a - b;
+            }
+            return String(a).localeCompare(String(b));
+          });
+        }
+
+        if (trimmedLine.includes(`${listVariableName}.reverse()`)) {
+          currentList.reverse();
+        }
+
+        // Handle extend operation
+        if (trimmedLine.includes(`${listVariableName}.extend(`)) {
+          const match = trimmedLine.match(/\.extend\(\[(.*?)\]\)/);
+          if (match) {
+            const itemsStr = match[1];
+            if (itemsStr.trim()) {
+              const items = itemsStr.split(',').map(item => {
+                const cleaned = item.trim().replace(/^['"]|['"]$/g, '');
+                return isNaN(Number(cleaned)) ? cleaned : Number(cleaned);
+              });
+              currentList.push(...items);
+            }
+          }
+        }
+      }
+
+      setFreePlayList([...currentList]);
+      toast.success(`Code executed successfully! Result: [${currentList.join(', ')}]`);
+    } catch (error) {
+      console.error('Code execution error:', error);
+      toast.error('Error executing code. Please check your syntax.');
+    }
+  };
+
+  const resetCode = () => {
+    setCodeInput(`# Python List Operations Playground
+# Create a list and try different operations
+
+my_list = [1, 2, 3]
+print("Initial list:", my_list)
+
+# Add elements
+my_list.append(4)
+my_list.insert(0, 0)
+
+# Remove elements
+my_list.remove(2)
+
+# Sort and reverse
+my_list.sort()
+my_list.reverse()
+
+print("Final list:", my_list)`);
+    setFreePlayList([]);
   };
 
   return (
@@ -528,22 +684,38 @@ export function InteractivePlayground({ onComplete }: LessonProps) {
 
         <TabsContent value="freeplay" className="space-y-6">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* List Builder */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Free Play List Builder</h3>
+            {/* Code Editor */}
+            <div className="space-y-4">
+              <CodeEditor
+                code={codeInput}
+                onCodeChange={setCodeInput}
+                onRun={runCode}
+                onReset={resetCode}
+                height="350px"
+                className="min-h-[400px]"
+              />
 
-              <div className="space-y-4">
+              {/* Manual List Builder */}
+              <Card className="p-4">
+                <h4 className="font-medium mb-3">Quick List Builder</h4>
                 <div className="flex space-x-2">
                   <Input
                     value={newItem}
                     onChange={(e) => setNewItem(e.target.value)}
-                    placeholder="Add item..."
+                    placeholder="Add item manually..."
                     onKeyPress={(e) => e.key === 'Enter' && addToFreePlay()}
                   />
                   <Button onClick={addToFreePlay}>Add</Button>
                 </div>
+              </Card>
+            </div>
 
-                <div className="bg-gray-50 p-4 rounded min-h-[200px]">
+            {/* Results and Gallery */}
+            <div className="space-y-4">
+              {/* Current List Display */}
+              <Card className="p-4">
+                <h4 className="font-medium mb-3">Current List Result</h4>
+                <div className="bg-gray-50 p-4 rounded min-h-[120px]">
                   <div className="flex flex-wrap gap-2">
                     {freePlayList.map((item, index) => (
                       <motion.div
@@ -564,45 +736,76 @@ export function InteractivePlayground({ onComplete }: LessonProps) {
                         </button>
                       </motion.div>
                     ))}
+                    {freePlayList.length === 0 && (
+                      <div className="text-gray-400 italic">Run your code to see results here...</div>
+                    )}
                   </div>
                 </div>
-
-                <div className="flex space-x-2">
-                  <Button onClick={saveFreePlayList} disabled={freePlayList.length === 0}>
+                <div className="flex space-x-2 mt-3">
+                  <Button onClick={saveFreePlayList} disabled={freePlayList.length === 0} size="sm">
                     Save List
                   </Button>
-                  <Button variant="outline" onClick={() => setFreePlayList([])}>
+                  <Button variant="outline" onClick={() => setFreePlayList([])} size="sm">
                     Clear
                   </Button>
                 </div>
-              </div>
-            </Card>
+              </Card>
 
-            {/* Saved Lists Gallery */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">
-                Saved Lists Gallery ({freePlayLists.length})
-              </h3>
+              {/* Saved Lists Gallery */}
+              <Card className="p-4">
+                <h4 className="font-medium mb-3">
+                  Saved Lists Gallery ({freePlayLists.length})
+                </h4>
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {freePlayLists.map((listCode, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="bg-gray-900 text-green-400 p-3 rounded font-mono text-sm"
+                    >
+                      {listCode}
+                    </motion.div>
+                  ))}
 
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {freePlayLists.map((listCode, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="bg-gray-900 text-green-400 p-3 rounded font-mono text-sm"
-                  >
-                    {listCode}
-                  </motion.div>
-                ))}
+                  {freePlayLists.length === 0 && (
+                    <div className="text-center text-gray-400 py-4 text-sm">
+                      No saved lists yet. Create and save some lists!
+                    </div>
+                  )}
+                </div>
+              </Card>
 
-                {freePlayLists.length === 0 && (
-                  <div className="text-center text-gray-400 py-8">
-                    No saved lists yet. Create and save some lists!
+              {/* Code Examples */}
+              <Card className="p-4">
+                <h4 className="font-medium mb-3">💡 Quick Examples</h4>
+                <div className="text-sm space-y-3">
+                  <div>
+                    <div className="text-xs text-gray-600 mb-1">Basic Operations:</div>
+                    <div className="bg-gray-100 p-2 rounded font-mono text-xs">
+                      <div>my_list = [1, 2, 3]</div>
+                      <div>my_list.append(4)  # Add to end</div>
+                      <div>my_list.insert(0, 0)  # Insert at index</div>
+                      <div>my_list.remove(2)  # Remove value</div>
+                    </div>
                   </div>
-                )}
-              </div>
-            </Card>
+
+                  <div>
+                    <div className="text-xs text-gray-600 mb-1">Sorting & Manipulation:</div>
+                    <div className="bg-gray-100 p-2 rounded font-mono text-xs">
+                      <div>my_list.sort()  # Sort ascending</div>
+                      <div>my_list.reverse()  # Reverse order</div>
+                      <div>my_list.extend([5, 6])  # Add multiple</div>
+                      <div>my_list.pop()  # Remove last</div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-gray-600">
+                    💡 Click "Run" to execute your code and see the results!
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </TabsContent>
 

@@ -1,18 +1,20 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, BookOpen, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Trophy, Target, Lock } from 'lucide-react';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 import LessonContainer from '@/components/chapter0/LessonContainer';
 import Lesson1Programming from '@/components/chapter0/Lesson1Programming';
 import Lesson2Variables from '@/components/chapter0/Lesson2Variables';
 import Lesson3DataTypes from '@/components/chapter0/Lesson3DataTypes';
 import Lesson4Operations from '@/components/chapter0/Lesson4Operations';
+import Link from 'next/link';
+import { toast } from 'sonner';
 
 const lessons = [
   {
@@ -52,9 +54,25 @@ const lessons = [
 export default function Chapter0Page() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
+  const [challengesUnlocked, setChallengesUnlocked] = useState(false);
 
   const currentLesson = lessons[currentLessonIndex];
   const progress = ((completedLessons.size) / lessons.length) * 100;
+
+  // Check if challenges should be unlocked
+  useEffect(() => {
+    const allCompleted = completedLessons.size === lessons.length;
+    if (allCompleted && !challengesUnlocked) {
+      setChallengesUnlocked(true);
+      // Show unlock notification
+      setTimeout(() => {
+        toast.success("🎯 Tantangan Terbuka!", {
+          description: "Selamat! Anda telah membuka tantangan interaktif. Uji kemampuan Anda sekarang!",
+          duration: 5000,
+        });
+      }, 1000);
+    }
+  }, [completedLessons.size, challengesUnlocked]);
 
   const handleLessonComplete = (lessonId: number) => {
     setCompletedLessons(prev => new Set([...prev, lessonId]));
@@ -138,6 +156,129 @@ export default function Chapter0Page() {
                       </Button>
                     </motion.div>
                   ))}
+
+                  {/* Challenges Menu - Unlocked after all lessons completed */}
+                  <div className="mt-6 pt-4 border-t">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-semibold text-gray-600">Tantangan</h3>
+                      {completedLessons.size < lessons.length && (
+                        <Badge variant="outline" className="text-xs">
+                          {completedLessons.size}/{lessons.length}
+                        </Badge>
+                      )}
+                    </div>
+
+                    {completedLessons.size === lessons.length ? (
+                      <Link href="/chapter0/challenges">
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                          className="relative"
+                        >
+                          {/* Sparkle effect */}
+                          {challengesUnlocked && (
+                            <>
+                              <motion.div
+                                className="absolute -top-1 -right-1 text-yellow-400"
+                                animate={{
+                                  scale: [0, 1, 0],
+                                  rotate: [0, 180, 360],
+                                }}
+                                transition={{
+                                  duration: 1,
+                                  repeat: Infinity,
+                                  repeatDelay: 2,
+                                }}
+                              >
+                                ✨
+                              </motion.div>
+                              <motion.div
+                                className="absolute -bottom-1 -left-1 text-orange-400"
+                                animate={{
+                                  scale: [0, 1, 0],
+                                  rotate: [360, 180, 0],
+                                }}
+                                transition={{
+                                  duration: 1,
+                                  repeat: Infinity,
+                                  repeatDelay: 2,
+                                  delay: 0.5,
+                                }}
+                              >
+                                ⭐
+                              </motion.div>
+                            </>
+                          )}
+
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start p-4 h-auto border-2 border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 hover:from-yellow-100 hover:to-orange-100 shadow-lg"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <motion.div
+                                className="text-2xl"
+                                animate={{
+                                  scale: [1, 1.1, 1],
+                                  rotate: [0, 5, -5, 0]
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  repeatDelay: 3
+                                }}
+                              >
+                                🎯
+                              </motion.div>
+                              <div className="text-left">
+                                <div className="font-medium text-sm text-yellow-800">Uji Kemampuan</div>
+                                <div className="text-xs text-yellow-600">Tantangan Interaktif</div>
+                              </div>
+                              <div className="ml-auto flex items-center space-x-1">
+                                <span className="text-xs text-yellow-600 font-medium">BUKA</span>
+                                <Target className="w-4 h-4 text-yellow-600" />
+                              </div>
+                            </div>
+                          </Button>
+                        </motion.div>
+                      </Link>
+                    ) : (
+                      <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        className="opacity-60"
+                      >
+                        <Button
+                          variant="ghost"
+                          disabled
+                          className="w-full justify-start p-4 h-auto cursor-not-allowed border border-gray-200"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="text-2xl">🔒</div>
+                            <div className="text-left flex-1">
+                              <div className="font-medium text-sm text-gray-500">Uji Kemampuan</div>
+                              <div className="text-xs text-gray-400">
+                                Selesaikan {lessons.length - completedLessons.size} pelajaran lagi
+                              </div>
+                            </div>
+                            <Lock className="w-4 h-4 text-gray-400" />
+                          </div>
+                        </Button>
+                      </motion.div>
+                    )}
+
+                    {/* Progress indicator for challenges unlock */}
+                    {completedLessons.size > 0 && completedLessons.size < lessons.length && (
+                      <div className="mt-2 px-1">
+                        <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                          <span>Progress untuk membuka tantangan</span>
+                          <span>{Math.round(progress)}%</span>
+                        </div>
+                        <Progress value={progress} className="h-1" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -232,12 +373,20 @@ export default function Chapter0Page() {
                       <h3 className="text-2xl font-bold text-green-800 mb-2">
                         Selamat!
                       </h3>
-                      <p className="text-green-700">
+                      <p className="text-green-700 mb-4">
                         Anda telah menyelesaikan Chapter 0: Dasar-Dasar Pemrograman!
                       </p>
-                      <Button className="mt-4" size="lg">
-                        Lanjut ke Chapter 1 →
-                      </Button>
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <Link href="/chapter0/challenges">
+                          <Button variant="outline" size="lg" className="bg-yellow-100 border-yellow-300 text-yellow-800 hover:bg-yellow-200">
+                            <Target className="w-5 h-5 mr-2" />
+                            Uji Kemampuan
+                          </Button>
+                        </Link>
+                        <Button size="lg">
+                          Lanjut ke Chapter 1 →
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>

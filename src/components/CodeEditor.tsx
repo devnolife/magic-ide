@@ -10,11 +10,20 @@ interface CodeEditorProps {
   onCodeChange: (code: string) => void;
   onRun: () => void;
   onReset: () => void;
+  height?: string;
+  className?: string;
 }
 
-export function CodeEditor({ code, onCodeChange, onRun, onReset }: CodeEditorProps) {
+export function CodeEditor({
+  code,
+  onCodeChange,
+  onRun,
+  onReset,
+  height = "400px",
+  className = ""
+}: CodeEditorProps) {
   return (
-    <Card className="h-full flex flex-col">
+    <Card className={`h-full flex flex-col ${className}`}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold">Python Code Editor</CardTitle>
@@ -40,9 +49,9 @@ export function CodeEditor({ code, onCodeChange, onRun, onReset }: CodeEditorPro
         </div>
       </CardHeader>
       <CardContent className="flex-1 p-0">
-        <div className="h-full border rounded-lg overflow-hidden">
+        <div className={`h-full border rounded-lg overflow-hidden`} style={{ height: height }}>
           <Editor
-            height="100%"
+            height={height}
             defaultLanguage="python"
             value={code}
             onChange={(value) => onCodeChange(value || '')}
@@ -57,10 +66,16 @@ export function CodeEditor({ code, onCodeChange, onRun, onReset }: CodeEditorPro
               tabSize: 4,
               insertSpaces: true,
               wordWrap: 'on',
-              folding: false,
+              folding: true,
               lineDecorationsWidth: 10,
               lineNumbersMinChars: 3,
-              padding: { top: 16, bottom: 16 }
+              padding: { top: 16, bottom: 16 },
+              bracketPairColorization: { enabled: true },
+              quickSuggestions: {
+                other: true,
+                comments: true,
+                strings: true
+              }
             }}
           />
         </div>
