@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@auth/prisma-adapter": "^2.10.0",
+=======
+>>>>>>> 6424fac (feat: Add Challenge Results and Selection components with performance metrics and user progress overview)
     "@hello-pangea/dnd": "^18.0.1",
     "@monaco-editor/react": "^4.7.0",
     "@prisma/client": "^6.12.0",
