@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  username    String   @unique
+  password    String
+  fullName    String?
+  avatar      String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  devices         Device[]
+  sessions        UserSession[]
+  chapterProgress ChapterProgress[]
+  analytics       LearningAnalytics[]
+  
+  @@map("users")
+}
+
+model Device {
+  id               String   @id @default(cuid())
+  userId           String
+  deviceFingerprint String  @unique // Encrypted device identifier
+  deviceInfo       Json     // Browser, OS, etc.
+  isActive         Boolean  @default(true)
+  lastUsed         DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  // Relationships
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions         UserSession[]
+
+  @@map("devices")
+}
+
+model UserSession {
+  id          String    @id @default(cuid())
+  userId      String
+  deviceId    String
+  sessionToken String   @unique
+  loginTime   DateTime  @default(now())
+  logoutTime  DateTime?
+  duration    Int?      // Duration in minutes
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  // Relationships
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device      Device    @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model ChapterProgress {
+  id                String   @id @default(cuid())
+  userId            String
+  chapterNumber     Int      // 0, 1, 2, 3, 4, 5
+  isCompleted       Boolean  @default(false)
+  completedLessons  Int      @default(0)
+  totalLessons      Int      @default(0)
+  timeSpent         Int      @default(0) // Time spent in minutes
+  lastAccessed      DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonProgress    LessonProgress[]
+
+  @@unique([userId, chapterNumber])
+  @@map("chapter_progress")
+}
+
+model LessonProgress {
+  id                String   @id @default(cuid())
+  chapterProgressId String
+  lessonNumber      Int
+  lessonTitle       String
+  isCompleted       Boolean  @default(false)
+  timeSpent         Int      @default(0) // Time spent in minutes
+  challengesCompleted Int    @default(0)
+  totalChallenges   Int      @default(0)
+  completedAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relationships
+  chapterProgress   ChapterProgress @relation(fields: [chapterProgressId], references: [id], onDelete: Cascade)
+
+  @@unique([chapterProgressId, lessonNumber])
+  @@map("lesson_progress")
+}
+
+model LearningAnalytics {
+  id                String   @id @default(cuid())
+  userId            String
+  date              DateTime @default(now())
+  totalTimeSpent    Int      @default(0) // Total daily time in minutes
+  chaptersVisited   Json     // Array of chapter numbers visited
+  lessonsCompleted  Int      @default(0)
+  challengesCompleted Int    @default(0)
+  streakDays        Int      @default(0)
+  createdAt         DateTime @default(now())
+
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@map("learning_analytics")
+}
