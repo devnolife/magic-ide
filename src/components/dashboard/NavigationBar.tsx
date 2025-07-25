@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MobileNavigation } from './MobileNavigation';
+import { LogoutButton } from '@/components/auth/LogoutButton';
+import { useAuth } from '@/components/auth/AuthProvider';
 import {
   Moon,
   Sun,
@@ -18,6 +20,20 @@ import { useState } from 'react';
 
 export function NavigationBar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { user, isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <nav className="bg-white/70 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse" />
+            <div className="w-24 h-8 bg-gray-200 rounded animate-pulse" />
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white/70 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
@@ -42,11 +58,11 @@ export function NavigationBar() {
             </Button>
             <Button variant="ghost" className="font-medium">
               <Trophy className="w-4 h-4 mr-2" />
-              Papan Skor
+              Leaderboard
             </Button>
             <Button variant="ghost" className="font-medium">
               <HelpCircle className="w-4 h-4 mr-2" />
-              Bantuan
+              Help
             </Button>
           </div>
 
@@ -58,7 +74,7 @@ export function NavigationBar() {
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Cari topik..."
+                  placeholder="Search topics..."
                   className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/50 backdrop-blur-sm"
                 />
               </div>
@@ -78,20 +94,14 @@ export function NavigationBar() {
               )}
             </Button>
 
-            {/* User Profile */}
-            <div className="flex items-center space-x-2">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src="/avatar.jpg" alt="User" />
-                <AvatarFallback>
-                  <User className="w-4 h-4" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="hidden md:block">
-                <Button variant="ghost" size="sm" className="font-medium">
-                  Halo, Pelajar!
-                </Button>
-              </div>
-            </div>
+            {/* Authentication Navigation */}
+            {isAuthenticated ? (
+              <LogoutButton variant="dropdown" />
+            ) : (
+              <Button onClick={() => window.location.href = '/login'}>
+                Sign In
+              </Button>
+            )}
 
             {/* Mobile Menu */}
             <MobileNavigation />
