@@ -1,0 +1,182 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  username    String   @unique
+  email       String   @unique
+  password    String
+  name        String?
+  role        Role     @default(USER)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  progress    UserProgress[]
+  challenges  ChallengeAttempt[]
+  sessions    UserSession[]
+
+  @@map("users")
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model Chapter {
+  id          String   @id @default(cuid())
+  number      Int      @unique
+  title       String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  lessons     Lesson[]
+  challenges  Challenge[]
+  progress    UserProgress[]
+
+  @@map("chapters")
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  chapterId   String
+  number      Int
+  title       String
+  description String?
+  content     String?  // JSON content for lesson data
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  chapter     Chapter        @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  progress    LessonProgress[]
+
+  @@unique([chapterId, number])
+  @@map("lessons")
+}
+
+model Challenge {
+  id          String   @id @default(cuid())
+  chapterId   String
+  number      Int
+  title       String
+  description String
+  difficulty  Difficulty @default(EASY)
+  points      Int        @default(10)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  // Relations
+  chapter     Chapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  attempts    ChallengeAttempt[]
+
+  @@unique([chapterId, number])
+  @@map("challenges")
+}
+
+model UserProgress {
+  id                String   @id @default(cuid())
+  userId            String
+  chapterId         String
+  completedLessons  Int      @default(0)
+  totalLessons      Int      @default(0)
+  completedChallenges Int    @default(0)
+  totalChallenges   Int      @default(0)
+  totalPoints       Int      @default(0)
+  timeSpent         Int      @default(0) // in minutes
+  lastAccessedAt    DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter         Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  lessonProgress  LessonProgress[]
+
+  @@unique([userId, chapterId])
+  @@map("user_progress")
+}
+
+model LessonProgress {
+  id               String       @id @default(cuid())
+  userId           String
+  lessonId         String
+  userProgressId   String
+  status           ProgressStatus @default(NOT_STARTED)
+  timeSpent        Int          @default(0) // in minutes
+  completedAt      DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  
+  // Relations
+  lesson           Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userProgress     UserProgress @relation(fields: [userProgressId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("lesson_progress")
+}
+
+model ChallengeAttempt {
+  id          String          @id @default(cuid())
+  userId      String
+  challengeId String
+  code        String?         // User's submitted code
+  result      String?         // JSON result of the attempt
+  score       Int             @default(0)
+  status      AttemptStatus   @default(ATTEMPTED)
+  timeSpent   Int             @default(0) // in minutes
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+  
+  // Relations
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge       @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@map("challenge_attempts")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum AttemptStatus {
+  ATTEMPTED
+  COMPLETED
+  FAILED
+}

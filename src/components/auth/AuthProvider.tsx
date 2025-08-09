@@ -4,17 +4,19 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface User {
   id: string;
+  username: string;
   email: string;
   name?: string;
+  role: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (email: string, password: string, name?: string) => Promise<void>;
+  register: (username: string, email: string, password: string, name?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,41 +44,54 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const checkAuthStatus = async () => {
     try {
-      // TODO: Replace with actual API call
-      const token = localStorage.getItem('auth-token');
-      if (token) {
-        // Mock user data - replace with actual API call
-        setUser({
-          id: '1',
-          email: 'user@example.com',
-          name: 'John Doe'
-        });
+      // Check if we're on the client side before accessing localStorage
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('auth-token');
+        if (token) {
+          const response = await fetch('/api/auth/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data.user);
+          } else {
+            localStorage.removeItem('auth-token');
+          }
+        }
       }
     } catch (error) {
       console.error('Auth check failed:', error);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth-token');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (username: string, password: string) => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('auth-token', data.token);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth-token', data.token);
+        }
         setUser(data.user);
       } else {
-        throw new Error('Login failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -89,8 +104,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
-      localStorage.removeItem('auth-token');
+      let token = null;
+      
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('auth-token');
+      }
+      
+      if (token) {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      }
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth-token');
+      }
       setUser(null);
     } catch (error) {
       console.error('Logout error:', error);
@@ -99,24 +130,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (email: string, password: string, name?: string) => {
+  const register = async (username: string, email: string, password: string, name?: string) => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ username, email, password, name }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('auth-token', data.token);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth-token', data.token);
+        }
         setUser(data.user);
       } else {
-        throw new Error('Registration failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);

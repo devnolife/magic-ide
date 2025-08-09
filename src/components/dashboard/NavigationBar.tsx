@@ -14,7 +14,8 @@ import {
   Search,
   Menu,
   Trophy,
-  HelpCircle
+  HelpCircle,
+  Shield
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -53,13 +54,19 @@ export function NavigationBar() {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-6">
-            <Button variant="ghost" className="font-medium">
+            <Button variant="ghost" className="font-medium" onClick={() => window.location.href = '/dashboard'}>
               Dashboard
             </Button>
             <Button variant="ghost" className="font-medium">
               <Trophy className="w-4 h-4 mr-2" />
               Leaderboard
             </Button>
+            {isAuthenticated && user?.role === 'ADMIN' && (
+              <Button variant="ghost" className="font-medium" onClick={() => window.location.href = '/admin'}>
+                <Shield className="w-4 h-4 mr-2" />
+                Admin
+              </Button>
+            )}
             <Button variant="ghost" className="font-medium">
               <HelpCircle className="w-4 h-4 mr-2" />
               Help
