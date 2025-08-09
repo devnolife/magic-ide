@@ -4,7 +4,7 @@ import React from 'react';
 import { LearningPlatform } from '@/components/LearningPlatform';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
-export default function Chapter5Page() {
+export function Chapter5Page() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="p-4">

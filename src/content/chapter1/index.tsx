@@ -303,7 +303,7 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
                 Anda telah menguasai dasar-dasar pemrograman.
                 Siap melanjutkan ke Chapter 2: Python Lists?
               </p>
-              <Link href="/chapter2">
+              <Link href="/chapter/2">
                 <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600">
                   Lanjut ke Chapter 2 →
                 </Button>

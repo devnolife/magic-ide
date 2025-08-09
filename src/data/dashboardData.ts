@@ -44,7 +44,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "30 menit",
-    href: "/chapter0"
+    href: "/chapter/0"
   },
   {
     id: 1,
@@ -54,7 +54,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "45 menit",
-    href: "/chapter/lists"
+    href: "/chapter/1"
   },
   {
     id: 2,
@@ -64,7 +64,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "55 menit",
-    href: "/chapter2"
+    href: "/chapter/2"
   },
   {
     id: 3,
@@ -74,7 +74,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "50 menit",
-    href: "/chapter3"
+    href: "/chapter/3"
   },
   {
     id: 4,
@@ -84,7 +84,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "45 menit",
-    href: "/chapter4"
+    href: "/chapter/4"
   },
   {
     id: 5,
@@ -94,7 +94,7 @@ export const chaptersData: Chapter[] = [
     progress: 0,
     status: 'not-started',
     estimatedTime: "60 menit",
-    href: "/chapter5"
+    href: "/chapter/5"
   }
 ];
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { GrimoireContainer } from '@/components/chapter3/GrimoireContainer';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
-export default function Chapter3Page() {
+export function Chapter3Page() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-amber-50 relative overflow-hidden">
       {/* Magical library background */}

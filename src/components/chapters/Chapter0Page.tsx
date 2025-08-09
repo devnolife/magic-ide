@@ -51,7 +51,7 @@ const lessons = [
   }
 ];
 
-export default function Chapter0Page() {
+export function Chapter0Page() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
   const [challengesUnlocked, setChallengesUnlocked] = useState(false);
@@ -169,7 +169,7 @@ export default function Chapter0Page() {
                     </div>
 
                     {completedLessons.size === lessons.length ? (
-                      <Link href="/chapter0/challenges">
+                      <Link href="/chapter/0/challenge/1">
                         <motion.div
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
@@ -377,15 +377,17 @@ export default function Chapter0Page() {
                         Anda telah menyelesaikan Chapter 0: Dasar-Dasar Pemrograman!
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Link href="/chapter0/challenges">
+                        <Link href="/chapter/0/challenge/1">
                           <Button variant="outline" size="lg" className="bg-yellow-100 border-yellow-300 text-yellow-800 hover:bg-yellow-200">
                             <Target className="w-5 h-5 mr-2" />
                             Uji Kemampuan
                           </Button>
                         </Link>
-                        <Button size="lg">
-                          Lanjut ke Chapter 1 →
-                        </Button>
+                        <Link href="/chapter/1">
+                          <Button size="lg">
+                            Lanjut ke Chapter 1 →
+                          </Button>
+                        </Link>
                       </div>
                     </CardContent>
                   </Card>

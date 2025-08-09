@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
-import { ChallengeContainer } from '@/components/chapters/ChallengeContainer';
-import { getChapterData, getChallengeData } from '@/lib/chapters';
+import { Chapter0Challenges } from '@/components/chapters/Chapter0Challenges';
 
 interface ChallengePageProps {
   params: {
@@ -9,25 +8,31 @@ interface ChallengePageProps {
   };
 }
 
-export default async function ChallengePage({ params }: ChallengePageProps) {
-  const chapter = await getChapterData(params.id);
-  const challenge = await getChallengeData(params.id, params.challengeId);
+const challengeComponents = {
+  '0': Chapter0Challenges,
+  // Add other chapters as needed
+};
 
-  if (!chapter || !challenge) {
+export default async function ChallengePage({ params }: ChallengePageProps) {
+  const ChallengeComponent = challengeComponents[params.id as keyof typeof challengeComponents];
+
+  if (!ChallengeComponent) {
     notFound();
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <ChallengeContainer chapter={chapter} challenge={challenge} />
-    </div>
-  );
+  return <ChallengeComponent challengeId={params.challengeId} />;
 }
 
 export async function generateStaticParams({ params }: { params: { id: string } }) {
   // Generate static params for all challenges in a chapter
-  const challenges = await getChallengeData(params.id);
-  return challenges.map((challenge: any) => ({
-    challengeId: challenge.id,
-  }));
+  if (params.id === '0') {
+    return [
+      { challengeId: '1' },
+      { challengeId: '2' },
+      { challengeId: '3' },
+      { challengeId: '4' },
+    ];
+  }
+
+  return [];
 }

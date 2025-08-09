@@ -4,7 +4,7 @@ import React from 'react';
 import { EnchantmentContainer } from '@/components/chapter4/EnchantmentContainer';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
-export default function Chapter4Page() {
+export function Chapter4Page() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 relative overflow-hidden">
       {/* Magical circle background */}

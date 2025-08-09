@@ -4,7 +4,7 @@ import React from 'react';
 import { AdvancedListContainer } from '@/components/chapter2/AdvancedListContainer';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 
-export default function Chapter2Page() {
+export function Chapter2Page() {
   return (
     <div className="min-h-screen bg-white relative">
       {/* Magical particle pattern background */}

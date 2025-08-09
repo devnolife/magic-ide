@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation';
-import { ChapterOverview } from '@/components/chapters/ChapterOverview';
-import { getChapterData } from '@/lib/chapters';
+import { Chapter0Page } from '@/components/chapters/Chapter0Page';
+import { Chapter1Page } from '@/components/chapters/Chapter1Page';
+import { Chapter2Page } from '@/components/chapters/Chapter2Page';
+import { Chapter3Page } from '@/components/chapters/Chapter3Page';
+import { Chapter4Page } from '@/components/chapters/Chapter4Page';
+import { Chapter5Page } from '@/components/chapters/Chapter5Page';
 
 interface ChapterPageProps {
   params: {
@@ -8,18 +12,23 @@ interface ChapterPageProps {
   };
 }
 
-export default async function ChapterPage({ params }: ChapterPageProps) {
-  const chapter = await getChapterData(params.id);
+const chapterComponents = {
+  '0': Chapter0Page,
+  '1': Chapter1Page,
+  '2': Chapter2Page,
+  '3': Chapter3Page,
+  '4': Chapter4Page,
+  '5': Chapter5Page,
+};
 
-  if (!chapter) {
+export default async function ChapterPage({ params }: ChapterPageProps) {
+  const ChapterComponent = chapterComponents[params.id as keyof typeof chapterComponents];
+
+  if (!ChapterComponent) {
     notFound();
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <ChapterOverview chapter={chapter} />
-    </div>
-  );
+  return <ChapterComponent />;
 }
 
 export async function generateStaticParams() {
