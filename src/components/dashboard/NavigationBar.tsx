@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogoutButton } from '@/components/auth/LogoutButton';
+import { useAuth } from '@/hooks/useAuth';
 import { MobileNavigation } from './MobileNavigation';
 import {
   Moon,
@@ -18,6 +20,20 @@ import { useState } from 'react';
 
 export function NavigationBar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <nav className="bg-white/70 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="h-8 w-48 bg-gray-200 animate-pulse rounded"></div>
+            <div className="h-8 w-32 bg-gray-200 animate-pulse rounded"></div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white/70 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
@@ -80,16 +96,11 @@ export function NavigationBar() {
 
             {/* User Profile */}
             <div className="flex items-center space-x-2">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src="/avatar.jpg" alt="User" />
-                <AvatarFallback>
-                  <User className="w-4 h-4" />
-                </AvatarFallback>
-              </Avatar>
+              <LogoutButton variant="dropdown" />
               <div className="hidden md:block">
-                <Button variant="ghost" size="sm" className="font-medium">
-                  Halo, Pelajar!
-                </Button>
+                <span className="font-medium text-sm">
+                  {user?.fullName || user?.username || 'User'}
+                </span>
               </div>
             </div>
 

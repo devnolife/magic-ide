@@ -27,7 +27,10 @@ export function useAuth() {
 
   const verifyAuth = async () => {
     try {
-      const response = await fetch('/api/auth/verify')
+      const response = await fetch('/api/auth/verify', {
+        method: 'GET',
+        credentials: 'include'
+      })
       const result = await response.json()
 
       if (result.success && result.user) {
@@ -60,6 +63,7 @@ export function useAuth() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password })
       })
 
@@ -88,18 +92,15 @@ export function useAuth() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password, fullName })
       })
 
       const result = await response.json()
 
       if (result.success && result.user) {
-        setAuthState({
-          user: result.user,
-          isLoading: false,
-          isAuthenticated: true
-        })
-        return { success: true }
+        // After successful registration, user still needs to login
+        return { success: true, user: result.user }
       } else {
         return { success: false, error: result.error }
       }
@@ -112,7 +113,8 @@ export function useAuth() {
   const logout = async () => {
     try {
       await fetch('/api/auth/logout', {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
 
       setAuthState({

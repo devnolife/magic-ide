@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '@/hooks/useAuth';
 import { LogOut, User, Settings } from 'lucide-react';
 
 interface LogoutButtonProps {
@@ -36,9 +36,10 @@ export function LogoutButton({ variant = 'button', className }: LogoutButtonProp
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className={`relative h-8 w-8 rounded-full ${className}`}>
             <Avatar className="h-8 w-8">
-              <AvatarImage src={user?.name ? `/avatars/${user.name}.png` : ''} alt={user?.name || 'User'} />
+              <AvatarImage src={user?.avatar || ''} alt={user?.fullName || user?.username || 'User'} />
               <AvatarFallback>
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                {user?.fullName ? user.fullName.charAt(0).toUpperCase() :
+                  user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -46,9 +47,9 @@ export function LogoutButton({ variant = 'button', className }: LogoutButtonProp
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{user?.name || 'User'}</p>
+              <p className="text-sm font-medium leading-none">{user?.fullName || user?.username || 'User'}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
+                @{user?.username}
               </p>
             </div>
           </DropdownMenuLabel>

@@ -1,53 +1,120 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { AuthService } from '@/lib/authService'
-import { parseDeviceInfo } from '@/lib/auth'
+import { z } from 'zod'
+import { prisma } from '@/lib/prisma'
+import { hashPassword, validateUsername, validatePassword } from '@/lib/auth'
+
+// Zod schema for input validation
+const registerSchema = z.object({
+  username: z.string().min(3).max(20),
+  password: z.string().min(6).max(100),
+  fullName: z.string().optional()
+})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { username, password, fullName } = body
 
-    if (!username || !password) {
+    // Validate input with Zod schema
+    const validationResult = registerSchema.safeParse(body)
+    if (!validationResult.success) {
       return NextResponse.json(
-        { success: false, error: 'Username and password are required' },
+        {
+          success: false,
+          error: 'Invalid input data',
+          details: validationResult.error.issues
+        },
         { status: 400 }
       )
     }
 
-    // Extract device info from request
-    const userAgent = request.headers.get('user-agent') || ''
-    const ip = request.headers.get('x-forwarded-for') ||
-      request.headers.get('x-real-ip') ||
-      '127.0.0.1'
+    const { username, password, fullName } = validationResult.data
 
-    const deviceInfo = parseDeviceInfo(userAgent, ip)
-
-    // Attempt registration
-    const result = await AuthService.register({
-      username,
-      password,
-      fullName,
-      deviceInfo
-    })
-
-    if (!result.success) {
-      return NextResponse.json(result, { status: 400 })
+    // Additional custom validation
+    const usernameValidation = validateUsername(username)
+    if (!usernameValidation.isValid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: usernameValidation.error
+        },
+        { status: 400 }
+      )
     }
 
-    // Set HTTP-only cookie with the token
-    const response = NextResponse.json(result)
-    response.cookies.set('auth-token', result.token!, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 30 * 24 * 60 * 60 // 30 days
+    const passwordValidation = validatePassword(password)
+    if (!passwordValidation.isValid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: passwordValidation.error
+        },
+        { status: 400 }
+      )
+    }
+
+    // Check for existing username (must be unique)
+    const existingUser = await prisma.user.findUnique({
+      where: { username }
     })
 
-    return response
-  } catch (error) {
-    console.error('Register API error:', error)
+    if (existingUser) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Username already exists. Please choose a different username.'
+        },
+        { status: 409 }
+      )
+    }
+
+    // Hash password with bcrypt
+    const hashedPassword = await hashPassword(password)
+
+    // Create user record in database
+    const newUser = await prisma.user.create({
+      data: {
+        username,
+        password: hashedPassword,
+        fullName: fullName || null
+      },
+      select: {
+        id: true,
+        username: true,
+        fullName: true,
+        avatar: true,
+        createdAt: true
+      }
+    })
+
+    // Initialize chapter progress for the new user
+    const chapters = [0, 1, 2, 3, 4, 5]
+    const chapterProgressData = chapters.map(chapterNumber => ({
+      userId: newUser.id,
+      chapterNumber,
+      totalLessons: chapterNumber === 0 ? 4 : chapterNumber === 1 ? 5 : 4 // Adjust based on your curriculum
+    }))
+
+    await prisma.chapterProgress.createMany({
+      data: chapterProgressData
+    })
+
+    // Return success response
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      {
+        success: true,
+        message: 'User registered successfully',
+        user: newUser
+      },
+      { status: 201 }
+    )
+
+  } catch (error) {
+    console.error('Registration error:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Internal server error. Please try again later.'
+      },
       { status: 500 }
     )
   }

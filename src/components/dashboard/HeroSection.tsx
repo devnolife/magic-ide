@@ -5,11 +5,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { PlayCircle, Sparkles, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/hooks/useAuth';
 import { calculateOverallProgress, userStatsData, chaptersData } from '@/data/dashboardData';
 
 export function HeroSection() {
+  const { user } = useAuth();
   const overallProgress = calculateOverallProgress();
   const currentChapter = chaptersData.find(chapter => chapter.status === 'in-progress');
+
+  const userName = user?.fullName || user?.username || 'Pelajar';
+  const firstName = user?.fullName ? user.fullName.split(' ')[0] : userName;
 
   return (
     <div className="mb-12">
@@ -20,9 +25,9 @@ export function HeroSection() {
         className="text-center mb-8"
       >
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Selamat Datang di Platform{' '}
+          Halo, {firstName}! 👋<br />
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Belajar Python
+            Mari Belajar Python
           </span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
