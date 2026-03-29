@@ -8,13 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import {
   Users,
   BookOpen,
-  Trophy,
   Clock,
   TrendingUp,
   UserCheck,
   Award,
   Target
 } from 'lucide-react';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 
 interface AdminStats {
   overview: {
@@ -142,8 +142,7 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
-          console.table("🚀 ~ AdminDashboard ~ animate:", animate)
+          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
           <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
         </div>
       </div>
@@ -156,7 +155,7 @@ export default function AdminDashboard() {
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center">
-              <Trophy className="h-16 w-16 text-red-500 mx-auto mb-4" />
+              <LottieAnimation src="/asset/empty-box.json" width={160} height={160} />
               <h2 className="text-xl font-bold mb-2">Access Denied</h2>
               <p className="text-gray-600">
                 {error || 'Administrator privileges required to access this page.'}

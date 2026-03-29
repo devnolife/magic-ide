@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { motion } from "framer-motion";
 import {
   School,
@@ -77,7 +78,7 @@ export default function ClassroomListPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
+          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
           <p className="mt-4 text-gray-500">Memuat daftar kelas...</p>
         </div>
       </div>
@@ -156,7 +157,7 @@ export default function ClassroomListPage() {
         </motion.div>
       ) : (
         <div className="text-center py-16">
-          <School className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <LottieAnimation src="/asset/empty-box.json" width={200} height={200} />
           {search ? (
             <>
               <p className="text-gray-500 text-lg mb-2">

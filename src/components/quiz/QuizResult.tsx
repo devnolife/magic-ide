@@ -2,9 +2,6 @@
 
 import { motion } from 'framer-motion';
 import {
-  CheckCircle2,
-  XCircle,
-  Trophy,
   ArrowLeft,
   Star,
   RotateCcw,
@@ -13,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 
 interface AnswerResult {
   questionId: string;
@@ -118,14 +116,17 @@ export function QuizResult({
                 : 'bg-gradient-to-r from-red-400 to-rose-500'
             }`}
           />
-          <CardContent className="pt-8 pb-6 text-center space-y-5">
+          <CardContent className="pt-8 pb-6 text-center space-y-5 relative">
+            {passed && (
+              <LottieAnimation src="/asset/confetti-celebration.json" width={200} height={200} loop={false} className="absolute -top-10 left-1/2 -translate-x-1/2 pointer-events-none z-10" />
+            )}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
             >
               {passed ? (
-                <Trophy className="h-14 w-14 text-yellow-500 mx-auto" />
+                <LottieAnimation src="/asset/success-checkmark.json" width={56} height={56} loop={false} className="mx-auto" />
               ) : (
                 <RotateCcw className="h-14 w-14 text-red-400 mx-auto" />
               )}
@@ -220,9 +221,9 @@ export function QuizResult({
                       <div className="flex items-start gap-2 flex-1">
                         <span className="flex-shrink-0 mt-0.5">
                           {isCorrect ? (
-                            <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            <LottieAnimation src="/asset/tick.json" width={24} height={24} loop={false} />
                           ) : (
-                            <XCircle className="h-5 w-5 text-red-500" />
+                            <LottieAnimation src="/asset/cross.json" width={24} height={24} loop={false} />
                           )}
                         </span>
                         <div className="flex-1">

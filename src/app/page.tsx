@@ -1,10 +1,11 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { GuruPintarLogo } from '@/components/branding/GuruPintarLogo';
-import { PythonMascot } from '@/components/branding/PythonMascot';
 import { FloatingShapes } from '@/components/branding/FloatingShapes';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -106,7 +107,14 @@ export default function Home() {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-200 to-blue-200 rounded-full blur-3xl opacity-40 scale-110" />
-              <PythonMascot className="w-80 h-80 lg:w-96 lg:h-96 relative z-10" />
+              <Image 
+                src="/asset/it-education.svg" 
+                alt="Belajar Python" 
+                width={450} 
+                height={450}
+                className="drop-shadow-xl relative z-10"
+                priority
+              />
             </div>
           </motion.div>
         </div>
@@ -193,6 +201,7 @@ export default function Home() {
                 <div className="absolute bottom-4 right-8 text-6xl">💻</div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl opacity-20">🎓</div>
               </div>
+              <LottieAnimation src="/asset/rocket-launch.json" width={80} height={80} />
               <h2 className="text-3xl font-extrabold mb-4 relative z-10">
                 Siap Jadi Programmer? 🚀
               </h2>

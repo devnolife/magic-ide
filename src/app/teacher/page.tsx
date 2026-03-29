@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -114,7 +116,7 @@ export default function TeacherDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
+          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
           <p className="mt-4 text-gray-500">Memuat dashboard...</p>
         </div>
       </div>
@@ -154,15 +156,26 @@ export default function TeacherDashboard() {
     >
       {/* Greeting */}
       <motion.div variants={itemVariants}>
-        <div className="flex items-center gap-3 mb-1">
-          <Sparkles className="h-6 w-6 text-yellow-500" />
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Selamat Datang, {user?.name || user?.username}!
-          </h1>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-1">
+              <Sparkles className="h-6 w-6 text-yellow-500" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Selamat Datang, {user?.name || user?.username}!
+              </h1>
+            </div>
+            <p className="text-gray-500">
+              Kelola kelas dan pantau perkembangan murid Anda.
+            </p>
+          </div>
+          <Image
+            src="/asset/development-team-doing-python-coding.svg"
+            alt="Tim Pengajar"
+            width={280}
+            height={180}
+            className="hidden md:block"
+          />
         </div>
-        <p className="text-gray-500">
-          Kelola kelas dan pantau perkembangan murid Anda.
-        </p>
       </motion.div>
 
       {/* Stats */}
@@ -267,7 +280,7 @@ export default function TeacherDashboard() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <School className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <LottieAnimation src="/asset/empty-box.json" width={200} height={200} />
                 <p className="text-gray-500 mb-4">Belum ada kelas.</p>
                 <Link href="/teacher/classrooms/new">
                   <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">

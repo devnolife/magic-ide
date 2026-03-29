@@ -5,9 +5,10 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { GuruPintarLogo } from '@/components/branding/GuruPintarLogo';
-import { PythonMascot } from '@/components/branding/PythonMascot';
 import { FloatingShapes } from '@/components/branding/FloatingShapes';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LoginPage() {
@@ -30,10 +31,7 @@ export default function LoginPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <div className="relative mx-auto w-20 h-20 mb-4">
-            <div className="absolute inset-0 rounded-full border-4 border-emerald-200" />
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin" />
-          </div>
+          <LottieAnimation src="/asset/loading-python.json" width={80} height={80} />
           <p className="text-emerald-600 font-medium">Memuat...</p>
         </motion.div>
       </div>
@@ -59,7 +57,13 @@ export default function LoginPage() {
           >
             <GuruPintarLogo size="xl" showSubtitle className="justify-center mb-8" />
             
-            <PythonMascot className="w-64 h-64 mx-auto mb-8" />
+            <Image 
+              src="/asset/online-computer-science-course.svg" 
+              alt="Belajar Coding Online" 
+              width={320} 
+              height={320}
+              className="drop-shadow-lg"
+            />
 
             <h2 className="text-2xl font-bold text-gray-700 mb-3">
               Modul Python 🐍

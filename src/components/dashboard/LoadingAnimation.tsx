@@ -1,23 +1,15 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 
 export function LoadingAnimation() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       <div className="text-center">
-        <motion.div
-          className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-emerald-600 rounded-full"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+        <div className="mx-auto mb-4">
+          <LottieAnimation src="/asset/loading-python.json" width={128} height={128} />
+        </div>
         <motion.p
           className="text-lg font-medium text-gray-600"
           animate={{

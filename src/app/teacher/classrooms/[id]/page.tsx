@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import {
   Card,
   CardContent,
@@ -274,7 +275,7 @@ export default function ClassroomDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
+          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
           <p className="mt-4 text-gray-500">Memuat detail kelas...</p>
         </div>
       </div>
@@ -506,7 +507,7 @@ export default function ClassroomDetailPage() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <Users className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                  <LottieAnimation src="/asset/empty-box.json" width={200} height={200} />
                   <p className="text-gray-500">Belum ada murid di kelas ini.</p>
                   <p className="text-sm text-gray-400 mt-1">
                     Tambah murid secara manual atau upload file Excel.
@@ -651,7 +652,7 @@ export default function ClassroomDetailPage() {
             <CardContent className="space-y-6">
               {/* File input */}
               <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-emerald-400 transition-colors">
-                <FileSpreadsheet className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+                <LottieAnimation src="/asset/upload-file.json" width={120} height={120} />
                 <p className="text-gray-600 mb-2 text-sm">
                   Pilih file Excel untuk diupload
                 </p>

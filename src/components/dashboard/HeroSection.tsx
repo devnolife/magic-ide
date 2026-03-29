@@ -3,9 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { PlayCircle, Sparkles, Trophy } from 'lucide-react';
+import { PlayCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { calculateOverallProgress, userStatsData, chaptersData } from '@/data/dashboardData';
+import { LottieAnimation } from '@/components/animations/LottieAnimation';
 
 export function HeroSection() {
   const overallProgress = calculateOverallProgress();
@@ -90,7 +91,9 @@ export function HeroSection() {
           <Card className="bg-gradient-to-r from-blue-500 to-emerald-600 border-0 shadow-xl text-white">
             <CardContent className="p-6">
               <div className="text-center">
-                <Sparkles className="w-12 h-12 mx-auto mb-4" />
+                <div className="mx-auto mb-4 w-12 h-12">
+                  <LottieAnimation src="/asset/rocket-launch.json" width={48} height={48} />
+                </div>
                 <h3 className="font-semibold mb-2">Lanjutkan Belajar</h3>
                 <p className="text-sm opacity-90 mb-4">
                   {currentChapter ? currentChapter.title : 'Semua chapter selesai!'}
@@ -116,7 +119,9 @@ export function HeroSection() {
           <Card className="bg-white/70 backdrop-blur-md border-white/20 shadow-xl">
             <CardContent className="p-6">
               <div className="text-center">
-                <Trophy className="w-12 h-12 mx-auto mb-4 text-yellow-500" />
+                <div className="mx-auto mb-4 w-12 h-12">
+                  <LottieAnimation src="/asset/success-checkmark.json" width={48} height={48} loop={false} />
+                </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Pencapaian Terbaru</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   "Pemula yang Antusias"

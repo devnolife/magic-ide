@@ -12,8 +12,8 @@ import {
   FileQuestion,
   Plus,
   ArrowRight,
-  Loader2,
 } from "lucide-react";
+import { LottieAnimation } from "@/components/animations/LottieAnimation";
 
 interface ContentStats {
   chapters: number;
@@ -61,7 +61,7 @@ export default function ContentOverviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
+        <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
       </div>
     );
   }
