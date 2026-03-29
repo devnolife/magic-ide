@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Users,
   BookOpen,
@@ -12,9 +11,10 @@ import {
   TrendingUp,
   UserCheck,
   Award,
-  Target
+  Target,
+  Loader2,
+  ShieldX,
 } from 'lucide-react';
-import { LottieAnimation } from '@/components/animations/LottieAnimation';
 
 interface AdminStats {
   overview: {
@@ -78,14 +78,10 @@ export default function AdminDashboard() {
 
       const [statsResponse, usersResponse] = await Promise.all([
         fetch('/api/admin/stats', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+          headers: { 'Authorization': `Bearer ${token}` },
         }),
         fetch('/api/admin/users?limit=20', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+          headers: { 'Authorization': `Bearer ${token}` },
         }),
       ]);
 
@@ -140,10 +136,10 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
-          <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="mt-4 text-muted-foreground">Memuat dashboard...</p>
         </div>
       </div>
     );
@@ -151,197 +147,135 @@ export default function AdminDashboard() {
 
   if (error || user?.role !== 'ADMIN') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <LottieAnimation src="/asset/empty-box.json" width={160} height={160} />
-              <h2 className="text-xl font-bold mb-2">Access Denied</h2>
-              <p className="text-gray-600">
-                {error || 'Administrator privileges required to access this page.'}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <ShieldX className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-bold mb-2">Access Denied</h2>
+          <p className="text-muted-foreground">
+            {error || 'Administrator privileges required to access this page.'}
+          </p>
+        </div>
       </div>
     );
   }
 
+  const statItems = [
+    { label: 'Total Users', value: stats?.overview.totalUsers ?? 0, icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { label: 'Active Users', value: stats?.overview.activeUsers ?? 0, icon: UserCheck, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { label: 'Challenge Attempts', value: stats?.overview.totalChallengeAttempts ?? 0, icon: Target, color: 'text-violet-600', bg: 'bg-violet-100' },
+    { label: 'Completion Rate', value: `${stats?.overview.challengeCompletionRate ?? 0}%`, icon: TrendingUp, color: 'text-orange-600', bg: 'bg-orange-100' },
+  ];
+
+  const summaryItems = [
+    { label: 'Total Learning Time', value: formatTime(stats?.overview.totalTimeSpent ?? 0), icon: Clock, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { label: 'New Users (30 days)', value: stats?.overview.recentRegistrations ?? 0, icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-100' },
+    { label: 'Total Sessions', value: stats?.overview.totalSessions ?? 0, icon: BookOpen, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
-      <div className="container mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage users and monitor platform performance</p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
+        <p className="text-muted-foreground">Kelola pengguna dan pantau performa platform</p>
+      </div>
+
+      {/* Stats Grid */}
+      {stats && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {statItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.label} className="flex items-center gap-4 rounded-lg border p-4">
+                <div className={`p-2.5 rounded-lg ${item.bg}`}>
+                  <Icon className={`h-5 w-5 ${item.color}`} />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{item.label}</p>
+                  <p className="text-2xl font-bold text-foreground">{item.value}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
+      )}
 
-        {/* Overview Stats */}
+      {/* Top Performers & Recent Users */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Total Users</p>
-                    <p className="text-2xl font-bold text-gray-900">{stats.overview.totalUsers}</p>
-                  </div>
-                  <Users className="h-8 w-8 text-emerald-600" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Active Users</p>
-                    <p className="text-2xl font-bold text-gray-900">{stats.overview.activeUsers}</p>
-                  </div>
-                  <UserCheck className="h-8 w-8 text-green-600" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Challenge Attempts</p>
-                    <p className="text-2xl font-bold text-gray-900">{stats.overview.totalChallengeAttempts}</p>
-                  </div>
-                  <Target className="h-8 w-8 text-blue-600" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Completion Rate</p>
-                    <p className="text-2xl font-bold text-gray-900">{stats.overview.challengeCompletionRate}%</p>
-                  </div>
-                  <TrendingUp className="h-8 w-8 text-orange-600" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Top Performers */}
-          {stats && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-5 w-5" />
-                  Top Performers
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {stats.topPerformers.slice(0, 10).map((performer, index) => (
-                    <div key={performer.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <p className="font-medium">{performer.name || performer.username}</p>
-                          <p className="text-sm text-gray-600">
-                            {performer.totalCompletedLessons} lessons, {performer.totalCompletedChallenges} challenges
-                          </p>
-                        </div>
-                      </div>
-                      <Badge variant="secondary">
-                        {performer.totalPoints} pts
-                      </Badge>
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Award className="h-5 w-5" />
+              Top Performers
+            </h2>
+            <div className="rounded-lg border divide-y">
+              {stats.topPerformers.slice(0, 8).map((performer, index) => (
+                <div key={performer.id} className="flex items-center justify-between p-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                      {index + 1}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Recent Users */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Recent Users
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {users.slice(0, 10).map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                     <div>
-                      <p className="font-medium">{user.name || user.username}</p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
-                      <p className="text-xs text-gray-500">
-                        {user._count.progress} chapters, {user._count.challenges} challenges
+                      <p className="font-medium text-sm text-foreground">{performer.name || performer.username}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {performer.totalCompletedLessons} lessons, {performer.totalCompletedChallenges} challenges
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={user.role === 'ADMIN' ? 'default' : 'secondary'}>
-                        {user.role}
-                      </Badge>
-                      <Button
-                        size="sm"
-                        variant={user.isActive ? "destructive" : "default"}
-                        onClick={() => updateUserStatus(user.id, !user.isActive)}
-                      >
-                        {user.isActive ? 'Deactivate' : 'Activate'}
-                      </Button>
-                    </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Additional Stats */}
-        {stats && (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <Clock className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">
-                    {formatTime(stats.overview.totalTimeSpent)}
-                  </p>
-                  <p className="text-sm text-gray-600">Total Learning Time</p>
+                  <Badge variant="secondary">{performer.totalPoints} pts</Badge>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <TrendingUp className="h-12 w-12 text-green-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">
-                    {stats.overview.recentRegistrations}
-                  </p>
-                  <p className="text-sm text-gray-600">New Users (30 days)</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <BookOpen className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">
-                    {stats.overview.totalSessions}
-                  </p>
-                  <p className="text-sm text-gray-600">Total Sessions</p>
-                </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
           </div>
         )}
+
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Recent Users
+          </h2>
+          <div className="rounded-lg border divide-y">
+            {users.slice(0, 8).map((u) => (
+              <div key={u.id} className="flex items-center justify-between p-3">
+                <div>
+                  <p className="font-medium text-sm text-foreground">{u.name || u.username}</p>
+                  <p className="text-xs text-muted-foreground">{u.email}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={u.role === 'ADMIN' ? 'default' : 'secondary'}>
+                    {u.role}
+                  </Badge>
+                  <Button
+                    size="sm"
+                    variant={u.isActive ? "destructive" : "default"}
+                    onClick={() => updateUserStatus(u.id, !u.isActive)}
+                  >
+                    {u.isActive ? 'Deactivate' : 'Activate'}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Summary Stats */}
+      {stats && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {summaryItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.label} className="flex flex-col items-center gap-2 rounded-lg border p-6 text-center">
+                <div className={`p-2.5 rounded-lg ${item.bg}`}>
+                  <Icon className={`h-5 w-5 ${item.color}`} />
+                </div>
+                <p className="text-2xl font-bold text-foreground">{item.value}</p>
+                <p className="text-sm text-muted-foreground">{item.label}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

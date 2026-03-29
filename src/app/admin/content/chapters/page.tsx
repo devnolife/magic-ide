@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -153,21 +152,20 @@ export default function ChaptersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manajemen Bab</h1>
-          <p className="text-gray-600 mt-1">Kelola bab-bab pembelajaran</p>
+          <h1 className="text-2xl font-bold text-foreground">Manajemen Bab</h1>
+          <p className="text-muted-foreground">Kelola bab-bab pembelajaran</p>
         </div>
         <Button
-          className="bg-emerald-600 hover:bg-emerald-700 text-white"
           onClick={() => {
             resetForm();
             setShowForm(true);
@@ -181,13 +179,13 @@ export default function ChaptersPage() {
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/50" onClick={resetForm} />
-          <Card className="relative z-10 w-full max-w-lg">
-            <CardHeader>
-              <CardTitle>{editingId ? "Edit Bab" : "Tambah Bab Baru"}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <div className="relative z-10 w-full max-w-lg bg-background rounded-lg border shadow-lg">
+            <div className="p-6 pb-3">
+              <h3 className="text-lg font-semibold">{editingId ? "Edit Bab" : "Tambah Bab Baru"}</h3>
+            </div>
+            <div className="px-6 pb-6 space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Nomor Bab</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">Nomor Bab</label>
                 <Input
                   type="number"
                   min={0}
@@ -197,7 +195,7 @@ export default function ChaptersPage() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Judul</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">Judul</label>
                 <Input
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -205,7 +203,7 @@ export default function ChaptersPage() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Deskripsi</label>
+                <label className="text-sm font-medium text-foreground mb-1 block">Deskripsi</label>
                 <textarea
                   className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[80px]"
                   value={form.description}
@@ -217,17 +215,13 @@ export default function ChaptersPage() {
                 <Button variant="outline" onClick={resetForm}>
                   Batal
                 </Button>
-                <Button
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                  onClick={handleSubmit}
-                  disabled={saving}
-                >
+                <Button onClick={handleSubmit} disabled={saving}>
                   {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                   {editingId ? "Simpan Perubahan" : "Tambah Bab"}
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       )}
 
@@ -235,112 +229,106 @@ export default function ChaptersPage() {
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/50" onClick={() => setDeleteConfirm(null)} />
-          <Card className="relative z-10 w-full max-w-sm">
-            <CardContent className="pt-6 text-center">
-              <Trash2 className="h-12 w-12 text-red-500 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Hapus Bab?</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Tindakan ini tidak dapat dibatalkan. Semua pelajaran dan kuis terkait mungkin terpengaruh.
-              </p>
-              <div className="flex justify-center gap-2">
-                <Button variant="outline" onClick={() => setDeleteConfirm(null)}>
-                  Batal
-                </Button>
-                <Button variant="destructive" onClick={() => handleDelete(deleteConfirm)}>
-                  Hapus
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="relative z-10 w-full max-w-sm bg-background rounded-lg border shadow-lg p-6 text-center">
+            <Trash2 className="h-12 w-12 text-destructive mx-auto mb-3" />
+            <h3 className="text-lg font-semibold mb-2">Hapus Bab?</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Tindakan ini tidak dapat dibatalkan. Semua pelajaran dan kuis terkait mungkin terpengaruh.
+            </p>
+            <div className="flex justify-center gap-2">
+              <Button variant="outline" onClick={() => setDeleteConfirm(null)}>
+                Batal
+              </Button>
+              <Button variant="destructive" onClick={() => handleDelete(deleteConfirm)}>
+                Hapus
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-emerald-600" />
-            Daftar Bab ({chapters.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {chapters.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
-              <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-              <p>Belum ada bab. Klik &quot;Tambah Bab&quot; untuk memulai.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b text-left text-gray-600">
-                    <th className="py-3 px-2 font-medium">No</th>
-                    <th className="py-3 px-2 font-medium">Judul</th>
-                    <th className="py-3 px-2 font-medium">Deskripsi</th>
-                    <th className="py-3 px-2 font-medium text-center">Pelajaran</th>
-                    <th className="py-3 px-2 font-medium text-center">Kuis</th>
-                    <th className="py-3 px-2 font-medium text-center">Status</th>
-                    <th className="py-3 px-2 font-medium text-right">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {chapters
-                    .sort((a, b) => a.number - b.number)
-                    .map((chapter) => (
-                      <tr key={chapter.id} className="border-b last:border-0 hover:bg-gray-50">
-                        <td className="py-3 px-2 font-mono text-gray-500">{chapter.number}</td>
-                        <td className="py-3 px-2 font-medium text-gray-900">{chapter.title}</td>
-                        <td className="py-3 px-2 text-gray-600 max-w-[200px] truncate">
-                          {chapter.description || "—"}
-                        </td>
-                        <td className="py-3 px-2 text-center">
-                          <Badge variant="secondary">{chapter._count?.lessons ?? 0}</Badge>
-                        </td>
-                        <td className="py-3 px-2 text-center">
-                          <Badge variant="secondary">{chapter._count?.quizzes ?? 0}</Badge>
-                        </td>
-                        <td className="py-3 px-2 text-center">
-                          <button onClick={() => toggleActive(chapter)} title="Toggle status">
-                            {chapter.isActive !== false ? (
-                              <span className="inline-flex items-center gap-1 text-green-600">
-                                <ToggleRight className="h-5 w-5" />
-                                <span className="text-xs">Aktif</span>
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 text-gray-400">
-                                <ToggleLeft className="h-5 w-5" />
-                                <span className="text-xs">Nonaktif</span>
-                              </span>
-                            )}
-                          </button>
-                        </td>
-                        <td className="py-3 px-2">
-                          <div className="flex justify-end gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => startEdit(chapter)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-red-600 hover:text-red-700"
-                              onClick={() => setDeleteConfirm(chapter.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+          <BookOpen className="h-5 w-5" />
+          Daftar Bab ({chapters.length})
+        </h2>
+        {chapters.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground rounded-lg border">
+            <BookOpen className="h-12 w-12 mx-auto mb-3 opacity-40" />
+            <p>Belum ada bab. Klik &quot;Tambah Bab&quot; untuk memulai.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b text-left text-muted-foreground bg-muted/50">
+                  <th className="py-3 px-3 font-medium">No</th>
+                  <th className="py-3 px-3 font-medium">Judul</th>
+                  <th className="py-3 px-3 font-medium">Deskripsi</th>
+                  <th className="py-3 px-3 font-medium text-center">Pelajaran</th>
+                  <th className="py-3 px-3 font-medium text-center">Kuis</th>
+                  <th className="py-3 px-3 font-medium text-center">Status</th>
+                  <th className="py-3 px-3 font-medium text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {chapters
+                  .sort((a, b) => a.number - b.number)
+                  .map((chapter) => (
+                    <tr key={chapter.id} className="border-b last:border-0 hover:bg-muted/50">
+                      <td className="py-3 px-3 font-mono text-muted-foreground">{chapter.number}</td>
+                      <td className="py-3 px-3 font-medium text-foreground">{chapter.title}</td>
+                      <td className="py-3 px-3 text-muted-foreground max-w-[200px] truncate">
+                        {chapter.description || "—"}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <Badge variant="secondary">{chapter._count?.lessons ?? 0}</Badge>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <Badge variant="secondary">{chapter._count?.quizzes ?? 0}</Badge>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <button onClick={() => toggleActive(chapter)} title="Toggle status">
+                          {chapter.isActive !== false ? (
+                            <span className="inline-flex items-center gap-1 text-green-600">
+                              <ToggleRight className="h-5 w-5" />
+                              <span className="text-xs">Aktif</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-muted-foreground">
+                              <ToggleLeft className="h-5 w-5" />
+                              <span className="text-xs">Nonaktif</span>
+                            </span>
+                          )}
+                        </button>
+                      </td>
+                      <td className="py-3 px-3">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => startEdit(chapter)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => setDeleteConfirm(chapter.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

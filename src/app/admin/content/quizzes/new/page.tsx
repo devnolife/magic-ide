@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -209,40 +208,37 @@ export default function NewQuizPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-6 py-8 max-w-4xl">
-      <div className="flex items-center gap-3 mb-8">
+    <div className="space-y-6 max-w-4xl">
+      <div className="flex items-center gap-3">
         <Button variant="ghost" size="sm" onClick={() => router.push("/admin/content/quizzes")}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Kembali
         </Button>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">Buat Kuis Baru</h1>
-          <p className="text-gray-600 mt-1">Rancang kuis dengan berbagai jenis soal</p>
+          <h1 className="text-2xl font-bold text-foreground">Buat Kuis Baru</h1>
+          <p className="text-muted-foreground">Rancang kuis dengan berbagai jenis soal</p>
         </div>
       </div>
 
       {/* Quiz Info */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileQuestion className="h-5 w-5 text-emerald-600" />
-            Informasi Kuis
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Judul Kuis *</label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan judul kuis" />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Bab *</label>
+      <div className="rounded-lg border p-6 space-y-4">
+        <h2 className="text-lg font-semibold flex items-center gap-2 text-foreground">
+          <FileQuestion className="h-5 w-5" />
+          Informasi Kuis
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Judul Kuis *</label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan judul kuis" />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Bab *</label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 value={chapterId}
@@ -256,7 +252,7 @@ export default function NewQuizPage() {
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700 mb-1 block">Deskripsi</label>
+            <label className="text-sm font-medium text-foreground mb-1 block">Deskripsi</label>
             <textarea
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[60px]"
               value={description}
@@ -265,7 +261,7 @@ export default function NewQuizPage() {
             />
           </div>
           <div className="max-w-xs">
-            <label className="text-sm font-medium text-gray-700 mb-1 block">Batas Waktu (menit, opsional)</label>
+            <label className="text-sm font-medium text-foreground mb-1 block">Batas Waktu (menit, opsional)</label>
             <Input
               type="number"
               min={1}
@@ -274,22 +270,20 @@ export default function NewQuizPage() {
               placeholder="Tidak terbatas"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
       {/* Questions */}
-      <div className="space-y-4 mb-6">
+      <div className="space-y-4">
         {questions.map((q, qIdx) => (
-          <Card key={qIdx} className="border-l-4 border-l-emerald-400">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <GripVertical className="h-4 w-4 text-gray-400" />
-                  Soal {qIdx + 1}
-                  <Badge variant="secondary" className="text-xs">
-                    {QUESTION_TYPES.find((t) => t.value === q.questionType)?.label}
-                  </Badge>
-                </CardTitle>
+          <div key={qIdx} className="rounded-lg border border-l-4 border-l-primary p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
+                <GripVertical className="h-4 w-4 text-muted-foreground" />
+                Soal {qIdx + 1}
+                <Badge variant="secondary" className="text-xs">
+                  {QUESTION_TYPES.find((t) => t.value === q.questionType)?.label}
+                </Badge>
+              </h3>
                 <div className="flex items-center gap-1">
                   <Button variant="ghost" size="sm" onClick={() => moveQuestion(qIdx, "up")} disabled={qIdx === 0}>
                     <ArrowUp className="h-4 w-4" />
@@ -305,18 +299,16 @@ export default function NewQuizPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-red-600 hover:text-red-700"
+                    className="text-destructive hover:text-destructive"
                     onClick={() => removeQuestion(qIdx)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Pertanyaan *</label>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Pertanyaan *</label>
                   <textarea
                     className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[60px]"
                     value={q.questionText}
@@ -326,7 +318,7 @@ export default function NewQuizPage() {
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <label className="text-sm font-medium text-gray-700 mb-1 block">Tipe Soal</label>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Tipe Soal</label>
                     <select
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       value={q.questionType}
@@ -340,7 +332,7 @@ export default function NewQuizPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-700 mb-1 block">Poin</label>
+                    <label className="text-sm font-medium text-foreground mb-1 block">Poin</label>
                     <Input
                       type="number"
                       min={1}
@@ -356,7 +348,7 @@ export default function NewQuizPage() {
               {/* Answers by type */}
               {q.questionType === "MULTIPLE_CHOICE" && (
                 <div className="space-y-3">
-                  <label className="text-sm font-medium text-gray-700">Pilihan Jawaban</label>
+                  <label className="text-sm font-medium text-foreground">Pilihan Jawaban</label>
                   {q.options.map((opt, oIdx) => (
                     <div key={oIdx} className="flex items-center gap-2">
                       <button
@@ -395,7 +387,7 @@ export default function NewQuizPage() {
 
               {q.questionType === "TRUE_FALSE" && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Jawaban Benar</label>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Jawaban Benar</label>
                   <select
                     className="flex h-10 w-full max-w-xs rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     value={q.correctAnswer}
@@ -410,7 +402,7 @@ export default function NewQuizPage() {
 
               {(q.questionType === "CODING" || q.questionType === "SHORT_ANSWER") && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Jawaban Benar</label>
+                  <label className="text-sm font-medium text-foreground mb-1 block">Jawaban Benar</label>
                   <textarea
                     className={`flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[60px] ${
                       q.questionType === "CODING" ? "font-mono" : ""
@@ -425,8 +417,7 @@ export default function NewQuizPage() {
                   />
                 </div>
               )}
-            </CardContent>
-          </Card>
+          </div>
         ))}
       </div>
 
@@ -440,7 +431,6 @@ export default function NewQuizPage() {
             Batal
           </Button>
           <Button
-            className="bg-emerald-600 hover:bg-emerald-700 text-white"
             onClick={handleSave}
             disabled={saving}
           >
