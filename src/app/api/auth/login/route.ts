@@ -54,11 +54,21 @@ export async function POST(request: NextRequest) {
     // Return user data (excluding password)
     const { password: _, ...userWithoutPassword } = user;
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: 'Login successful',
       user: userWithoutPassword,
       token,
     });
+
+    // Set auth cookie so middleware can read it on page navigations
+    response.cookies.set('auth-token', token, {
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+      sameSite: 'lax',
+      httpOnly: false,
+    });
+
+    return response;
 
   } catch (error) {
     console.error('Login error:', error);

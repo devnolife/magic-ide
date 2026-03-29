@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +15,8 @@ import {
   Upload,
   ArrowRight,
   Sparkles,
+  Loader2,
+  Inbox,
 } from "lucide-react";
 
 interface ClassroomSummary {
@@ -64,7 +64,8 @@ export default function TeacherDashboard() {
       });
 
       if (res.ok) {
-        const classrooms: ClassroomSummary[] = await res.json();
+        const data = await res.json();
+        const classrooms: ClassroomSummary[] = Array.isArray(data) ? data : (data.classrooms ?? []);
 
         const totalStudents = classrooms.reduce(
           (sum, c) => sum + (c._count?.students ?? 0),
@@ -116,7 +117,7 @@ export default function TeacherDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <LottieAnimation src="/asset/loading-python.json" width={120} height={120} />
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
           <p className="mt-4 text-gray-500">Memuat dashboard...</p>
         </div>
       </div>
@@ -160,21 +161,15 @@ export default function TeacherDashboard() {
           <div>
             <div className="flex items-center gap-3 mb-1">
               <Sparkles className="h-6 w-6 text-yellow-500" />
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                 Selamat Datang, {user?.name || user?.username}!
               </h1>
             </div>
-            <p className="text-gray-500">
+            <p className="text-muted-foreground">
               Kelola kelas dan pantau perkembangan murid Anda.
             </p>
           </div>
-          <Image
-            src="/asset/development-team-doing-python-coding.svg"
-            alt="Tim Pengajar"
-            width={280}
-            height={180}
-            className="hidden md:block"
-          />
+
         </div>
       </motion.div>
 
@@ -188,15 +183,15 @@ export default function TeacherDashboard() {
           return (
             <Card
               key={stat.label}
-              className="bg-white/70 backdrop-blur-md border-white/20 shadow-lg hover:shadow-xl transition-shadow"
+              className="border shadow-sm hover:shadow-md transition-shadow"
             >
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">
+                    <p className="text-sm font-medium text-muted-foreground">
                       {stat.label}
                     </p>
-                    <p className="text-3xl font-bold text-gray-900 mt-1">
+                    <p className="text-3xl font-bold text-foreground mt-1">
                       {stat.value}
                     </p>
                   </div>
@@ -216,7 +211,7 @@ export default function TeacherDashboard() {
         className="flex flex-col sm:flex-row gap-3"
       >
         <Link href="/teacher/classrooms/new">
-          <Button className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-lg">
+          <Button className="w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Buat Kelas Baru
           </Button>
@@ -231,14 +226,14 @@ export default function TeacherDashboard() {
 
       {/* Recent Classrooms */}
       <motion.div variants={itemVariants}>
-        <Card className="bg-white/70 backdrop-blur-md border-white/20 shadow-lg">
+        <Card className="border shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <School className="h-5 w-5 text-emerald-600" />
+              <School className="h-5 w-5 text-primary" />
               Kelas Terbaru
             </CardTitle>
             <Link href="/teacher/classrooms">
-              <Button variant="ghost" size="sm" className="text-emerald-600">
+              <Button variant="ghost" size="sm" className="text-primary">
                 Lihat Semua
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
@@ -253,16 +248,16 @@ export default function TeacherDashboard() {
                     href={`/teacher/classrooms/${classroom.id}`}
                     className="block"
                   >
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50/80 hover:bg-emerald-50/80 transition-colors group">
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/50 hover:bg-accent transition-colors group">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">
                           {classroom.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-800 group-hover:text-emerald-700 transition-colors">
+                          <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
                             {classroom.name}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {classroom.description || "Tidak ada deskripsi"}
                           </p>
                         </div>
@@ -272,7 +267,7 @@ export default function TeacherDashboard() {
                           <Users className="h-3 w-3 mr-1" />
                           {classroom._count?.students ?? 0} murid
                         </Badge>
-                        <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                       </div>
                     </div>
                   </Link>
@@ -280,10 +275,10 @@ export default function TeacherDashboard() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <LottieAnimation src="/asset/empty-box.json" width={200} height={200} />
-                <p className="text-gray-500 mb-4">Belum ada kelas.</p>
+                <Inbox className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">Belum ada kelas.</p>
                 <Link href="/teacher/classrooms/new">
-                  <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">
+                  <Button>
                     <Plus className="h-4 w-4 mr-2" />
                     Buat Kelas Pertama
                   </Button>

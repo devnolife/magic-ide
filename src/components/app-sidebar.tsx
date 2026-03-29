@@ -44,7 +44,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navMainItems = React.useMemo(() => {
     const items = [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-      { title: "Leaderboard", url: "#", icon: Trophy },
+      { title: "Leaderboard", url: "/leaderboard", icon: Trophy },
     ]
 
     if (isAuthenticated && user?.role === "TEACHER") {

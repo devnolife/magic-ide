@@ -52,7 +52,7 @@ export default function ClassroomListPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setClassrooms(data);
+        setClassrooms(Array.isArray(data) ? data : (data.classrooms ?? []));
       }
     } catch (err) {
       console.error("Failed to fetch classrooms:", err);
@@ -90,13 +90,13 @@ export default function ClassroomListPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Daftar Kelas</h1>
-          <p className="text-gray-500 text-sm">
+          <h1 className="text-2xl font-bold text-foreground">Daftar Kelas</h1>
+          <p className="text-muted-foreground text-sm">
             Kelola semua kelas yang Anda buat
           </p>
         </div>
         <Link href="/teacher/classrooms/new">
-          <Button className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-lg">
+          <Button className="w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Buat Kelas Baru
           </Button>
@@ -105,12 +105,12 @@ export default function ClassroomListPage() {
 
       {/* Search */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Cari kelas..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 bg-white/70 backdrop-blur border-gray-200"
+          className="pl-10"
         />
       </div>
 
@@ -125,18 +125,18 @@ export default function ClassroomListPage() {
           {filtered.map((classroom) => (
             <motion.div key={classroom.id} variants={itemVariants}>
               <Link href={`/teacher/classrooms/${classroom.id}`}>
-                <Card className="h-full bg-white/70 backdrop-blur-md border-white/20 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group">
+                <Card className="h-full border shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer group">
                   <CardContent className="pt-6">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-sm">
                         {classroom.name.charAt(0).toUpperCase()}
                       </div>
-                      <ArrowRight className="h-5 w-5 text-gray-300 group-hover:text-emerald-600 transition-colors" />
+                      <ArrowRight className="h-5 w-5 text-muted-foreground/40 group-hover:text-primary transition-colors" />
                     </div>
-                    <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-emerald-700 transition-colors">
+                    <h3 className="font-bold text-foreground text-lg mb-1 group-hover:text-primary transition-colors">
                       {classroom.name}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                       {classroom.description || "Tidak ada deskripsi"}
                     </p>
                     <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ export default function ClassroomListPage() {
                         <Users className="h-3 w-3 mr-1" />
                         {classroom._count?.students ?? 0} murid
                       </Badge>
-                      <Badge variant="outline" className="text-xs text-gray-500">
+                      <Badge variant="outline" className="text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3 mr-1" />
                         {formatDate(classroom.createdAt)}
                       </Badge>
@@ -160,21 +160,21 @@ export default function ClassroomListPage() {
           <LottieAnimation src="/asset/empty-box.json" width={200} height={200} />
           {search ? (
             <>
-              <p className="text-gray-500 text-lg mb-2">
+              <p className="text-muted-foreground text-lg mb-2">
                 Tidak ada kelas yang cocok
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-muted-foreground/70 text-sm">
                 Coba ubah kata kunci pencarian Anda.
               </p>
             </>
           ) : (
             <>
-              <p className="text-gray-500 text-lg mb-2">Belum ada kelas</p>
-              <p className="text-gray-400 text-sm mb-6">
+              <p className="text-muted-foreground text-lg mb-2">Belum ada kelas</p>
+              <p className="text-muted-foreground/70 text-sm mb-6">
                 Mulai dengan membuat kelas pertama Anda.
               </p>
               <Link href="/teacher/classrooms/new">
-                <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">
+                <Button>
                   <Plus className="h-4 w-4 mr-2" />
                   Buat Kelas Baru
                 </Button>

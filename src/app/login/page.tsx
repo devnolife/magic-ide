@@ -18,8 +18,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated && !isLoading && user) {
-      const redirectUrl = user.role === 'ADMIN' ? '/admin' : user.role === 'TEACHER' ? '/teacher' : '/dashboard';
-      router.push(redirectUrl);
+      // Use redirect query param if present, otherwise redirect by role
+      const params = new URLSearchParams(window.location.search);
+      const redirectParam = params.get('redirect');
+      const roleRedirect = user.role === 'ADMIN' ? '/admin' : user.role === 'TEACHER' ? '/teacher' : '/dashboard';
+      router.push(redirectParam || roleRedirect);
     }
   }, [isAuthenticated, isLoading, user, router]);
 

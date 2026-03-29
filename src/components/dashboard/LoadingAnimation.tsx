@@ -1,28 +1,15 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { LottieAnimation } from '@/components/animations/LottieAnimation';
+import { Loader2 } from 'lucide-react';
 
 export function LoadingAnimation() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       <div className="text-center">
-        <div className="mx-auto mb-4">
-          <LottieAnimation src="/asset/loading-python.json" width={128} height={128} />
-        </div>
-        <motion.p
-          className="text-lg font-medium text-gray-600"
-          animate={{
-            opacity: [0.5, 1, 0.5],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
+        <Loader2 className="h-16 w-16 animate-spin text-primary mx-auto mb-4" />
+        <p className="text-lg font-medium text-gray-600 animate-pulse">
           Memuat Python Learning Hub...
-        </motion.p>
+        </p>
       </div>
     </div>
   );

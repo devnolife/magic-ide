@@ -69,11 +69,21 @@ export async function POST(request: NextRequest) {
     // Create session
     await createUserSession(user.id, token);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: 'User created successfully',
       user,
       token,
     });
+
+    // Set auth cookie so middleware can read it on page navigations
+    response.cookies.set('auth-token', token, {
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+      sameSite: 'lax',
+      httpOnly: false,
+    });
+
+    return response;
 
   } catch (error) {
     console.error('Registration error:', error);
