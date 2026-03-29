@@ -54,9 +54,20 @@ function getPageTitle(pathname: string): string {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, logout } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto" />
+          <p className="mt-4 text-muted-foreground">Memuat...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user || user.role !== "ADMIN") {
     return (
