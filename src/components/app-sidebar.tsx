@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   LayoutDashboard,
-  BookOpen,
   Trophy,
   HelpCircle,
   Search,
@@ -20,7 +19,6 @@ import { NavSecondary } from "@/components/nav-secondary"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -99,6 +97,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
               </div>
             </div>
+            <div className="flex items-center gap-1 mt-1">
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild tooltip="Profile" size="sm">
+                    <a href="/dashboard/profile">
+                      <User className="size-4" />
+                      <span>Profile</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    tooltip="Keluar"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await logout();
+                        window.location.href = "/login";
+                      } catch (error) {
+                        console.error("Logout failed:", error);
+                      }
+                    }}
+                  >
+                    <LogOut className="size-4" />
+                    <span>Keluar</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </div>
           </>
         )}
       </SidebarHeader>
@@ -107,34 +134,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavChapters items={chapters} />
         <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Profile">
-              <a href="/dashboard/profile">
-                <User className="size-4" />
-                <span>Profile</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Keluar"
-              onClick={async () => {
-                try {
-                  await logout();
-                  window.location.href = "/login";
-                } catch (error) {
-                  console.error("Logout failed:", error);
-                }
-              }}
-            >
-              <LogOut className="size-4" />
-              <span>Keluar</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   )
 }

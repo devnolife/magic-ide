@@ -7,7 +7,6 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -115,6 +114,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
             </div>
           </div>
+          <div className="flex items-center gap-1 mt-1">
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Profile" size="sm">
+                  <a href="/admin/profile">
+                    <User className="size-4" />
+                    <span>Profile</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Keluar"
+                  size="sm"
+                  onClick={async () => {
+                    try {
+                      await logout();
+                      window.location.href = "/login";
+                    } catch (error) {
+                      console.error("Logout failed:", error);
+                    }
+                  }}
+                >
+                  <LogOut className="size-4" />
+                  <span>Keluar</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </div>
         </SidebarHeader>
 
         <SidebarContent>
@@ -145,35 +173,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-
-        <SidebarFooter className="px-3">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Profile">
-                <a href="/admin/profile">
-                  <User className="size-4" />
-                  <span>Profile</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip="Keluar"
-                onClick={async () => {
-                  try {
-                    await logout();
-                    window.location.href = "/login";
-                  } catch (error) {
-                    console.error("Logout failed:", error);
-                  }
-                }}
-              >
-                <LogOut className="size-4" />
-                <span>Keluar</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
       </Sidebar>
 
       <SidebarInset>
