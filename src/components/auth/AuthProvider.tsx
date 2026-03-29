@@ -44,6 +44,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     checkAuthStatus();
@@ -80,6 +81,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     } finally {
       setIsLoading(false);
+      setIsInitialized(true);
     }
   };
 
@@ -191,7 +193,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoading ? (
+      {!isInitialized ? (
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto" />
