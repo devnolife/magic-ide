@@ -6,7 +6,7 @@ const JWT_SECRET = new TextEncoder().encode(
 );
 
 // Define protected routes
-const protectedRoutes = ['/dashboard', '/chapter', '/admin', '/teacher', '/leaderboard'];
+const protectedRoutes = ['/dashboard', '/chapter', '/admin', '/teacher', '/leaderboard', '/certificates'];
 const adminRoutes = ['/admin'];
 const teacherRoutes = ['/teacher'];
 

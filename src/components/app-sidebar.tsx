@@ -9,6 +9,7 @@ import {
   Shield,
   School,
   GraduationCap,
+  Award,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -45,6 +46,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const items = [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
       { title: "Leaderboard", url: "/leaderboard", icon: Trophy },
+      { title: "Sertifikat", url: "/certificates", icon: Award },
     ]
 
     if (isAuthenticated && user?.role === "TEACHER") {
