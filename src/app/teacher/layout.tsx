@@ -1,32 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   LayoutDashboard,
   School,
-  ArrowLeft,
-  Menu,
-  X,
+  User,
   LogOut,
-  ChevronDown,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const sidebarLinks = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
   { href: "/teacher/classrooms", label: "Kelas", icon: School },
 ];
+
+function getPageTitle(pathname: string): string {
+  if (pathname === "/teacher") return "Dashboard";
+  if (pathname === "/teacher/classrooms/new") return "Buat Kelas Baru";
+  if (pathname.startsWith("/teacher/classrooms/")) return "Detail Kelas";
+  if (pathname === "/teacher/classrooms") return "Kelas";
+  return "Panel Guru";
+}
 
 export default function TeacherLayout({
   children,
@@ -35,14 +56,14 @@ export default function TeacherLayout({
 }) {
   const { user, isLoading, logout } = useAuth();
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pageTitle = getPageTitle(pathname);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto" />
-          <p className="mt-4 text-gray-600">Memuat...</p>
+          <p className="mt-4 text-muted-foreground">Memuat...</p>
         </div>
       </div>
     );
@@ -50,11 +71,11 @@ export default function TeacherLayout({
 
   if (!user || (user.role !== "TEACHER" && user.role !== "ADMIN")) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
-          <School className="h-16 w-16 text-red-500 mx-auto" />
+          <School className="h-16 w-16 text-destructive mx-auto" />
           <h2 className="text-xl font-bold">Akses Ditolak</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Halaman ini hanya untuk guru dan admin.
           </p>
           <Link href="/dashboard">
@@ -65,150 +86,132 @@ export default function TeacherLayout({
     );
   }
 
-  const initials = (user.name || user.username || "T")
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-
-  const handleLogout = async () => {
-    await logout();
-    window.location.href = "/login";
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed top-0 left-0 z-40 h-full w-64
-          bg-gradient-to-b from-emerald-900 via-emerald-800 to-blue-900
-          text-white shadow-2xl
-          transition-transform duration-300 ease-in-out
-          lg:translate-x-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-      >
-        {/* Sidebar header */}
-        <div className="flex items-center justify-between p-5 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
-              <School className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="font-bold text-sm">Python Learning</h2>
-              <p className="text-xs text-emerald-200">Panel Guru</p>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <Sidebar variant="floating" collapsible="icon">
+        <SidebarHeader className="px-4 py-4">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                className="data-[slot=sidebar-menu-button]:p-1.5!"
+              >
+                <a href="/teacher">
+                  <div className="flex size-7! items-center justify-center rounded-md bg-gradient-to-r from-emerald-600 to-blue-700">
+                    <School className="size-4.5 text-white" />
+                  </div>
+                  <span className="text-lg font-semibold">Panel Guru</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+          <Separator className="my-2" />
+          <div className="flex items-center gap-3 px-1">
+            <Avatar className="h-9 w-9 rounded-lg">
+              <AvatarImage src="" alt={user?.name || "User"} />
+              <AvatarFallback className="rounded-lg bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-sm">
+                {(user?.name || user?.username || "U").charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium">{user?.name || user?.username || "User"}</span>
+              <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
             </div>
           </div>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1 rounded hover:bg-white/10"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
+        </SidebarHeader>
 
-        {/* Nav links */}
-        <nav className="p-4 space-y-1">
-          {sidebarLinks.map((link) => {
-            const isActive =
-              link.href === "/teacher"
-                ? pathname === "/teacher"
-                : pathname.startsWith(link.href);
-            const Icon = link.icon;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`
-                  flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                  transition-colors duration-200
-                  ${
-                    isActive
-                      ? "bg-white/20 text-white shadow-lg"
-                      : "text-emerald-200 hover:bg-white/10 hover:text-white"
+        <SidebarContent>
+          <SidebarGroup className="px-3">
+            <SidebarGroupContent className="flex flex-col gap-2">
+              <SidebarMenu>
+                {sidebarLinks.map((link) => {
+                  const isActive =
+                    link.href === "/teacher"
+                      ? pathname === "/teacher"
+                      : pathname.startsWith(link.href);
+                  return (
+                    <SidebarMenuItem key={link.href}>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip={link.label}
+                        isActive={isActive}
+                      >
+                        <a href={link.href}>
+                          <link.icon />
+                          <span>{link.label}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+
+        <SidebarFooter className="px-3">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Profile">
+                <a href="/teacher/profile">
+                  <User className="size-4" />
+                  <span>Profile</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Keluar"
+                onClick={async () => {
+                  try {
+                    await logout();
+                    window.location.href = "/login";
+                  } catch (error) {
+                    console.error("Logout failed:", error);
                   }
-                `}
+                }}
               >
-                <Icon className="h-5 w-5" />
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+                <LogOut className="size-4" />
+                <span>Keluar</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
 
-        {/* Back link */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-emerald-200 hover:bg-white/10 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            Kembali ke Utama
-          </Link>
-        </div>
-      </aside>
-
-      {/* Main area */}
-      <div className="lg:ml-64 min-h-screen flex flex-col">
-        {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
-          <div className="flex items-center justify-between px-4 sm:px-6 h-16">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
-            >
-              <Menu className="h-5 w-5 text-gray-700" />
-            </button>
-
-            <div className="hidden lg:block">
-              <h1 className="text-lg font-semibold text-gray-800">
-                Panel Guru
-              </h1>
-            </div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-emerald-600 text-white text-xs font-bold">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="hidden sm:block text-sm font-medium text-gray-700">
-                    {user.name || user.username}
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-gray-500" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <div className="px-3 py-2">
-                  <p className="text-sm font-medium">{user.name || user.username}</p>
-                  <p className="text-xs text-gray-500">{user.email}</p>
-                </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Keluar
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+      <SidebarInset>
+        <header className="m-2 mb-0 flex h-(--header-height) shrink-0 items-center gap-2 rounded-xl border bg-card shadow-sm transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+          <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mx-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="/teacher">Panel Guru</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
-      </div>
-    </div>
+        <div className="flex flex-1 flex-col p-4 md:p-6">
+          <div className="max-w-7xl mx-auto w-full">{children}</div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

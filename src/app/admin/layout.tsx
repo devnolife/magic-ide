@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +27,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
@@ -35,6 +35,8 @@ import {
   FileQuestion,
   GraduationCap,
   Shield,
+  User,
+  LogOut,
 } from "lucide-react";
 
 const navItems = [
@@ -53,7 +55,7 @@ function getPageTitle(pathname: string): string {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
 
@@ -84,7 +86,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
     >
       <Sidebar variant="floating" collapsible="icon">
-        <SidebarHeader>
+        <SidebarHeader className="px-4 py-4">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -100,10 +102,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
+          <Separator className="my-2" />
+          <div className="flex items-center gap-3 px-1">
+            <Avatar className="h-9 w-9 rounded-lg">
+              <AvatarImage src="" alt={user?.name || "Admin"} />
+              <AvatarFallback className="rounded-lg bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-sm">
+                {(user?.name || user?.username || "A").charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium">{user?.name || user?.username || "Admin"}</span>
+              <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
+            </div>
+          </div>
         </SidebarHeader>
 
         <SidebarContent>
-          <SidebarGroup>
+          <SidebarGroup className="px-3">
             <SidebarGroupContent className="flex flex-col gap-2">
               <SidebarMenu>
                 {navItems.map((item) => {
@@ -131,8 +146,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter>
-          <NavUser />
+        <SidebarFooter className="px-3">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Profile">
+                <a href="/admin/profile">
+                  <User className="size-4" />
+                  <span>Profile</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Keluar"
+                onClick={async () => {
+                  try {
+                    await logout();
+                    window.location.href = "/login";
+                  } catch (error) {
+                    console.error("Logout failed:", error);
+                  }
+                }}
+              >
+                <LogOut className="size-4" />
+                <span>Keluar</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
 
