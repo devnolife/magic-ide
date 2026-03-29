@@ -111,48 +111,6 @@ export default function TeacherLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-          <Separator className="my-2" />
-          <div className="flex items-center gap-3 px-1">
-            <Avatar className="h-9 w-9 rounded-lg">
-              <AvatarImage src="" alt={user?.name || "User"} />
-              <AvatarFallback className="rounded-lg bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-sm">
-                {(user?.name || user?.username || "U").charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user?.name || user?.username || "User"}</span>
-              <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1 mt-1">
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Profile" size="sm">
-                  <a href="/teacher/profile">
-                    <User className="size-4" />
-                    <span>Profile</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  tooltip="Keluar"
-                  size="sm"
-                  onClick={async () => {
-                    try {
-                      await logout();
-                      window.location.href = "/login";
-                    } catch (error) {
-                      console.error("Logout failed:", error);
-                    }
-                  }}
-                >
-                  <LogOut className="size-4" />
-                  <span>Keluar</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </div>
         </SidebarHeader>
 
         <SidebarContent>
@@ -204,6 +162,42 @@ export default function TeacherLayout({
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+
+            <div className="ml-auto flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2">
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src="" alt={user?.name || "User"} />
+                  <AvatarFallback className="rounded-lg bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-xs">
+                    {(user?.name || user?.username || "U").charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm font-medium truncate max-w-[120px]">
+                  {user?.name || user?.username || "User"}
+                </span>
+              </div>
+              <Separator orientation="vertical" className="h-4 hidden md:block" />
+              <a
+                href="/teacher/profile"
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <User className="size-4" />
+                <span className="hidden lg:inline">Profile</span>
+              </a>
+              <button
+                onClick={async () => {
+                  try {
+                    await logout();
+                    window.location.href = "/login";
+                  } catch (error) {
+                    console.error("Logout failed:", error);
+                  }
+                }}
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-destructive transition-colors"
+              >
+                <LogOut className="size-4" />
+                <span className="hidden lg:inline">Keluar</span>
+              </button>
+            </div>
           </div>
         </header>
 

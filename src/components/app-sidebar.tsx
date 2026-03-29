@@ -9,8 +9,6 @@ import {
   Shield,
   School,
   GraduationCap,
-  User,
-  LogOut,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -24,8 +22,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/components/auth/AuthProvider"
 
 const chapters = [
@@ -43,7 +39,7 @@ const navSecondary = [
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user, isAuthenticated, logout } = useAuth()
+  const { user, isAuthenticated } = useAuth()
 
   const navMainItems = React.useMemo(() => {
     const items = [
@@ -61,8 +57,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     return items
   }, [isAuthenticated, user?.role])
-
-  const displayName = user?.name || user?.username || "User"
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -82,52 +76,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        {isAuthenticated && (
-          <>
-            <Separator className="my-2" />
-            <div className="flex items-center gap-3 px-2">
-              <Avatar className="h-9 w-9 rounded-lg">
-                <AvatarImage src="" alt={displayName} />
-                <AvatarFallback className="rounded-lg bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-sm">
-                  {displayName.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{displayName}</span>
-                <span className="truncate text-xs text-muted-foreground">{user?.email || ""}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-1 mt-1">
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip="Profile" size="sm">
-                    <a href="/dashboard/profile">
-                      <User className="size-4" />
-                      <span>Profile</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    tooltip="Keluar"
-                    size="sm"
-                    onClick={async () => {
-                      try {
-                        await logout();
-                        window.location.href = "/login";
-                      } catch (error) {
-                        console.error("Logout failed:", error);
-                      }
-                    }}
-                  >
-                    <LogOut className="size-4" />
-                    <span>Keluar</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </div>
-          </>
-        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMainItems} />
