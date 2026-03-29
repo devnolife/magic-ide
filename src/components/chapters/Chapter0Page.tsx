@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, BookOpen, Trophy, Target, Lock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Trophy, Target, Lock, Loader2 } from 'lucide-react';
 import { BackToDashboard } from '@/components/dashboard/BackToDashboard';
 import LessonContainer from '@/components/chapter0/LessonContainer';
 import Lesson1Programming from '@/components/chapter0/Lesson1Programming';
@@ -51,20 +51,80 @@ const lessons = [
   }
 ];
 
+interface ChapterMeta {
+  chapterId: string;
+  lessons: { id: string; number: number; title: string }[];
+}
+
 export function Chapter0Page() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
   const [challengesUnlocked, setChallengesUnlocked] = useState(false);
+  const [chapterMeta, setChapterMeta] = useState<ChapterMeta | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [savingLesson, setSavingLesson] = useState<number | null>(null);
+
+  // Load chapter metadata (DB IDs) and existing progress
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        // Fetch chapter metadata (chapterId + lesson IDs)
+        const metaRes = await fetch('/api/chapters/0/lessons');
+        if (metaRes.ok) {
+          const meta = await metaRes.json();
+          setChapterMeta(meta);
+        }
+
+        // Fetch user's saved progress
+        if (token) {
+          const progressRes = await fetch('/api/progress', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (progressRes.ok) {
+            const data = await progressRes.json();
+            const ch0Progress = (data.progress ?? []).find(
+              (p: { chapterNumber: number }) => p.chapterNumber === 0
+            );
+
+            if (ch0Progress?.lessonProgress) {
+              const completed = new Set<number>();
+              for (const lp of ch0Progress.lessonProgress) {
+                if (lp.status === 'COMPLETED') {
+                  // Map DB lesson to frontend lesson number
+                  const lesson = lp.lesson;
+                  if (lesson?.number) {
+                    completed.add(lesson.number);
+                  }
+                }
+              }
+              setCompletedLessons(completed);
+              if (completed.size === lessons.length) {
+                setChallengesUnlocked(true);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error loading chapter data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const currentLesson = lessons[currentLessonIndex];
   const progress = ((completedLessons.size) / lessons.length) * 100;
 
   // Check if challenges should be unlocked
   useEffect(() => {
+    if (loading) return;
     const allCompleted = completedLessons.size === lessons.length;
     if (allCompleted && !challengesUnlocked) {
       setChallengesUnlocked(true);
-      // Show unlock notification
       setTimeout(() => {
         toast.success("🎯 Tantangan Terbuka!", {
           description: "Selamat! Anda telah membuka tantangan interaktif. Uji kemampuan Anda sekarang!",
@@ -72,11 +132,59 @@ export function Chapter0Page() {
         });
       }, 1000);
     }
-  }, [completedLessons.size, challengesUnlocked]);
+  }, [completedLessons.size, challengesUnlocked, loading]);
 
-  const handleLessonComplete = (lessonId: number) => {
-    setCompletedLessons(prev => new Set([...prev, lessonId]));
-  };
+  const handleLessonComplete = useCallback(async (lessonNumber: number) => {
+    // Already completed — skip
+    if (completedLessons.has(lessonNumber)) return;
+
+    // Update local state immediately
+    setCompletedLessons(prev => new Set([...prev, lessonNumber]));
+    setSavingLesson(lessonNumber);
+
+    // Save to database
+    try {
+      const token = localStorage.getItem('token');
+      if (!token || !chapterMeta) {
+        setSavingLesson(null);
+        return;
+      }
+
+      // Find the DB lesson ID for this lesson number
+      const dbLesson = chapterMeta.lessons.find(l => l.number === lessonNumber);
+      if (!dbLesson) {
+        console.error('Lesson not found in DB for number:', lessonNumber);
+        setSavingLesson(null);
+        return;
+      }
+
+      const res = await fetch('/api/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          chapterId: chapterMeta.chapterId,
+          lessonId: dbLesson.id,
+          status: 'COMPLETED',
+          timeSpent: 0,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success(`✅ Pelajaran "${lessons.find(l => l.id === lessonNumber)?.title}" tersimpan!`, {
+          duration: 2000,
+        });
+      } else {
+        console.error('Failed to save lesson progress');
+      }
+    } catch (err) {
+      console.error('Error saving lesson progress:', err);
+    } finally {
+      setSavingLesson(null);
+    }
+  }, [completedLessons, chapterMeta]);
 
   const goToNextLesson = () => {
     if (currentLessonIndex < lessons.length - 1) {
@@ -93,6 +201,14 @@ export function Chapter0Page() {
   const goToLesson = (index: number) => {
     setCurrentLessonIndex(index);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const CurrentLessonComponent = currentLesson.component;
 
@@ -149,9 +265,11 @@ export function Chapter0Page() {
                             <div className="font-medium text-sm">{lesson.title}</div>
                             <div className="text-xs opacity-70">{lesson.subtitle}</div>
                           </div>
-                          {completedLessons.has(lesson.id) && (
+                          {savingLesson === lesson.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin ml-auto" />
+                          ) : completedLessons.has(lesson.id) ? (
                             <Trophy className="w-4 h-4 text-yellow-500 ml-auto" />
-                          )}
+                          ) : null}
                         </div>
                       </Button>
                     </motion.div>
