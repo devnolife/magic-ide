@@ -6,6 +6,7 @@ import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import { ChapterGrid } from "@/components/dashboard/ChapterGrid"
 import type { ChapterProgress } from "@/components/dashboard/ChapterGrid"
+import { useAuth } from "@/components/auth/AuthProvider"
 import {
   SidebarInset,
   SidebarProvider,
@@ -13,10 +14,16 @@ import {
 
 export default function Page() {
   const [progressData, setProgressData] = useState<ChapterProgress[]>([]);
+  const { user } = useAuth();
 
   const handleProgressLoaded = useCallback((data: ChapterProgress[]) => {
     setProgressData(data);
   }, []);
+
+  const streakData = user ? {
+    currentStreak: user.currentStreak ?? 0,
+    longestStreak: user.longestStreak ?? 0,
+  } : undefined;
 
   return (
     <SidebarProvider
@@ -33,7 +40,7 @@ export default function Page() {
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards progressData={progressData} />
+              <SectionCards progressData={progressData} streakData={streakData} />
               <div className="px-4 lg:px-6">
                 <ChapterGrid onProgressLoaded={handleProgressLoaded} />
               </div>

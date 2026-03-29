@@ -51,12 +51,46 @@ export async function POST(request: NextRequest) {
     // Create session
     await createUserSession(user.id, token);
 
+    // Update streak
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const lastLogin = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
+    if (lastLogin) lastLogin.setHours(0, 0, 0, 0);
+
+    let newStreak = user.currentStreak;
+    if (!lastLogin) {
+      newStreak = 1;
+    } else {
+      const diffDays = Math.floor((today.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) {
+        newStreak = user.currentStreak + 1;
+      } else if (diffDays > 1) {
+        newStreak = 1;
+      }
+      // diffDays === 0 means same day, keep current streak
+    }
+
+    const newLongest = Math.max(newStreak, user.longestStreak);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        lastLoginDate: new Date(),
+        currentStreak: newStreak,
+        longestStreak: newLongest,
+      },
+    });
+
     // Return user data (excluding password)
     const { password: _, ...userWithoutPassword } = user;
 
     const response = NextResponse.json({
       message: 'Login successful',
-      user: userWithoutPassword,
+      user: {
+        ...userWithoutPassword,
+        currentStreak: newStreak,
+        longestStreak: newLongest,
+      },
       token,
     });
 

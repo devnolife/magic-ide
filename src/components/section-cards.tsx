@@ -15,9 +15,10 @@ import type { ChapterProgress } from "@/components/dashboard/ChapterGrid"
 
 interface SectionCardsProps {
   progressData?: ChapterProgress[];
+  streakData?: { currentStreak: number; longestStreak: number };
 }
 
-export function SectionCards({ progressData }: SectionCardsProps) {
+export function SectionCards({ progressData, streakData }: SectionCardsProps) {
   const totalChapters = progressData?.length ?? 0;
   const completedCount = progressData?.filter((c) => c.status === 'completed').length ?? 0;
   const inProgressCount = progressData?.filter((c) => c.status === 'in-progress').length ?? 0;
@@ -64,23 +65,23 @@ export function SectionCards({ progressData }: SectionCardsProps) {
 
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Waktu Belajar</CardDescription>
+          <CardDescription>Login Streak</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {formatTime(totalTimeMinutes)}
+            🔥 {streakData?.currentStreak ?? 0} Hari
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
               <Flame className="size-3" />
-              Aktif
+              {(streakData?.currentStreak ?? 0) >= 7 ? 'Hebat!' : 'Aktif'}
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Tetap konsisten! <Flame className="size-4" />
+            Rekor: {streakData?.longestStreak ?? 0} hari <Flame className="size-4" />
           </div>
           <div className="text-muted-foreground">
-            Total akumulasi waktu belajar
+            {formatTime(totalTimeMinutes)} waktu belajar
           </div>
         </CardFooter>
       </Card>

@@ -8,6 +8,8 @@ interface User {
   email: string;
   name?: string;
   role: string;
+  currentStreak?: number;
+  longestStreak?: number;
 }
 
 interface AuthContextType {

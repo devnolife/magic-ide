@@ -20,6 +20,11 @@ model User {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // Streak tracking
+  lastLoginDate  DateTime?
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
   
   // Relations
   progress           UserProgress[]
