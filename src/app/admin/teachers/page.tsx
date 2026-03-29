@@ -122,7 +122,7 @@ export default function TeachersPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-purple-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -135,7 +135,7 @@ export default function TeachersPage() {
           <p className="text-gray-600 mt-1">Kelola akun guru dan kelas mereka</p>
         </div>
         <Button
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white"
           onClick={() => setShowPromote(true)}
         >
           <UserPlus className="h-4 w-4 mr-2" /> Tambah Guru
@@ -168,14 +168,14 @@ export default function TeachersPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-purple-200 bg-purple-50">
+        <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Pengguna</p>
                 <p className="text-2xl font-bold text-gray-900">{allUsers.length}</p>
               </div>
-              <Users className="h-8 w-8 text-purple-600" />
+              <Users className="h-8 w-8 text-emerald-600" />
             </div>
           </CardContent>
         </Card>
@@ -188,7 +188,7 @@ export default function TeachersPage() {
           <Card className="relative z-10 w-full max-w-lg max-h-[80vh] flex flex-col">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <UserPlus className="h-5 w-5 text-purple-600" />
+                <UserPlus className="h-5 w-5 text-emerald-600" />
                 Promosi Pengguna Menjadi Guru
               </CardTitle>
             </CardHeader>
@@ -259,7 +259,7 @@ export default function TeachersPage() {
               <GraduationCap className="h-12 w-12 mx-auto mb-3 text-gray-300" />
               <p className="mb-3">Belum ada guru terdaftar.</p>
               <Button
-                className="bg-purple-600 hover:bg-purple-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 onClick={() => setShowPromote(true)}
               >
                 <UserPlus className="h-4 w-4 mr-2" /> Tambah Guru Pertama

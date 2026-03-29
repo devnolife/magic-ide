@@ -104,7 +104,7 @@ export function AdvancedListContainer() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'intermediate': return 'bg-blue-500';
-      case 'advanced': return 'bg-purple-500';
+      case 'advanced': return 'bg-emerald-500';
       case 'master': return 'bg-gradient-to-r from-yellow-400 to-orange-500';
       default: return 'bg-gray-500';
     }
@@ -122,22 +122,22 @@ export function AdvancedListContainer() {
   if (showPlayground) {
     return (
       <div className="max-w-7xl mx-auto">
-        <Card className="bg-white border-purple-200 shadow-2xl">
-          <CardHeader className="border-b border-purple-100">
+        <Card className="bg-white border-emerald-200 shadow-2xl">
+          <CardHeader className="border-b border-emerald-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-pink-500 rounded-full flex items-center justify-center">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-2xl text-gray-800">🎮 Taman Bermain Sihir Master</CardTitle>
-                  <p className="text-purple-600 text-sm">Sandbox manipulasi list lanjutan</p>
+                  <p className="text-emerald-600 text-sm">Sandbox manipulasi list lanjutan</p>
                 </div>
               </div>
               <Button
                 onClick={() => setShowPlayground(false)}
                 variant="outline"
-                className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                className="border-emerald-300 text-emerald-600 hover:bg-emerald-50"
               >
                 Kembali ke Akademi
               </Button>
@@ -168,7 +168,7 @@ export function AdvancedListContainer() {
             </div>
 
             <div className="flex items-center justify-center gap-8 text-sm">
-              <div className="flex items-center gap-2 text-purple-600">
+              <div className="flex items-center gap-2 text-emerald-600">
                 <Trophy className="w-4 h-4" />
                 <span>{completedLessons.size}/{lessons.length} Dikuasai</span>
               </div>
@@ -183,7 +183,7 @@ export function AdvancedListContainer() {
             </div>
 
             <div className="max-w-md mx-auto">
-              <div className="flex justify-between text-sm text-purple-600 mb-2">
+              <div className="flex justify-between text-sm text-emerald-600 mb-2">
                 <span>Progress Akademi</span>
                 <span>{Math.round(overallProgress)}%</span>
               </div>
@@ -197,10 +197,10 @@ export function AdvancedListContainer() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Lesson Selector */}
         <div className="lg:col-span-1">
-          <Card className="bg-white border-purple-200 shadow-xl  h-fit">
+          <Card className="bg-white border-emerald-200 shadow-xl  h-fit">
             <CardHeader>
               <CardTitle className="text-xl text-gray-800 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-purple-600" />
+                <BookOpen className="w-5 h-5 text-emerald-600" />
                 Kurikulum Kuno
               </CardTitle>
             </CardHeader>
@@ -214,7 +214,7 @@ export function AdvancedListContainer() {
                   <Button
                     variant={activeLesson === lesson.id ? "default" : "outline"}
                     className={`w-full justify-start h-auto p-4 ${activeLesson === lesson.id
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white'
+                      ? 'bg-gradient-to-r from-emerald-600 to-pink-600 border-emerald-400 text-white'
                       : 'bg-white border-gray-300 hover:bg-gray-50 text-gray-700'
                       }`}
                     onClick={() => setActiveLesson(lesson.id)}
@@ -224,7 +224,7 @@ export function AdvancedListContainer() {
                         ? 'bg-green-500/20 text-green-600'
                         : activeLesson === lesson.id
                           ? 'bg-white/20 text-white'
-                          : 'bg-purple-500/20 text-purple-600'
+                          : 'bg-emerald-500/20 text-emerald-600'
                         }`}>
                         {completedLessons.has(lesson.id) ? <CheckCircle className="w-5 h-5" /> : lesson.icon}
                       </div>
@@ -237,7 +237,7 @@ export function AdvancedListContainer() {
                           </Badge>
                           <span className="text-xs opacity-60">{lesson.duration}</span>
                         </div>
-                        <div className={`text-xs mt-1 ${activeLesson === lesson.id ? 'text-purple-200' : 'text-purple-600'}`}>
+                        <div className={`text-xs mt-1 ${activeLesson === lesson.id ? 'text-emerald-200' : 'text-emerald-600'}`}>
                           ✨ {lesson.magicalPower}
                         </div>
                       </div>
@@ -265,7 +265,7 @@ export function AdvancedListContainer() {
 
         {/* Lesson Content */}
         <div className="lg:col-span-2">
-          <Card className="bg-white border-purple-200 shadow-xl ">
+          <Card className="bg-white border-emerald-200 shadow-xl ">
             <CardContent className="p-6">
               {lessons.map((lesson) => (
                 activeLesson === lesson.id && (

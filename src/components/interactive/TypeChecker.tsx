@@ -51,7 +51,7 @@ export default function TypeChecker({ title, description }: TypeCheckerProps) {
       value: 'True',
       type: 'Boolean (Benar/Salah)',
       description: 'Nilai True atau False',
-      color: 'bg-purple-100 text-purple-800 border-purple-300',
+      color: 'bg-emerald-100 text-emerald-800 border-emerald-300',
       icon: '✅'
     },
     {

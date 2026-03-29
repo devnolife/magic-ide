@@ -114,7 +114,7 @@ export default function TeacherDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
           <p className="mt-4 text-gray-500">Memuat dashboard...</p>
         </div>
       </div>
@@ -126,8 +126,8 @@ export default function TeacherDashboard() {
       label: "Total Kelas",
       value: data?.totalClassrooms ?? 0,
       icon: School,
-      color: "text-purple-600",
-      bg: "bg-purple-100",
+      color: "text-emerald-600",
+      bg: "bg-emerald-100",
     },
     {
       label: "Total Murid",
@@ -203,7 +203,7 @@ export default function TeacherDashboard() {
         className="flex flex-col sm:flex-row gap-3"
       >
         <Link href="/teacher/classrooms/new">
-          <Button className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg">
+          <Button className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-lg">
             <Plus className="h-4 w-4 mr-2" />
             Buat Kelas Baru
           </Button>
@@ -221,11 +221,11 @@ export default function TeacherDashboard() {
         <Card className="bg-white/70 backdrop-blur-md border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <School className="h-5 w-5 text-purple-600" />
+              <School className="h-5 w-5 text-emerald-600" />
               Kelas Terbaru
             </CardTitle>
             <Link href="/teacher/classrooms">
-              <Button variant="ghost" size="sm" className="text-purple-600">
+              <Button variant="ghost" size="sm" className="text-emerald-600">
                 Lihat Semua
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
@@ -240,13 +240,13 @@ export default function TeacherDashboard() {
                     href={`/teacher/classrooms/${classroom.id}`}
                     className="block"
                   >
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50/80 hover:bg-purple-50/80 transition-colors group">
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50/80 hover:bg-emerald-50/80 transition-colors group">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow">
                           {classroom.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-800 group-hover:text-purple-700 transition-colors">
+                          <p className="font-semibold text-gray-800 group-hover:text-emerald-700 transition-colors">
                             {classroom.name}
                           </p>
                           <p className="text-sm text-gray-500">
@@ -259,7 +259,7 @@ export default function TeacherDashboard() {
                           <Users className="h-3 w-3 mr-1" />
                           {classroom._count?.students ?? 0} murid
                         </Badge>
-                        <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
+                        <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-emerald-600 transition-colors" />
                       </div>
                     </div>
                   </Link>
@@ -270,7 +270,7 @@ export default function TeacherDashboard() {
                 <School className="h-12 w-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500 mb-4">Belum ada kelas.</p>
                 <Link href="/teacher/classrooms/new">
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                  <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">
                     <Plus className="h-4 w-4 mr-2" />
                     Buat Kelas Pertama
                   </Button>

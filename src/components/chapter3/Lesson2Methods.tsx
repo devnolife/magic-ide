@@ -126,7 +126,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
       case 'air': return 'bg-cyan-100 text-cyan-800 border-cyan-200';
       case 'earth': return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'light': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'arcane': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'arcane': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -136,7 +136,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
       case 'evocation': return 'bg-orange-100 text-orange-800';
       case 'restoration': return 'bg-green-100 text-green-800';
       case 'abjuration': return 'bg-blue-100 text-blue-800';
-      case 'conjuration': return 'bg-purple-100 text-purple-800';
+      case 'conjuration': return 'bg-emerald-100 text-emerald-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -150,15 +150,15 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
   return (
     <div className="space-y-6">
       {/* Lesson Header */}
-      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200">
+      <Card className="bg-gradient-to-r from-cyan-50 to-emerald-50 border-2 border-cyan-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-emerald-500 rounded-lg flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-indigo-800">Lesson 2: Grimoire Management Spells</CardTitle>
-              <CardDescription className="text-indigo-600">
+              <CardTitle className="text-2xl text-cyan-800">Lesson 2: Grimoire Management Spells</CardTitle>
+              <CardDescription className="text-cyan-600">
                 Master advanced dictionary methods and magical data manipulation
               </CardDescription>
             </div>
@@ -167,10 +167,10 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
       </Card>
 
       {/* Learning Objectives */}
-      <Card className="border-indigo-200">
+      <Card className="border-cyan-200">
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
-            <Wand2 className="w-5 h-5 text-indigo-500" />
+            <Wand2 className="w-5 h-5 text-cyan-500" />
             <span>Grimoire Mastery Goals</span>
           </CardTitle>
         </CardHeader>
@@ -218,7 +218,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Main Grimoire */}
-        <Card className="border-indigo-200">
+        <Card className="border-cyan-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">📜</span>
@@ -237,7 +237,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
-                    className={`p-4 rounded-lg border-2 transition-all duration-300 ${activeOperation ? 'border-indigo-400 bg-indigo-50 shadow-lg' : 'border-gray-200'
+                    className={`p-4 rounded-lg border-2 transition-all duration-300 ${activeOperation ? 'border-cyan-400 bg-cyan-50 shadow-lg' : 'border-gray-200'
                       }`}
                   >
                     <div className="flex items-center justify-between">
@@ -254,7 +254,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-indigo-600">{spell.power}</div>
+                        <div className="text-2xl font-bold text-cyan-600">{spell.power}</div>
                         <div className="text-xs text-gray-500">Power</div>
                       </div>
                     </div>
@@ -266,7 +266,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
         </Card>
 
         {/* Secondary Grimoire */}
-        <Card className="border-purple-200">
+        <Card className="border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">📖</span>
@@ -279,7 +279,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
           <CardContent>
             <div className="space-y-3">
               {Object.entries(secondGrimoire).map(([key, spell]) => (
-                <div key={key} className="p-3 rounded-lg border border-purple-200 bg-purple-25">
+                <div key={key} className="p-3 rounded-lg border border-emerald-200 bg-emerald-25">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-medium text-gray-800">{spell.name}</div>
@@ -288,7 +288,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
                         {spell.element}
                       </Badge>
                     </div>
-                    <div className="text-lg font-bold text-purple-600">{spell.power}</div>
+                    <div className="text-lg font-bold text-emerald-600">{spell.power}</div>
                   </div>
                 </div>
               ))}
@@ -361,7 +361,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button onClick={mergeGrimoires} className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white">
+            <Button onClick={mergeGrimoires} className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white">
               <Merge className="w-4 h-4 mr-2" />
               Merge Grimoires
             </Button>
@@ -426,9 +426,9 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
 
         {/* Extracted Items */}
         {extractedItems.length > 0 && (
-          <Card className="border-purple-200">
+          <Card className="border-emerald-200">
             <CardHeader>
-              <CardTitle className="text-purple-700">Extracted Items</CardTitle>
+              <CardTitle className="text-emerald-700">Extracted Items</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -438,7 +438,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-2 bg-purple-50 border border-purple-200 rounded text-sm"
+                    className="p-2 bg-emerald-50 border border-emerald-200 rounded text-sm"
                   >
                     <strong>{key}:</strong> {value.name}
                   </motion.div>
@@ -462,7 +462,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <motion.div
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full"
+                className="bg-gradient-to-r from-cyan-500 to-emerald-500 h-3 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${(completedTasks.length / 6) * 100}%` }}
                 transition={{ duration: 0.5 }}

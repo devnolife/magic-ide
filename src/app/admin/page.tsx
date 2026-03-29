@@ -140,9 +140,9 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
           console.table("🚀 ~ AdminDashboard ~ animate:", animate)
           <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
         </div>
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
 
   if (error || user?.role !== 'ADMIN') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center">
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       <div className="container mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-gray-600">Total Users</p>
                     <p className="text-2xl font-bold text-gray-900">{stats.overview.totalUsers}</p>
                   </div>
-                  <Users className="h-8 w-8 text-purple-600" />
+                  <Users className="h-8 w-8 text-emerald-600" />
                 </div>
               </CardContent>
             </Card>
@@ -244,7 +244,7 @@ export default function AdminDashboard() {
                   {stats.topPerformers.slice(0, 10).map((performer, index) => (
                     <div key={performer.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold">
+                        <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">
                           {index + 1}
                         </div>
                         <div>
@@ -332,7 +332,7 @@ export default function AdminDashboard() {
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
-                  <BookOpen className="h-12 w-12 text-purple-600 mx-auto mb-2" />
+                  <BookOpen className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
                   <p className="text-2xl font-bold text-gray-900">
                     {stats.overview.totalSessions}
                   </p>

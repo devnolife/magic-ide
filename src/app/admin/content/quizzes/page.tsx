@@ -97,7 +97,7 @@ export default function QuizzesPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-purple-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -110,7 +110,7 @@ export default function QuizzesPage() {
           <p className="text-gray-600 mt-1">Kelola kuis dan soal-soal latihan</p>
         </div>
         <Link href="/admin/content/quizzes/new">
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
             <Plus className="h-4 w-4 mr-2" /> Buat Kuis Baru
           </Button>
         </Link>
@@ -150,7 +150,7 @@ export default function QuizzesPage() {
               <FileQuestion className="h-12 w-12 mx-auto mb-3 text-gray-300" />
               <p className="mb-3">Belum ada kuis{filterChapter ? " di bab ini" : ""}.</p>
               <Link href="/admin/content/quizzes/new">
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                   <Plus className="h-4 w-4 mr-2" /> Buat Kuis Pertama
                 </Button>
               </Link>

@@ -107,7 +107,7 @@ export default function OperationAnimator({ title, description }: OperationAnima
 
   const getResultColor = (type: string) => {
     return type === 'math'
-      ? 'bg-purple-100 text-purple-800 border-purple-300'
+      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
       : 'bg-orange-100 text-orange-800 border-orange-300';
   };
 

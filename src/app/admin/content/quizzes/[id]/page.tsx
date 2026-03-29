@@ -285,7 +285,7 @@ export default function EditQuizPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-purple-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -329,7 +329,7 @@ export default function EditQuizPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileQuestion className="h-5 w-5 text-purple-600" />
+            <FileQuestion className="h-5 w-5 text-emerald-600" />
             Informasi Kuis
           </CardTitle>
         </CardHeader>
@@ -378,7 +378,7 @@ export default function EditQuizPage() {
       {/* Questions */}
       <div className="space-y-4 mb-6">
         {questions.map((q, qIdx) => (
-          <Card key={qIdx} className="border-l-4 border-l-purple-400">
+          <Card key={qIdx} className="border-l-4 border-l-emerald-400">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -537,7 +537,7 @@ export default function EditQuizPage() {
             Batal
           </Button>
           <Button
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white"
             onClick={handleSave}
             disabled={saving}
           >
@@ -549,3 +549,4 @@ export default function EditQuizPage() {
     </div>
   );
 }
+

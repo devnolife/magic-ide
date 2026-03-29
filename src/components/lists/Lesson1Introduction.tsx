@@ -89,7 +89,7 @@ export function Lesson1Introduction({ onComplete }: LessonProps) {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-2xl mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-emerald-600 text-white text-2xl mb-4"
         >
           🛒
         </motion.div>
@@ -310,7 +310,7 @@ export function Lesson1Introduction({ onComplete }: LessonProps) {
                           animate={{ opacity: 1, y: 0 }}
                           className="mb-2"
                         >
-                          <Badge className="bg-purple-500 text-white">
+                          <Badge className="bg-emerald-500 text-white">
                             Index [{index}]
                           </Badge>
                         </motion.div>

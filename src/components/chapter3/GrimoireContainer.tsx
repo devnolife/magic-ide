@@ -45,9 +45,9 @@ export function GrimoireContainer() {
       description: 'Jelajahi struktur data kompleks dengan dictionary bersarang dan manipulasi data bertingkat',
       icon: '�️',
       difficulty: 'Lanjutan',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200',
+      color: 'from-emerald-500 to-emerald-600',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-200',
       concepts: ['Nested Structures', 'Deep Access', 'Complex Data']
     },
     {
@@ -67,9 +67,9 @@ export function GrimoireContainer() {
       description: 'Ruang latihan bebas untuk eksperimen dengan semua konsep Dictionary yang telah dipelajari',
       icon: '🎮',
       difficulty: 'Praktik',
-      color: 'from-indigo-500 to-indigo-600',
-      bgColor: 'bg-indigo-50',
-      borderColor: 'border-indigo-200',
+      color: 'from-cyan-500 to-cyan-600',
+      bgColor: 'bg-cyan-50',
+      borderColor: 'border-cyan-200',
       concepts: ['Free Practice', 'Real Projects', 'Experimentation']
     }
   ];
@@ -116,9 +116,9 @@ export function GrimoireContainer() {
     switch (difficulty) {
       case 'Pemula': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'Menengah': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Lanjutan': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'Lanjutan': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       case 'Ahli': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Praktik': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+      case 'Praktik': return 'bg-cyan-100 text-cyan-800 border-cyan-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -126,7 +126,7 @@ export function GrimoireContainer() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Python Dictionary Learning Center */}
-      <Card className="mb-8 bg-gradient-to-r from-blue-50 via-purple-50 to-indigo-50 border-2 border-blue-200 shadow-xl">
+      <Card className="mb-8 bg-gradient-to-r from-blue-50 via-emerald-50 to-cyan-50 border-2 border-blue-200 shadow-xl">
         <CardHeader className="text-center pb-6">
           <div className="flex justify-center mb-6">
             <div className="relative">
@@ -134,10 +134,10 @@ export function GrimoireContainer() {
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-pulse flex items-center justify-center">
                 <span className="text-xs text-white font-bold">{`{}`}</span>
               </div>
-              <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-purple-400 rounded-full animate-ping"></div>
+              <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-emerald-400 rounded-full animate-ping"></div>
             </div>
           </div>
-          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3">
+          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-emerald-600 to-cyan-600 bg-clip-text text-transparent mb-3">
             Python Dictionary Learning Center
           </CardTitle>
           <CardDescription className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
@@ -157,7 +157,7 @@ export function GrimoireContainer() {
               <div className="text-sm font-semibold text-gray-800">Built-in Methods</div>
               <div className="text-xs text-gray-600">Essential Operations</div>
             </div>
-            <div className="bg-white/80 rounded-lg p-3 border border-purple-200">
+            <div className="bg-white/80 rounded-lg p-3 border border-emerald-200">
               <div className="text-2xl mb-1">🗂️</div>
               <div className="text-sm font-semibold text-gray-800">Nested Data</div>
               <div className="text-xs text-gray-600">Complex Structures</div>
@@ -274,11 +274,11 @@ export function GrimoireContainer() {
       </Tabs>
 
       {/* Learning Progress Dashboard */}
-      <Card className={`${styles.progressCard} mt-8 bg-gradient-to-r from-blue-50 via-purple-50 to-indigo-50 border border-blue-200 shadow-lg`}>
+      <Card className={`${styles.progressCard} mt-8 bg-gradient-to-r from-blue-50 via-emerald-50 to-cyan-50 border border-blue-200 shadow-lg`}>
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
                 <span className="text-xl text-white">📊</span>
               </div>
               <div>
@@ -294,7 +294,7 @@ export function GrimoireContainer() {
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-4 mb-6 overflow-hidden shadow-inner">
             <div
-              className={`${getProgressWidthClass()} h-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-full transition-all duration-700 ease-out relative`}
+              className={`${getProgressWidthClass()} h-full bg-gradient-to-r from-blue-500 via-emerald-500 to-cyan-500 rounded-full transition-all duration-700 ease-out relative`}
             >
               <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
             </div>
@@ -317,7 +317,7 @@ export function GrimoireContainer() {
               >
                 <div className="flex-shrink-0">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${unlockedLessons.includes(lesson.id)
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                      ? 'bg-gradient-to-r from-blue-500 to-emerald-500 text-white'
                       : 'bg-gray-300 text-gray-500'
                     }`}>
                     {unlockedLessons.includes(lesson.id) ? lesson.icon : '🔒'}
@@ -349,12 +349,12 @@ export function GrimoireContainer() {
                 <div className="text-2xl font-bold text-blue-600">{progressPercentage}%</div>
                 <div className="text-xs text-gray-600">Completion</div>
               </div>
-              <div className="bg-white/60 rounded-lg p-3 border border-purple-200">
-                <div className="text-2xl font-bold text-purple-600">{unlockedLessons.length}</div>
+              <div className="bg-white/60 rounded-lg p-3 border border-emerald-200">
+                <div className="text-2xl font-bold text-emerald-600">{unlockedLessons.length}</div>
                 <div className="text-xs text-gray-600">Modules Done</div>
               </div>
-              <div className="bg-white/60 rounded-lg p-3 border border-indigo-200">
-                <div className="text-2xl font-bold text-indigo-600">{lessons.length - unlockedLessons.length}</div>
+              <div className="bg-white/60 rounded-lg p-3 border border-cyan-200">
+                <div className="text-2xl font-bold text-cyan-600">{lessons.length - unlockedLessons.length}</div>
                 <div className="text-xs text-gray-600">Remaining</div>
               </div>
               <div className="bg-white/60 rounded-lg p-3 border border-green-200">

@@ -111,7 +111,7 @@ function CodingInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Tulis kode Python kamu di sini..."
-      className="w-full h-[250px] p-4 rounded-lg border bg-gray-50 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+      className="w-full h-[250px] p-4 rounded-lg border bg-gray-50 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
       spellCheck={false}
     />
   );
@@ -147,14 +147,14 @@ function QuestionRenderer({
                 onClick={() => onAnswer(opt.label)}
                 className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-start gap-3 ${
                   selected
-                    ? 'border-purple-500 bg-purple-50 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50/50'
+                    ? 'border-emerald-500 bg-emerald-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/50'
                 }`}
               >
                 <span
                   className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                     selected
-                      ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white'
+                      ? 'bg-gradient-to-br from-blue-500 to-emerald-600 text-white'
                       : 'bg-gray-100 text-gray-600'
                   }`}
                 >
@@ -182,8 +182,8 @@ function QuestionRenderer({
                 onClick={() => onAnswer(val)}
                 className={`flex-1 p-6 rounded-xl border-2 text-center font-semibold text-lg transition-all duration-200 ${
                   selected
-                    ? 'border-purple-500 bg-purple-50 shadow-md text-purple-700'
-                    : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50/50 text-gray-700'
+                    ? 'border-emerald-500 bg-emerald-50 shadow-md text-emerald-700'
+                    : 'border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/50 text-gray-700'
                 }`}
               >
                 {label}
@@ -200,7 +200,7 @@ function QuestionRenderer({
           value={answer}
           onChange={(e) => onAnswer(e.target.value)}
           placeholder="Ketik jawaban kamu di sini..."
-          className="w-full p-4 rounded-xl border-2 border-gray-200 bg-white text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+          className="w-full p-4 rounded-xl border-2 border-gray-200 bg-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
         />
       );
 
@@ -214,7 +214,7 @@ function QuestionRenderer({
           value={answer}
           onChange={(e) => onAnswer(e.target.value)}
           placeholder="Ketik jawaban kamu..."
-          className="w-full p-4 rounded-xl border-2 border-gray-200 bg-white text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+          className="w-full p-4 rounded-xl border-2 border-gray-200 bg-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
         />
       );
   }
@@ -360,7 +360,7 @@ export default function TakeQuizPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
-          <Loader2 className="h-10 w-10 animate-spin text-purple-500 mx-auto" />
+          <Loader2 className="h-10 w-10 animate-spin text-emerald-500 mx-auto" />
           <p className="text-muted-foreground">Memuat kuis...</p>
         </div>
       </div>
@@ -484,10 +484,10 @@ export default function TakeQuizPage() {
               onClick={() => setCurrentIndex(i)}
               className={`w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isCurrent
-                  ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md scale-110'
+                  ? 'bg-gradient-to-br from-blue-500 to-emerald-600 text-white shadow-md scale-110'
                   : isAnswered
                   ? 'bg-green-100 text-green-700 border border-green-300'
-                  : 'bg-gray-100 text-gray-500 border border-gray-200 hover:border-purple-300'
+                  : 'bg-gray-100 text-gray-500 border border-gray-200 hover:border-emerald-300'
               }`}
             >
               {i + 1}
@@ -550,7 +550,7 @@ export default function TakeQuizPage() {
                 Math.min(sortedQuestions.length - 1, i + 1)
               )
             }
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+            className="bg-gradient-to-r from-blue-500 to-emerald-600 hover:from-blue-600 hover:to-emerald-700 text-white"
           >
             Selanjutnya
             <ChevronRight className="h-4 w-4 ml-1" />
@@ -616,3 +616,4 @@ export default function TakeQuizPage() {
     </div>
   );
 }
+

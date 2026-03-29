@@ -106,7 +106,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           </div>
           <div>
             <h2 className="text-2xl font-bold text-gray-800">🔮 Laboratorium Generator Mantra</h2>
-            <p className="text-purple-600">Ubah bahan mentah menjadi artefak ajaib</p>
+            <p className="text-emerald-600">Ubah bahan mentah menjadi artefak ajaib</p>
           </div>
         </div>
       </div>
@@ -114,13 +114,13 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
       {/* Comprehension Stage Selector */}
       <Tabs value={comprehensionStage} onValueChange={(value) => setComprehensionStage(value as any)}>
         <TabsList className="grid w-full grid-cols-3 bg-gray-100">
-          <TabsTrigger value="basic" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
+          <TabsTrigger value="basic" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-gray-800">
             Mantra Dasar
           </TabsTrigger>
-          <TabsTrigger value="filtered" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
+          <TabsTrigger value="filtered" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-gray-800">
             Sihir Filter
           </TabsTrigger>
-          <TabsTrigger value="nested" className="data-[state=active]:bg-purple-600 data-[state=active]:text-gray-800">
+          <TabsTrigger value="nested" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-gray-800">
             Dimensi Nested
           </TabsTrigger>
         </TabsList>
@@ -218,12 +218,12 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           </div>
 
           {/* Spell Forge Controls */}
-          <Card className="bg-white border-purple-500/30">
+          <Card className="bg-white border-emerald-500/30">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="text-gray-800">
-                    <div className="text-sm text-purple-600 mb-1">Spell Formula:</div>
+                    <div className="text-sm text-emerald-600 mb-1">Spell Formula:</div>
                     <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg">
                       {getComprehensionCode()}
                     </code>
@@ -245,7 +245,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                   <Button
                     onClick={runSpellForge}
                     disabled={isAnimating}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    className="bg-gradient-to-r from-emerald-600 to-pink-600 hover:from-emerald-700 hover:to-pink-700"
                   >
                     <Play className="w-4 h-4 mr-1" />
                     Cast Spell
@@ -352,17 +352,17 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
           </div>
 
           {/* Filtered Results Preview */}
-          <Card className="bg-white border-purple-500/30">
+          <Card className="bg-white border-emerald-500/30">
             <CardContent className="p-4">
               <div className="text-center">
-                <div className="text-sm text-purple-600 mb-2">Combined Spell Formula:</div>
+                <div className="text-sm text-emerald-600 mb-2">Combined Spell Formula:</div>
                 <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg">
                   {getComprehensionCode()}
                 </code>
                 <div className="mt-4 flex justify-center">
                   <Button
                     onClick={runSpellForge}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600"
+                    className="bg-gradient-to-r from-emerald-600 to-pink-600"
                   >
                     <Zap className="w-4 h-4 mr-1" />
                     Cast Filtered Spell
@@ -375,16 +375,16 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
 
         <TabsContent value="nested" className="space-y-4">
           {/* Nested Comprehension */}
-          <Card className="bg-white border-purple-500/30">
+          <Card className="bg-white border-emerald-500/30">
             <CardHeader>
               <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+                <Sparkles className="w-5 h-5 text-emerald-400" />
                 Dimensional Matrix Magic
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center space-y-4">
-                <p className="text-purple-600">
+                <p className="text-emerald-600">
                   Create magical grids with nested comprehensions
                 </p>
                 <code className="bg-black/50 px-4 py-2 rounded-lg text-green-400 text-lg block">
@@ -392,7 +392,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                 </code>
                 <Button
                   onClick={runSpellForge}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600"
+                  className="bg-gradient-to-r from-emerald-600 to-pink-600"
                 >
                   <ChevronRight className="w-4 h-4 mr-1" />
                   Create Matrix

@@ -162,9 +162,9 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
         <h2 className="text-2xl font-bold text-center">Operasi String (Teks)</h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <Card className="border-purple-200">
-            <CardHeader className="bg-purple-50">
-              <CardTitle className="text-purple-700">📝 Penggabungan String</CardTitle>
+          <Card className="border-emerald-200">
+            <CardHeader className="bg-emerald-50">
+              <CardTitle className="text-emerald-700">📝 Penggabungan String</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
@@ -203,9 +203,9 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
             </CardContent>
           </Card>
 
-          <Card className="border-indigo-200">
-            <CardHeader className="bg-indigo-50">
-              <CardTitle className="text-indigo-700">🔧 Operasi String Lanjutan</CardTitle>
+          <Card className="border-cyan-200">
+            <CardHeader className="bg-cyan-50">
+              <CardTitle className="text-cyan-700">🔧 Operasi String Lanjutan</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
@@ -434,7 +434,7 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
                     <span>Perbandingan ==, !=, &lt;, &gt;</span>
                   </li>
                   <li className="flex items-center space-x-2">
-                    <Badge className="bg-purple-100 text-purple-800">6</Badge>
+                    <Badge className="bg-emerald-100 text-emerald-800">6</Badge>
                     <span>Logika not, and, or</span>
                   </li>
                 </ol>

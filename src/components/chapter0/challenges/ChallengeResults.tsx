@@ -92,7 +92,7 @@ export default function ChallengeResults({
     } else if (score >= 75) {
       return {
         level: 'Luar Biasa',
-        color: 'from-purple-400 to-pink-500',
+        color: 'from-emerald-400 to-pink-500',
         icon: '⭐',
         message: 'Kerja bagus! Anda menguasai konsep dengan baik!'
       };
@@ -229,7 +229,7 @@ export default function ChallengeResults({
 
             <Card className="border-0 shadow-lg">
               <CardContent className="p-4 text-center">
-                <TrendingUp className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                <TrendingUp className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-gray-800">
                   {Math.max(0, 100 - (mistakes * 10))}%
                 </div>
@@ -293,7 +293,7 @@ export default function ChallengeResults({
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-gray-600">Bonus Akurasi:</span>
-                            <span className="font-semibold text-purple-600">+{scoreBreakdown.accuracyBonus}</span>
+                            <span className="font-semibold text-emerald-600">+{scoreBreakdown.accuracyBonus}</span>
                           </div>
                         </div>
 
@@ -308,7 +308,7 @@ export default function ChallengeResults({
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-gray-600">Multiplier ({difficulty}):</span>
-                            <span className="font-semibold text-indigo-600">×{scoreBreakdown.difficultyMultiplier}</span>
+                            <span className="font-semibold text-cyan-600">×{scoreBreakdown.difficultyMultiplier}</span>
                           </div>
                         </div>
                       </div>
@@ -356,7 +356,7 @@ export default function ChallengeResults({
                         stiffness: 200
                       }}
                       className={`p-4 rounded-lg border-2 ${achievement.rarity === 'legendary' ? 'border-yellow-400 bg-yellow-50' :
-                        achievement.rarity === 'epic' ? 'border-purple-400 bg-purple-50' :
+                        achievement.rarity === 'epic' ? 'border-emerald-400 bg-emerald-50' :
                           achievement.rarity === 'rare' ? 'border-blue-400 bg-blue-50' :
                             'border-gray-400 bg-gray-50'
                         }`}
@@ -367,7 +367,7 @@ export default function ChallengeResults({
                           <h4 className="font-bold text-gray-800">{achievement.title}</h4>
                           <p className="text-sm text-gray-600">{achievement.description}</p>
                           <Badge className={`mt-1 text-xs ${achievement.rarity === 'legendary' ? 'bg-yellow-500' :
-                            achievement.rarity === 'epic' ? 'bg-purple-500' :
+                            achievement.rarity === 'epic' ? 'bg-emerald-500' :
                               achievement.rarity === 'rare' ? 'bg-blue-500' :
                                 'bg-gray-500'
                             } text-white`}>
@@ -423,7 +423,7 @@ export default function ChallengeResults({
                   </div>
 
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-purple-600 mb-1">
+                    <div className="text-3xl font-bold text-emerald-600 mb-1">
                       {formatTime(userStats.totalTimeSpent)}
                     </div>
                     <div className="text-sm text-gray-600">Total Waktu</div>
@@ -464,7 +464,7 @@ export default function ChallengeResults({
 
             <Button
               onClick={onNextChallenge}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600"
             >
               <ChevronRight className="w-4 h-4" />
               Tantangan Selanjutnya

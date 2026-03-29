@@ -129,15 +129,15 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
   return (
     <div className="space-y-6">
       {/* Lesson Header */}
-      <Card className="bg-gradient-to-r from-violet-50 to-purple-50 border-2 border-violet-200">
+      <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-2 border-blue-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
               <RotateCcw className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-violet-800">Lesson 1: For Loop Incantations</CardTitle>
-              <CardDescription className="text-violet-600">
+              <CardTitle className="text-2xl text-blue-800">Lesson 1: For Loop Incantations</CardTitle>
+              <CardDescription className="text-blue-600">
                 Master the sacred art of controlled repetition and range manipulation
               </CardDescription>
             </div>
@@ -146,10 +146,10 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
       </Card>
 
       {/* Learning Objectives */}
-      <Card className="border-violet-200">
+      <Card className="border-blue-200">
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
-            <Target className="w-5 h-5 text-violet-500" />
+            <Target className="w-5 h-5 text-blue-500" />
             <span>Incantation Mastery Goals</span>
           </CardTitle>
         </CardHeader>
@@ -185,10 +185,10 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Range Loop Workshop */}
-        <Card className="border-violet-200">
+        <Card className="border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Hash className="w-5 h-5 text-violet-500" />
+              <Hash className="w-5 h-5 text-blue-500" />
               <span>Range Magic Circle</span>
             </CardTitle>
             <CardDescription>
@@ -243,7 +243,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
               <Button
                 onClick={animateLoop}
                 disabled={isAnimating || animationSteps.length === 0}
-                className="flex-1 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600"
+                className="flex-1 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600"
               >
                 <Play className="w-4 h-4 mr-2" />
                 {isAnimating ? 'Casting...' : 'Animate Loop'}
@@ -268,7 +268,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
                       exit={{ opacity: 0, scale: 0.8, y: -20 }}
                       transition={{ duration: 0.3 }}
                       className={`p-3 rounded-lg border-2 text-center font-bold ${currentStep === index
-                          ? 'border-violet-400 text-white shadow-lg'
+                          ? 'border-blue-400 text-white shadow-lg'
                           : 'border-gray-300 text-gray-700'
                         }`}
                     >
@@ -283,7 +283,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
         </Card>
 
         {/* List Loop Laboratory */}
-        <Card className="border-purple-200">
+        <Card className="border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">📝</span>
@@ -327,7 +327,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
               <Button
                 onClick={animateListLoop}
                 disabled={isAnimating}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="bg-gradient-to-r from-emerald-500 to-pink-500 hover:from-emerald-600 hover:to-pink-600"
               >
                 <Play className="w-4 h-4 mr-2" />
                 Simple Loop
@@ -335,7 +335,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
               <Button
                 onClick={demonstrateEnumerate}
                 disabled={isAnimating}
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 Enumerate Loop
@@ -395,7 +395,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <motion.div
-                className="bg-gradient-to-r from-violet-500 to-purple-500 h-3 rounded-full"
+                className="bg-gradient-to-r from-blue-500 to-emerald-500 h-3 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${(completedTasks.length / 4) * 100}%` }}
                 transition={{ duration: 0.5 }}

@@ -151,15 +151,15 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
   return (
     <div className="space-y-6">
       {/* Lesson Header */}
-      <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-200">
+      <Card className="bg-gradient-to-r from-emerald-50 to-cyan-50 border-2 border-emerald-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
               <Zap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-purple-800">Lesson 2: While Circle Rituals</CardTitle>
-              <CardDescription className="text-purple-600">
+              <CardTitle className="text-2xl text-emerald-800">Lesson 2: While Circle Rituals</CardTitle>
+              <CardDescription className="text-emerald-600">
                 Master conditional repetition and infinite circle control mechanisms
               </CardDescription>
             </div>
@@ -168,10 +168,10 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
       </Card>
 
       {/* Learning Objectives */}
-      <Card className="border-purple-200">
+      <Card className="border-emerald-200">
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
-            <Zap className="w-5 h-5 text-purple-500" />
+            <Zap className="w-5 h-5 text-emerald-500" />
             <span>While Circle Mastery Goals</span>
           </CardTitle>
         </CardHeader>
@@ -221,10 +221,10 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* While Loop Controller */}
-        <Card className="border-purple-200">
+        <Card className="border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Zap className="w-5 h-5 text-purple-500" />
+              <Zap className="w-5 h-5 text-emerald-500" />
               <span>While Circle Controller</span>
             </CardTitle>
             <CardDescription>
@@ -282,7 +282,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
               <Button
                 onClick={runWhileLoop}
                 disabled={isRunning}
-                className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
               >
                 <Play className="w-4 h-4 mr-2" />
                 {isRunning ? 'Running...' : 'Run While Loop'}
@@ -294,8 +294,8 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
             </div>
 
             {/* Current State Display */}
-            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-              <h4 className="font-semibold text-purple-800 mb-2">Current State:</h4>
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <h4 className="font-semibold text-emerald-800 mb-2">Current State:</h4>
               <div className="space-y-1 text-sm">
                 <div>Counter: <Badge variant="outline">{counter}</Badge></div>
                 <div>Condition: <code className="bg-white px-2 py-1 rounded">{condition}</code></div>
@@ -310,7 +310,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
         </Card>
 
         {/* Execution History */}
-        <Card className="border-indigo-200">
+        <Card className="border-cyan-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">📊</span>
@@ -327,7 +327,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
                 <Button
                   onClick={demonstrateBreakContinue}
                   disabled={isRunning}
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600"
                 >
                   <Pause className="w-4 h-4 mr-2" />
                   Demonstrate Break/Continue
@@ -392,7 +392,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <motion.div
-                className="bg-gradient-to-r from-purple-500 to-indigo-500 h-3 rounded-full"
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 h-3 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${(completedTasks.length / 3) * 100}%` }}
                 transition={{ duration: 0.5 }}

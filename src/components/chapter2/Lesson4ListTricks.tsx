@@ -163,10 +163,10 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
       <Tabs value={activeTechnique} onValueChange={setActiveTechnique}>
         <TabsContent value="stack" className="space-y-4">
           {/* Stack Visualization */}
-          <Card className="bg-white border-purple-500/30">
+          <Card className="bg-white border-emerald-500/30">
             <CardHeader>
               <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
-                <Layers className="w-5 h-5 text-purple-400" />
+                <Layers className="w-5 h-5 text-emerald-400" />
                 Magical Stack Tower
               </CardTitle>
             </CardHeader>
@@ -175,12 +175,12 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                 {/* Stack Visualization */}
                 <div>
                   <h4 className="text-gray-800 font-semibold mb-3">Spell Stack (LIFO)</h4>
-                  <div className="bg-purple-900/30 border-2 border-purple-500 rounded-lg p-4 min-h-[200px] flex flex-col-reverse items-center justify-start">
+                  <div className="bg-emerald-900/30 border-2 border-emerald-500 rounded-lg p-4 min-h-[200px] flex flex-col-reverse items-center justify-start">
                     <AnimatePresence>
                       {magicStack.map((spell, index) => (
                         <motion.div
                           key={`${spell}-${index}`}
-                          className="w-full max-w-xs bg-purple-600 border border-purple-400 rounded-lg p-3 mb-2 text-center text-gray-800 font-semibold"
+                          className="w-full max-w-xs bg-emerald-600 border border-emerald-400 rounded-lg p-3 mb-2 text-center text-gray-800 font-semibold"
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -20 }}
@@ -232,7 +232,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
                   </div>
 
                   <div className="mt-4 p-3 bg-blue-500/20 rounded-lg">
-                    <div className="text-purple-600 text-sm">
+                    <div className="text-emerald-600 text-sm">
                       <strong>Current Top:</strong> {magicStack[magicStack.length - 1] || 'None'}
                       <br />
                       <strong>Stack Size:</strong> {magicStack.length}

@@ -81,7 +81,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
       {/* Header */}
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-600 rounded-full flex items-center justify-center">
             <GitBranch className="w-6 h-6 text-gray-800" />
           </div>
           <div>
@@ -96,7 +96,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
         <Button
           variant={selectedData === 'spells' ? 'default' : 'outline'}
           onClick={() => setSelectedData('spells')}
-          className={selectedData === 'spells' ? 'bg-purple-600' : 'border-gray-600'}
+          className={selectedData === 'spells' ? 'bg-emerald-600' : 'border-gray-600'}
         >
           <Scroll className="w-4 h-4 mr-2" />
           Spell Scrolls
@@ -104,7 +104,7 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
         <Button
           variant={selectedData === 'matrix' ? 'default' : 'outline'}
           onClick={() => setSelectedData('matrix')}
-          className={selectedData === 'matrix' ? 'bg-purple-600' : 'border-gray-600'}
+          className={selectedData === 'matrix' ? 'bg-emerald-600' : 'border-gray-600'}
         >
           <Layers className="w-4 h-4 mr-2" />
           Matrix Grid
@@ -113,26 +113,26 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
 
       <Tabs defaultValue="visualization">
         <TabsList className="grid w-full grid-cols-4 bg-gray-800">
-          <TabsTrigger value="visualization" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="visualization" className="data-[state=active]:bg-emerald-600">
             Scroll Holder
           </TabsTrigger>
-          <TabsTrigger value="navigation" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="navigation" className="data-[state=active]:bg-emerald-600">
             Navigator
           </TabsTrigger>
-          <TabsTrigger value="search" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="search" className="data-[state=active]:bg-emerald-600">
             Spell Finder
           </TabsTrigger>
-          <TabsTrigger value="flatten" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="flatten" className="data-[state=active]:bg-emerald-600">
             Dimension Merge
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="visualization" className="space-y-4">
           {/* Master Scroll Holder */}
-          <Card className="bg-white border-purple-500/30">
+          <Card className="bg-white border-emerald-500/30">
             <CardHeader>
               <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
-                <Scroll className="w-5 h-5 text-purple-400" />
+                <Scroll className="w-5 h-5 text-emerald-400" />
                 Master Scroll Collection
               </CardTitle>
             </CardHeader>
@@ -141,12 +141,12 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                 {getCurrentData().map((scroll, scrollIndex) => (
                   <motion.div
                     key={scrollIndex}
-                    className="border border-purple-500/30 rounded-lg overflow-hidden"
+                    className="border border-emerald-500/30 rounded-lg overflow-hidden"
                     whileHover={{ scale: 1.02 }}
                   >
                     {/* Scroll Header */}
                     <div
-                      className="bg-purple-600/20 p-3 cursor-pointer flex items-center justify-between"
+                      className="bg-emerald-600/20 p-3 cursor-pointer flex items-center justify-between"
                       onClick={() => toggleScroll(scrollIndex)}
                     >
                       <div className="flex items-center gap-3">
@@ -156,13 +156,13 @@ export function Lesson2NestedLists({ onComplete }: LessonComponentProps) {
                         <span className="text-gray-800 font-semibold">
                           {selectedData === 'spells' ? `Spell Scroll ${scrollIndex}` : `Matrix Row ${scrollIndex}`}
                         </span>
-                        <Badge variant="secondary" className="bg-blue-500/20 text-purple-600">
+                        <Badge variant="secondary" className="bg-blue-500/20 text-emerald-600">
                           {scroll.length} items
                         </Badge>
                       </div>
                       {expandedScrolls.has(scrollIndex) ?
-                        <ChevronDown className="w-5 h-5 text-purple-400" /> :
-                        <ChevronRight className="w-5 h-5 text-purple-400" />
+                        <ChevronDown className="w-5 h-5 text-emerald-400" /> :
+                        <ChevronRight className="w-5 h-5 text-emerald-400" />
                       }
                     </div>
 

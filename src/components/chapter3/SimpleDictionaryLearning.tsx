@@ -124,7 +124,7 @@ export function SimpleDictionaryLearning() {
     switch (difficulty) {
       case 'Beginner': return 'bg-green-100 text-green-800 border-green-200';
       case 'Intermediate': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Advanced': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'Advanced': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -151,7 +151,7 @@ export function SimpleDictionaryLearning() {
   return (
     <div className={styles.learningContainer}>
       {/* Header Section */}
-      <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <Card className="mb-8 border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">

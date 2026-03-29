@@ -61,7 +61,7 @@ export default function ContentOverviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-purple-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -74,10 +74,10 @@ export default function ContentOverviewPage() {
       icon: BookOpen,
       color: "purple",
       href: "/admin/content/chapters",
-      bg: "bg-purple-50",
-      border: "border-purple-200",
-      iconColor: "text-purple-600",
-      badgeBg: "bg-purple-100 text-purple-700",
+      bg: "bg-emerald-50",
+      border: "border-emerald-200",
+      iconColor: "text-emerald-600",
+      badgeBg: "bg-emerald-100 text-emerald-700",
     },
     {
       title: "Pelajaran",
@@ -132,7 +132,7 @@ export default function ContentOverviewPage() {
                     </Button>
                   </Link>
                   <Link href={s.title === "Kuis" ? "/admin/content/quizzes/new" : s.href}>
-                    <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
+                    <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white">
                       <Plus className="h-4 w-4 mr-1" /> Tambah
                     </Button>
                   </Link>
@@ -152,7 +152,7 @@ export default function ContentOverviewPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <Link href="/admin/content/chapters">
               <Button variant="outline" className="w-full justify-start">
-                <BookOpen className="h-4 w-4 mr-2 text-purple-600" />
+                <BookOpen className="h-4 w-4 mr-2 text-emerald-600" />
                 Lihat Semua Bab
               </Button>
             </Link>
@@ -169,7 +169,7 @@ export default function ContentOverviewPage() {
               </Button>
             </Link>
             <Link href="/admin/content/quizzes/new">
-              <Button className="w-full justify-start bg-purple-600 hover:bg-purple-700 text-white">
+              <Button className="w-full justify-start bg-emerald-600 hover:bg-emerald-700 text-white">
                 <Plus className="h-4 w-4 mr-2" />
                 Buat Kuis Baru
               </Button>

@@ -275,7 +275,7 @@ print("Subject popularity:", subject_count)
     switch (difficulty) {
       case 'Beginner': return 'bg-green-100 text-green-800 border-green-200';
       case 'Intermediate': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Advanced': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'Advanced': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -283,13 +283,13 @@ print("Subject popularity:", subject_count)
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50">
+      <Card className="border-emerald-200 bg-gradient-to-r from-emerald-50 to-cyan-50">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl flex items-center justify-center gap-3">
-            <Code className="w-8 h-8 text-purple-600" />
+            <Code className="w-8 h-8 text-emerald-600" />
             Practice Playground
           </CardTitle>
-          <p className="text-purple-700">
+          <p className="text-emerald-700">
             Put your dictionary skills to the test with hands-on exercises!
           </p>
         </CardHeader>

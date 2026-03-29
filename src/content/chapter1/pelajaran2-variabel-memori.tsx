@@ -72,7 +72,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
                     <span className="text-sm">👕 Baju, celana, jaket</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <div className="w-16 h-12 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs font-bold">
+                    <div className="w-16 h-12 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-bold">
                       MAINAN
                     </div>
                     <span className="text-sm">🎮 Game, puzzle, boneka</span>
@@ -112,7 +112,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
                     <span className="text-sm">25</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <div className="w-16 h-12 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs font-bold">
+                    <div className="w-16 h-12 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-bold">
                       hobi
                     </div>
                     <span className="text-sm">["membaca", "musik"]</span>
@@ -205,8 +205,8 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
       </div>
 
       {/* Memory Management */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             <Database className="w-5 h-5 mr-2 inline" />
             Bagaimana Python Mengelola Memori

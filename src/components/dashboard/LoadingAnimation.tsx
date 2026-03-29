@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 
 export function LoadingAnimation() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       <div className="text-center">
         <motion.div
-          className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+          className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-emerald-600 rounded-full"
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360],

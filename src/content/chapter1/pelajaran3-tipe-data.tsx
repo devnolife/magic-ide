@@ -82,7 +82,7 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <div className="w-20 h-12 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs font-bold">
+                  <div className="w-20 h-12 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-bold">
                     UNDANGAN
                   </div>
                   <div>
@@ -130,7 +130,7 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <div className="w-20 h-12 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs font-bold">
+                  <div className="w-20 h-12 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-bold">
                     bool
                   </div>
                   <div>
@@ -263,9 +263,9 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
           </Card>
 
           {/* Boolean */}
-          <Card className="border-purple-200">
-            <CardHeader className="bg-purple-50">
-              <CardTitle className="flex items-center text-purple-700">
+          <Card className="border-emerald-200">
+            <CardHeader className="bg-emerald-50">
+              <CardTitle className="flex items-center text-emerald-700">
                 ✅ Boolean (bool) - Benar/Salah
               </CardTitle>
             </CardHeader>
@@ -276,10 +276,10 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 </p>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-purple-300">is_siswa = True</div>
-                  <div className="text-purple-300">sudah_lulus = False</div>
-                  <div className="text-purple-300">is_aktif = True</div>
-                  <div className="text-purple-300">sudah_bayar = False</div>
+                  <div className="text-emerald-300">is_siswa = True</div>
+                  <div className="text-emerald-300">sudah_lulus = False</div>
+                  <div className="text-emerald-300">is_aktif = True</div>
+                  <div className="text-emerald-300">sudah_bayar = False</div>
                 </div>
 
                 <div className="text-sm space-y-1">
@@ -363,8 +363,8 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
       </div>
 
       {/* Type Conversion */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             <Zap className="w-5 h-5 mr-2 inline" />
             Konversi Antar Tipe Data
@@ -407,10 +407,10 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
               <div className="space-y-3">
                 <h4 className="font-semibold">Mengubah ke Boolean:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-purple-300">bool(1)      # True</div>
-                  <div className="text-purple-300">bool(0)      # False</div>
-                  <div className="text-purple-300">bool("hi")   # True</div>
-                  <div className="text-purple-300">bool("")     # False</div>
+                  <div className="text-emerald-300">bool(1)      # True</div>
+                  <div className="text-emerald-300">bool(0)      # False</div>
+                  <div className="text-emerald-300">bool("hi")   # True</div>
+                  <div className="text-emerald-300">bool("")     # False</div>
                 </div>
               </div>
             </div>

@@ -160,7 +160,7 @@ export default function ChallengeContainer({
         transition={{ duration: 0.5 }}
       >
         {/* Header */}
-        <Card className="mb-6 border-0 shadow-lg bg-gradient-to-r from-purple-50 to-blue-50">
+        <Card className="mb-6 border-0 shadow-lg bg-gradient-to-r from-emerald-50 to-blue-50">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -205,11 +205,11 @@ export default function ChallengeContainer({
                         Tantangan Selesai!
                       </h3>
                       <p className="text-gray-600 mb-4">
-                        Skor Anda: <span className="font-bold text-purple-600">{state.score}</span>
+                        Skor Anda: <span className="font-bold text-emerald-600">{state.score}</span>
                       </p>
                       <Button
                         onClick={() => window.location.reload()}
-                        className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                        className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600"
                       >
                         Coba Lagi
                       </Button>

@@ -274,7 +274,7 @@ export default function ClassroomDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
           <p className="mt-4 text-gray-500">Memuat detail kelas...</p>
         </div>
       </div>
@@ -306,7 +306,7 @@ export default function ClassroomDetailPage() {
       {/* Back link */}
       <Link
         href="/teacher/classrooms"
-        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-purple-600 transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         Kembali ke Daftar Kelas
@@ -317,7 +317,7 @@ export default function ClassroomDetailPage() {
         <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
                 {classroom.name.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -369,7 +369,7 @@ export default function ClassroomDetailPage() {
                 <DialogTrigger asChild>
                   <Button
                     size="sm"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700"
                   >
                     <UserPlus className="h-4 w-4 mr-2" />
                     Tambah Murid
@@ -470,7 +470,7 @@ export default function ClassroomDetailPage() {
                       {classroom.students.map((student) => (
                         <tr
                           key={student.id}
-                          className="border-b last:border-0 hover:bg-purple-50/50 transition-colors"
+                          className="border-b last:border-0 hover:bg-emerald-50/50 transition-colors"
                         >
                           <td className="py-3 pr-4 font-medium text-gray-800">
                             {student.name || "-"}
@@ -555,7 +555,7 @@ export default function ClassroomDetailPage() {
                       {progress.map((row) => (
                         <tr
                           key={row.userId}
-                          className="border-b last:border-0 hover:bg-purple-50/50 transition-colors"
+                          className="border-b last:border-0 hover:bg-emerald-50/50 transition-colors"
                         >
                           <td className="py-3 pr-4 sticky left-0 bg-white/70">
                             <p className="font-medium text-gray-800">
@@ -614,7 +614,7 @@ export default function ClassroomDetailPage() {
                               {row.completionPercentage}%
                             </Badge>
                           </td>
-                          <td className="py-3 px-3 text-center font-semibold text-purple-700">
+                          <td className="py-3 px-3 text-center font-semibold text-emerald-700">
                             {row.totalPoints}
                           </td>
                         </tr>
@@ -650,7 +650,7 @@ export default function ClassroomDetailPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               {/* File input */}
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 transition-colors">
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-emerald-400 transition-colors">
                 <FileSpreadsheet className="h-10 w-10 text-gray-400 mx-auto mb-3" />
                 <p className="text-gray-600 mb-2 text-sm">
                   Pilih file Excel untuk diupload
@@ -660,7 +660,7 @@ export default function ClassroomDetailPage() {
                   type="file"
                   accept=".xlsx,.xls"
                   onChange={handleFileChange}
-                  className="block mx-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-100 file:text-purple-700 file:font-medium hover:file:bg-purple-200 file:cursor-pointer cursor-pointer"
+                  className="block mx-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-emerald-100 file:text-emerald-700 file:font-medium hover:file:bg-emerald-200 file:cursor-pointer cursor-pointer"
                 />
               </div>
 
@@ -669,15 +669,15 @@ export default function ClassroomDetailPage() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200"
+                  className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-200"
                 >
                   <div className="flex items-center gap-3">
-                    <FileSpreadsheet className="h-5 w-5 text-purple-600" />
+                    <FileSpreadsheet className="h-5 w-5 text-emerald-600" />
                     <div>
-                      <p className="text-sm font-medium text-purple-800">
+                      <p className="text-sm font-medium text-emerald-800">
                         {file.name}
                       </p>
-                      <p className="text-xs text-purple-500">
+                      <p className="text-xs text-emerald-500">
                         {(file.size / 1024).toFixed(1)} KB
                       </p>
                     </div>
@@ -700,7 +700,7 @@ export default function ClassroomDetailPage() {
                       size="sm"
                       onClick={handleUpload}
                       disabled={uploading}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                      className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700"
                     >
                       {uploading ? (
                         <>
@@ -796,3 +796,4 @@ export default function ClassroomDetailPage() {
     </motion.div>
   );
 }
+

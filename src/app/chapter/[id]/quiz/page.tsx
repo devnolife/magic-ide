@@ -96,7 +96,7 @@ export default function QuizListPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
-          <Loader2 className="h-10 w-10 animate-spin text-purple-500 mx-auto" />
+          <Loader2 className="h-10 w-10 animate-spin text-emerald-500 mx-auto" />
           <p className="text-muted-foreground">Memuat daftar kuis...</p>
         </div>
       </div>
@@ -136,11 +136,11 @@ export default function QuizListPage() {
         </Button>
 
         <div className="flex items-center gap-3 mb-1">
-          <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+          <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-600 text-white">
             <FileQuestion className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
               Kuis
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -180,7 +180,7 @@ export default function QuizListPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1 flex-1">
-                      <CardTitle className="text-lg font-semibold group-hover:text-purple-600 transition-colors">
+                      <CardTitle className="text-lg font-semibold group-hover:text-emerald-600 transition-colors">
                         {quiz.title}
                       </CardTitle>
                       {quiz.description && (
@@ -210,7 +210,7 @@ export default function QuizListPage() {
                     )}
                     {quiz.bestAttempt && (
                       <div className="flex items-center gap-1.5">
-                        <Trophy className="h-4 w-4 text-purple-500" />
+                        <Trophy className="h-4 w-4 text-emerald-500" />
                         <span>Skor terbaik: {quiz.bestAttempt.percentage}%</span>
                       </div>
                     )}
@@ -221,7 +221,7 @@ export default function QuizListPage() {
                       onClick={() =>
                         router.push(`/chapter/${chapterId}/quiz/${quiz.id}`)
                       }
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                      className="bg-gradient-to-r from-blue-500 to-emerald-600 hover:from-blue-600 hover:to-emerald-700 text-white"
                     >
                       {quiz.bestAttempt ? 'Kerjakan Ulang' : 'Mulai Kuis'}
                       <ChevronRight className="h-4 w-4 ml-1" />
@@ -236,3 +236,4 @@ export default function QuizListPage() {
     </div>
   );
 }
+

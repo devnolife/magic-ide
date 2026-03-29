@@ -255,9 +255,9 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
                     <div className="text-2xl font-bold text-green-800">{analysisResult.inStockCount}</div>
                     <div className="text-sm text-green-600">In Stock</div>
                   </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-800">${analysisResult.averagePrice}</div>
-                    <div className="text-sm text-purple-600">Avg Price</div>
+                  <div className="text-center p-3 bg-emerald-50 rounded-lg">
+                    <div className="text-2xl font-bold text-emerald-800">${analysisResult.averagePrice}</div>
+                    <div className="text-sm text-emerald-600">Avg Price</div>
                   </div>
                   <div className="text-center p-3 bg-orange-50 rounded-lg">
                     <div className="text-2xl font-bold text-orange-800">{analysisResult.averageRating}⭐</div>
@@ -306,7 +306,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
   const RealWorldDemo = () => (
     <div className={styles.conceptDemo}>
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <RefreshCw className="w-6 h-6 text-purple-500" />
+        <RefreshCw className="w-6 h-6 text-emerald-500" />
         Real-World Applications
       </h3>
 
@@ -339,14 +339,14 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
               <br />{'}'}</div>
           </div>
 
-          <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
             <div className="text-2xl mb-3">📊</div>
-            <h4 className="font-semibold text-purple-800 mb-2">Data Science</h4>
-            <p className="text-sm text-purple-700">
+            <h4 className="font-semibold text-emerald-800 mb-2">Data Science</h4>
+            <p className="text-sm text-emerald-700">
               Analyzing datasets, counting frequencies, grouping data, and creating reports
               all rely heavily on dictionary operations.
             </p>
-            <div className="mt-3 p-2 bg-purple-100 rounded text-xs font-mono">
+            <div className="mt-3 p-2 bg-emerald-100 rounded text-xs font-mono">
               sales = {'{'}"Q1": 1000, "Q2": 1200{'}'}
               <br />growth = sales["Q2"] - sales["Q1"]
             </div>
@@ -402,7 +402,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
           </Button>
         </div>
 
-        <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+        <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-emerald-50 border border-blue-200 rounded-lg">
           <div className="text-center mb-4">
             <Lightbulb className="w-8 h-8 text-amber-500 mx-auto mb-2" />
             <h4 className="font-bold text-gray-800">Career Impact</h4>
@@ -442,10 +442,10 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
               Statistical operations and insights from dictionary data
             </p>
           </div>
-          <div className="p-6 bg-white rounded-lg border-2 border-purple-200">
-            <RefreshCw className="w-12 h-12 text-purple-500 mx-auto mb-4" />
-            <h4 className="font-bold text-purple-800 mb-2">Real Applications</h4>
-            <p className="text-sm text-purple-700">
+          <div className="p-6 bg-white rounded-lg border-2 border-emerald-200">
+            <RefreshCw className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+            <h4 className="font-bold text-emerald-800 mb-2">Real Applications</h4>
+            <p className="text-sm text-emerald-700">
               Understanding how dictionaries power modern software
             </p>
           </div>

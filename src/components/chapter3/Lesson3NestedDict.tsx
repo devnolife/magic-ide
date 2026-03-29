@@ -157,7 +157,7 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
       case 'water': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'earth': return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'air': return 'bg-cyan-100 text-cyan-800 border-cyan-200';
-      case 'arcane': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'arcane': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -174,8 +174,8 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
 
   const getRankColor = (rank: string) => {
     switch (rank) {
-      case 'supreme_wizard': return 'bg-purple-200 text-purple-900';
-      case 'archmage': return 'bg-indigo-200 text-indigo-900';
+      case 'supreme_wizard': return 'bg-emerald-200 text-emerald-900';
+      case 'archmage': return 'bg-cyan-200 text-cyan-900';
       case 'grandmaster': return 'bg-blue-200 text-blue-900';
       default: return 'bg-gray-200 text-gray-900';
     }
@@ -246,16 +246,16 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
 
       {/* Breadcrumb Navigation */}
       {breadcrumb.length > 0 && (
-        <Card className="border-indigo-200 bg-indigo-50">
+        <Card className="border-cyan-200 bg-cyan-50">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2">
-              <Navigation className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-medium text-indigo-800">Current Path:</span>
+              <Navigation className="w-4 h-4 text-cyan-600" />
+              <span className="text-sm font-medium text-cyan-800">Current Path:</span>
               <div className="flex items-center space-x-1">
                 <span className="text-sm bg-white px-2 py-1 rounded border">academy</span>
                 {breadcrumb.map((segment, index) => (
                   <React.Fragment key={index}>
-                    <ChevronRight className="w-3 h-3 text-indigo-400" />
+                    <ChevronRight className="w-3 h-3 text-cyan-400" />
                     <span className="text-sm bg-white px-2 py-1 rounded border">{segment}</span>
                   </React.Fragment>
                 ))}
@@ -351,14 +351,14 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
               </div>
 
               {/* Teachers Department */}
-              <div className="border border-purple-200 rounded-lg">
+              <div className="border border-emerald-200 rounded-lg">
                 <div
-                  className="flex items-center justify-between p-3 cursor-pointer hover:bg-purple-50"
+                  className="flex items-center justify-between p-3 cursor-pointer hover:bg-emerald-50"
                   onClick={() => toggleSection('teachers')}
                 >
                   <div className="flex items-center space-x-2">
-                    <GraduationCap className="w-5 h-5 text-purple-600" />
-                    <span className="font-semibold text-purple-800">Teachers</span>
+                    <GraduationCap className="w-5 h-5 text-emerald-600" />
+                    <span className="font-semibold text-emerald-800">Teachers</span>
                     <Badge variant="outline">{Object.keys(academy.teachers).length}</Badge>
                   </div>
                   {expandedSections.teachers ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -370,13 +370,13 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="border-t border-purple-200"
+                      className="border-t border-emerald-200"
                     >
                       <div className="p-3 space-y-2">
                         {Object.entries(academy.teachers).map(([name, data]) => (
                           <div
                             key={name}
-                            className="p-3 bg-purple-50 rounded border border-purple-200 cursor-pointer hover:bg-purple-100"
+                            className="p-3 bg-emerald-50 rounded border border-emerald-200 cursor-pointer hover:bg-emerald-100"
                             onClick={() => navigateToPath(['teachers', name])}
                           >
                             <div className="flex items-center justify-between">
@@ -388,7 +388,7 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
                                 </Badge>
                               </div>
                               <div className="text-right">
-                                <div className="text-lg font-bold text-purple-600">{data.experience}y</div>
+                                <div className="text-lg font-bold text-emerald-600">{data.experience}y</div>
                                 <div className="text-sm text-gray-600">Experience</div>
                               </div>
                             </div>
@@ -469,10 +469,10 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
           </Card>
 
           {/* Path Explorer */}
-          <Card className="border-indigo-200">
+          <Card className="border-cyan-200">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Navigation className="w-5 h-5 text-indigo-500" />
+                <Navigation className="w-5 h-5 text-cyan-500" />
                 <span>Path Explorer</span>
               </CardTitle>
             </CardHeader>

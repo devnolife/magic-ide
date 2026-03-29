@@ -354,8 +354,8 @@ export function ListContainer() {
           <Card className="min-h-[600px]">
             <CardHeader className="border-b">
               <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100">
-                  <Gamepad2 className="w-5 h-5 text-purple-600" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-100">
+                  <Gamepad2 className="w-5 h-5 text-emerald-600" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Interactive Playground</CardTitle>

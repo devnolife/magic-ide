@@ -97,7 +97,7 @@ const detectiveCases: Record<string, DetectiveCase> = {
 const typeOptions = [
   { value: 'string', label: 'String', color: 'bg-blue-500', icon: '📝' },
   { value: 'number', label: 'Number', color: 'bg-green-500', icon: '🔢' },
-  { value: 'boolean', label: 'Boolean', color: 'bg-purple-500', icon: '✓' },
+  { value: 'boolean', label: 'Boolean', color: 'bg-emerald-500', icon: '✓' },
   { value: 'null', label: 'Null', color: 'bg-gray-500', icon: '∅' }
 ];
 
@@ -263,7 +263,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border-0 shadow-lg bg-gradient-to-r from-indigo-50 to-purple-50">
+      <Card className="border-0 shadow-lg bg-gradient-to-r from-cyan-50 to-emerald-50">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -301,7 +301,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
               </div>
               <div>
                 <div className="text-sm text-gray-500">Streak</div>
-                <div className="text-lg font-bold text-purple-600">{streak}</div>
+                <div className="text-lg font-bold text-emerald-600">{streak}</div>
               </div>
             </div>
           </div>
@@ -311,7 +311,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
       {!isActive && !isCompleted && (
         <Card className="border-0 shadow-lg">
           <CardContent className="p-8 text-center">
-            <Eye className="w-16 h-16 text-indigo-500 mx-auto mb-4" />
+            <Eye className="w-16 h-16 text-cyan-500 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-800 mb-4">
               Siap untuk memulai investigasi?
             </h3>
@@ -321,7 +321,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
             </p>
             <Button
               onClick={startInvestigation}
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+              className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600"
             >
               <PlayCircle className="w-4 h-4 mr-2" />
               Mulai Investigasi
@@ -432,7 +432,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
                       <div className="text-sm text-gray-600">Skor Final</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">{maxStreak}</div>
+                      <div className="text-2xl font-bold text-emerald-600">{maxStreak}</div>
                       <div className="text-sm text-gray-600">Max Streak</div>
                     </div>
                     <div className="text-center">
@@ -453,7 +453,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
 
                   <Button
                     onClick={resetInvestigation}
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                    className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600"
                   >
                     <RotateCcw className="w-4 h-4 mr-2" />
                     Investigasi Baru

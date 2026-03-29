@@ -404,7 +404,7 @@ export default function Lesson1Programming({ onComplete, isCompleted }: LessonPr
             </CardContent>
           </Card>
 
-          <Card className="border-purple-200">
+          <Card className="border-emerald-200">
             <CardContent className="p-6 text-center space-y-4">
               <div className="text-4xl">🔄</div>
               <h3 className="font-semibold">Dapat Diulang</h3>
@@ -418,8 +418,8 @@ export default function Lesson1Programming({ onComplete, isCompleted }: LessonPr
       </div>
 
       {/* Programming Languages Preview */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             🌍 Bahasa untuk Berkomunikasi dengan Komputer
           </CardTitle>

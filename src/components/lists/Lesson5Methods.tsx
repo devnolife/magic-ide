@@ -63,7 +63,7 @@ const methods: Method[] = [
     name: 'reverse()',
     description: 'Membalik urutan list',
     icon: <RotateCcw className="w-4 h-4" />,
-    color: 'from-purple-400 to-purple-600',
+    color: 'from-emerald-400 to-emerald-600',
     syntax: 'list.reverse()',
     returnType: 'None'
   },
@@ -131,10 +131,10 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
     } else if (typeof value === 'string') {
       const colors = [
         'from-green-400 to-green-600',
-        'from-purple-400 to-purple-600',
+        'from-emerald-400 to-emerald-600',
         'from-red-400 to-red-600',
         'from-yellow-400 to-yellow-600',
-        'from-indigo-400 to-indigo-600'
+        'from-cyan-400 to-cyan-600'
       ];
       return colors[value.length % colors.length];
     }
@@ -291,7 +291,7 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white text-2xl mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-emerald-600 text-white text-2xl mb-4"
         >
           🎨
         </motion.div>
@@ -357,7 +357,7 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
             >
               <Card
                 className={`p-4 cursor-pointer transition-all ${currentMethod === method.name
-                    ? 'ring-2 ring-purple-500 bg-purple-50'
+                    ? 'ring-2 ring-emerald-500 bg-emerald-50'
                     : 'hover:shadow-md'
                   }`}
                 onClick={() => !isAnimating && setCurrentMethod(method.name)}

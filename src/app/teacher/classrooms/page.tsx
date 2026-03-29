@@ -77,7 +77,7 @@ export default function ClassroomListPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto" />
           <p className="mt-4 text-gray-500">Memuat daftar kelas...</p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function ClassroomListPage() {
           </p>
         </div>
         <Link href="/teacher/classrooms/new">
-          <Button className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg">
+          <Button className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-lg">
             <Plus className="h-4 w-4 mr-2" />
             Buat Kelas Baru
           </Button>
@@ -127,12 +127,12 @@ export default function ClassroomListPage() {
                 <Card className="h-full bg-white/70 backdrop-blur-md border-white/20 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group">
                   <CardContent className="pt-6">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
                         {classroom.name.charAt(0).toUpperCase()}
                       </div>
-                      <ArrowRight className="h-5 w-5 text-gray-300 group-hover:text-purple-600 transition-colors" />
+                      <ArrowRight className="h-5 w-5 text-gray-300 group-hover:text-emerald-600 transition-colors" />
                     </div>
-                    <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-purple-700 transition-colors">
+                    <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-emerald-700 transition-colors">
                       {classroom.name}
                     </h3>
                     <p className="text-sm text-gray-500 mb-4 line-clamp-2">
@@ -173,7 +173,7 @@ export default function ClassroomListPage() {
                 Mulai dengan membuat kelas pertama Anda.
               </p>
               <Link href="/teacher/classrooms/new">
-                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">
                   <Plus className="h-4 w-4 mr-2" />
                   Buat Kelas Baru
                 </Button>

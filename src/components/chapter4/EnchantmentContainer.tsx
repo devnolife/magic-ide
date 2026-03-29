@@ -22,9 +22,9 @@ export function EnchantmentContainer() {
       description: 'Master the art of controlled repetition with for loops and ranges',
       icon: '🔁',
       difficulty: 'Apprentice',
-      color: 'from-violet-500 to-violet-600',
-      bgColor: 'bg-violet-50',
-      borderColor: 'border-violet-200'
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200'
     },
     {
       id: 'lesson2',
@@ -32,9 +32,9 @@ export function EnchantmentContainer() {
       description: 'Learn conditional repetition and infinite circle management',
       icon: '⚡',
       difficulty: 'Adept',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      color: 'from-emerald-500 to-emerald-600',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-200'
     },
     {
       id: 'lesson3',
@@ -52,9 +52,9 @@ export function EnchantmentContainer() {
       description: 'Master advanced list/dict comprehensions and generator magic',
       icon: '✨',
       difficulty: 'Master',
-      color: 'from-indigo-500 to-indigo-600',
-      bgColor: 'bg-indigo-50',
-      borderColor: 'border-indigo-200'
+      color: 'from-cyan-500 to-cyan-600',
+      bgColor: 'bg-cyan-50',
+      borderColor: 'border-cyan-200'
     },
     {
       id: 'playground',
@@ -83,7 +83,7 @@ export function EnchantmentContainer() {
       case 'Apprentice': return 'bg-green-100 text-green-800';
       case 'Adept': return 'bg-blue-100 text-blue-800';
       case 'Expert': return 'bg-yellow-100 text-yellow-800';
-      case 'Master': return 'bg-purple-100 text-purple-800';
+      case 'Master': return 'bg-emerald-100 text-emerald-800';
       case 'Grandmaster': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -92,17 +92,17 @@ export function EnchantmentContainer() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Enchantment Academy Header */}
-      <Card className="mb-8 bg-gradient-to-r from-violet-50 via-purple-50 to-fuchsia-50 border-2 border-violet-200 shadow-xl">
+      <Card className="mb-8 bg-gradient-to-r from-blue-50 via-emerald-50 to-fuchsia-50 border-2 border-blue-200 shadow-xl">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
             <div className="relative">
               <span className="text-6xl">⭕</span>
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-violet-400 rounded-full animate-spin"></div>
-              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-purple-400 rounded-full animate-spin [animation-direction:reverse]"></div>
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 rounded-full animate-spin"></div>
+              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-emerald-400 rounded-full animate-spin [animation-direction:reverse]"></div>
               <div className="absolute top-1 -left-4 w-2 h-2 bg-fuchsia-400 rounded-full animate-ping"></div>
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-fuchsia-600 bg-clip-text text-transparent">
             Master Circula's Enchantment Academy
           </CardTitle>
           <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -114,7 +114,7 @@ export function EnchantmentContainer() {
 
       {/* Lesson Navigation */}
       <Tabs value={currentLesson} onValueChange={setCurrentLesson}>
-        <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/80 backdrop-blur-sm border border-violet-200 shadow-lg">
+        <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/80 backdrop-blur-sm border border-blue-200 shadow-lg">
           {lessons.map((lesson) => (
             <TabsTrigger
               key={lesson.id}
@@ -161,7 +161,7 @@ export function EnchantmentContainer() {
       </Tabs>
 
       {/* Progress Indicator */}
-      <Card className="mt-8 bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-200">
+      <Card className="mt-8 bg-gradient-to-r from-blue-50 to-fuchsia-50 border border-blue-200">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">Enchantment Progress</h3>
@@ -170,13 +170,13 @@ export function EnchantmentContainer() {
             </Badge>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3 mb-4 overflow-hidden">
-            <div className={`h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500 ease-out`} />
+            <div className={`h-full bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-full transition-all duration-500 ease-out`} />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {lessons.map((lesson, index) => (
               <div key={lesson.id} className="flex items-center space-x-2">
                 <div className={`w-3 h-3 rounded-full ${unlockedLessons.includes(lesson.id)
-                  ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500'
+                  ? 'bg-gradient-to-r from-blue-500 to-fuchsia-500'
                   : 'bg-gray-300'
                   }`} />
                 <span className={`text-sm ${unlockedLessons.includes(lesson.id) ? 'text-gray-800' : 'text-gray-400'

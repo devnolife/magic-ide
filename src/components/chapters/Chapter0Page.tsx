@@ -97,7 +97,7 @@ export function Chapter0Page() {
   const CurrentLessonComponent = currentLesson.component;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-pink-50">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">

@@ -82,7 +82,7 @@ export default function CreateClassroomPage() {
       {/* Back link */}
       <Link
         href="/teacher/classrooms"
-        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-purple-600 transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         Kembali ke Daftar Kelas
@@ -91,7 +91,7 @@ export default function CreateClassroomPage() {
       <Card className="bg-white/70 backdrop-blur-md border-white/20 shadow-xl">
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white shadow-md">
               <School className="h-5 w-5" />
             </div>
             <div>
@@ -167,7 +167,7 @@ export default function CreateClassroomPage() {
               <Button
                 type="submit"
                 disabled={submitting || !name.trim()}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg"
+                className="flex-1 bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 shadow-lg"
               >
                 {submitting ? (
                   <>

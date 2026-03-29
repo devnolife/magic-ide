@@ -186,7 +186,7 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
                   <span>Pemahaman logika pemrograman</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <Badge className="bg-purple-100 text-purple-800 text-xs">Teknis</Badge>
+                  <Badge className="bg-emerald-100 text-emerald-800 text-xs">Teknis</Badge>
                   <span>Pengelolaan variabel dan memori</span>
                 </li>
                 <li className="flex items-start space-x-2">
@@ -255,9 +255,9 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
       </div>
 
       {/* Chapter Summary */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
-          <CardTitle className="text-indigo-700">📚 Ringkasan Chapter</CardTitle>
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
+          <CardTitle className="text-cyan-700">📚 Ringkasan Chapter</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
           <div className="space-y-4">
@@ -304,7 +304,7 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
                 Siap melanjutkan ke Chapter 2: Python Lists?
               </p>
               <Link href="/chapter/2">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600">
+                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-emerald-600">
                   Lanjut ke Chapter 2 →
                 </Button>
               </Link>

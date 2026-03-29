@@ -272,7 +272,7 @@ export default function Challenge2VariableMemory({ onComplete, difficulty }: Cha
     switch (type) {
       case 'string': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'number': return 'bg-green-100 text-green-800 border-green-200';
-      case 'boolean': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'boolean': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       case 'any': return 'bg-gray-100 text-gray-800 border-gray-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
@@ -294,7 +294,7 @@ export default function Challenge2VariableMemory({ onComplete, difficulty }: Cha
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+      <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-cyan-50">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -511,7 +511,7 @@ export default function Challenge2VariableMemory({ onComplete, difficulty }: Cha
         <Button
           onClick={checkCompletion}
           disabled={isCompleted || warehouseState === 'processing'}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
         >
           <PlayCircle className="w-4 h-4" />
           {warehouseState === 'processing' ? 'Memeriksa...' : 'Periksa Hasil'}

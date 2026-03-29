@@ -39,9 +39,9 @@ export default function TeacherLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto" />
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto" />
           <p className="mt-4 text-gray-600">Memuat...</p>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default function TeacherLayout({
 
   if (!user || (user.role !== "TEACHER" && user.role !== "ADMIN")) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50 flex items-center justify-center">
         <div className="text-center space-y-4">
           <School className="h-16 w-16 text-red-500 mx-auto" />
           <h2 className="text-xl font-bold">Akses Ditolak</h2>
@@ -78,7 +78,7 @@ export default function TeacherLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -91,7 +91,7 @@ export default function TeacherLayout({
       <aside
         className={`
           fixed top-0 left-0 z-40 h-full w-64
-          bg-gradient-to-b from-purple-900 via-purple-800 to-blue-900
+          bg-gradient-to-b from-emerald-900 via-emerald-800 to-blue-900
           text-white shadow-2xl
           transition-transform duration-300 ease-in-out
           lg:translate-x-0
@@ -106,7 +106,7 @@ export default function TeacherLayout({
             </div>
             <div>
               <h2 className="font-bold text-sm">Python Learning</h2>
-              <p className="text-xs text-purple-200">Panel Guru</p>
+              <p className="text-xs text-emerald-200">Panel Guru</p>
             </div>
           </div>
           <button
@@ -136,7 +136,7 @@ export default function TeacherLayout({
                   ${
                     isActive
                       ? "bg-white/20 text-white shadow-lg"
-                      : "text-purple-200 hover:bg-white/10 hover:text-white"
+                      : "text-emerald-200 hover:bg-white/10 hover:text-white"
                   }
                 `}
               >
@@ -151,7 +151,7 @@ export default function TeacherLayout({
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
           <Link
             href="/dashboard"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-purple-200 hover:bg-white/10 hover:text-white transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-emerald-200 hover:bg-white/10 hover:text-white transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
             Kembali ke Utama
@@ -181,7 +181,7 @@ export default function TeacherLayout({
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition-colors">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-purple-600 text-white text-xs font-bold">
+                    <AvatarFallback className="bg-emerald-600 text-white text-xs font-bold">
                       {initials}
                     </AvatarFallback>
                   </Avatar>

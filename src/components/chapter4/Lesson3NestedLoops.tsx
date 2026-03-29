@@ -268,7 +268,7 @@ export function Lesson3NestedLoops({ onComplete }: Lesson3NestedLoopsProps) {
               <Button
                 onClick={runPatternDemo}
                 disabled={isRunning}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="w-full bg-gradient-to-r from-emerald-500 to-pink-500 hover:from-emerald-600 hover:to-pink-600"
               >
                 <Target className="w-4 h-4 mr-2" />
                 Pattern Demo

@@ -260,7 +260,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
   const ItemsDemo = () => (
     <div className={styles.conceptDemo}>
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <List className="w-6 h-6 text-purple-500" />
+        <List className="w-6 h-6 text-emerald-500" />
         .items() - Get Everything Together
       </h3>
 
@@ -326,8 +326,8 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
           </div>
 
           {extractedItems.length > 0 && (
-            <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-sm text-purple-800">
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <p className="text-sm text-emerald-800">
                 <strong>Use case:</strong> Perfect for loops! When you need both
                 the key and value together, use .items()!
               </p>
@@ -358,8 +358,8 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
             <p className="font-semibold">.values()</p>
             <p className="text-sm text-gray-600">Get all dictionary data</p>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-purple-200">
-            <List className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+          <div className="p-4 bg-white rounded-lg border border-emerald-200">
+            <List className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
             <p className="font-semibold">.items()</p>
             <p className="text-sm text-gray-600">Get key-value pairs together</p>
           </div>

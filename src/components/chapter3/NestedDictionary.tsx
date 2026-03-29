@@ -140,8 +140,8 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
                     <div className="text-sm">📄 Bob → Name, Grades, Info</div>
                   </div>
                 </div>
-                <div className="border border-purple-200 rounded p-2 bg-purple-50">
-                  <div className="font-medium text-purple-800">📁 Teacher</div>
+                <div className="border border-emerald-200 rounded p-2 bg-emerald-50">
+                  <div className="font-medium text-emerald-800">📁 Teacher</div>
                   <div className="ml-4 mt-1">
                     <div className="text-sm">📄 Name, Subjects</div>
                   </div>
@@ -240,7 +240,7 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
                     📝 name
                   </div>
                   <div
-                    className={`p-1 border rounded cursor-pointer transition-all text-xs ${isPathHighlighted(['students', 'alice', 'grades']) ? 'bg-purple-100 border-purple-300' : 'bg-gray-50 border-gray-200'
+                    className={`p-1 border rounded cursor-pointer transition-all text-xs ${isPathHighlighted(['students', 'alice', 'grades']) ? 'bg-emerald-100 border-emerald-300' : 'bg-gray-50 border-gray-200'
                       }`}
                     onClick={() => navigateToPath(['students', 'alice', 'grades'])}
                   >
@@ -318,7 +318,7 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
   const ModifyDemo = () => (
     <div className={styles.conceptDemo}>
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <Plus className="w-6 h-6 text-purple-500" />
+        <Plus className="w-6 h-6 text-emerald-500" />
         Modifying Nested Data
       </h3>
 
@@ -379,8 +379,8 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
           </div>
 
           {newGrade.student && newGrade.subject && (
-            <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-sm text-purple-800">
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <p className="text-sm text-emerald-800">
                 <strong>Code:</strong> class_data["students"]["{newGrade.student}"]["grades"]["{newGrade.subject}"] = {newGrade.grade || 0}
               </p>
             </div>
@@ -437,8 +437,8 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
             <p className="font-semibold">Deep Access</p>
             <p className="text-sm text-gray-600">Navigate through multiple levels</p>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-purple-200">
-            <Plus className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+          <div className="p-4 bg-white rounded-lg border border-emerald-200">
+            <Plus className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
             <p className="font-semibold">Data Modification</p>
             <p className="text-sm text-gray-600">Update nested information</p>
           </div>

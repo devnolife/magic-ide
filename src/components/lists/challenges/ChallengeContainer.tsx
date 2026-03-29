@@ -210,7 +210,7 @@ export function ChallengeContainer({
         animate={{ opacity: 1, y: 0 }}
         className="space-y-4"
       >
-        <Card className="border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <Card className="border-2 border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="space-y-2">
@@ -219,7 +219,7 @@ export function ChallengeContainer({
                     {getDifficultyIcon(difficulty)}
                     <span className="ml-1 capitalize">{difficulty}</span>
                   </Badge>
-                  <Badge variant="outline" className="text-indigo-600">
+                  <Badge variant="outline" className="text-cyan-600">
                     {theme}
                   </Badge>
                 </div>
@@ -266,7 +266,7 @@ export function ChallengeContainer({
           <Card>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 mb-2">
-                <Brain className="w-4 h-4 text-purple-600" />
+                <Brain className="w-4 h-4 text-emerald-600" />
                 <span className="font-medium text-gray-700">Required Skills:</span>
               </div>
               <div className="flex flex-wrap gap-2">

@@ -69,7 +69,7 @@ const operations: Operation[] = [
     name: 'pop()',
     description: 'Menghapus dan mengambil item',
     icon: <Trash2 className="w-4 h-4" />,
-    color: 'from-purple-400 to-purple-600',
+    color: 'from-emerald-400 to-emerald-600',
     syntax: 'item = list.pop(index)',
     example: 'last_fruit = fruits.pop()'
   }
@@ -79,7 +79,7 @@ const sampleItems = [
   { value: "apel", color: "from-red-400 to-red-600" },
   { value: "pisang", color: "from-yellow-400 to-yellow-600" },
   { value: "jeruk", color: "from-orange-400 to-orange-600" },
-  { value: "anggur", color: "from-purple-400 to-purple-600" },
+  { value: "anggur", color: "from-emerald-400 to-emerald-600" },
   { value: "mangga", color: "from-green-400 to-green-600" }
 ];
 
@@ -88,7 +88,7 @@ export function Lesson3BasicOperations({ onComplete }: LessonProps) {
   const [listItems, setListItems] = useState<ListItem[]>([
     { id: 1, value: "pisang", color: "from-yellow-400 to-yellow-600" },
     { id: 2, value: "jeruk", color: "from-orange-400 to-orange-600" },
-    { id: 3, value: "anggur", color: "from-purple-400 to-purple-600" }
+    { id: 3, value: "anggur", color: "from-emerald-400 to-emerald-600" }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [insertIndex, setInsertIndex] = useState(0);
@@ -101,7 +101,7 @@ export function Lesson3BasicOperations({ onComplete }: LessonProps) {
     setListItems([
       { id: 1, value: "pisang", color: "from-yellow-400 to-yellow-600" },
       { id: 2, value: "jeruk", color: "from-orange-400 to-orange-600" },
-      { id: 3, value: "anggur", color: "from-purple-400 to-purple-600" }
+      { id: 3, value: "anggur", color: "from-emerald-400 to-emerald-600" }
     ]);
     setOperationHistory([]);
     setPoppedItem(null);
@@ -378,11 +378,11 @@ export function Lesson3BasicOperations({ onComplete }: LessonProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-purple-50 border border-purple-200 rounded-lg p-4"
+              className="bg-emerald-50 border border-emerald-200 rounded-lg p-4"
             >
               <div className="flex items-center space-x-2">
-                <Trash2 className="w-4 h-4 text-purple-600" />
-                <span className="text-purple-800 font-medium">
+                <Trash2 className="w-4 h-4 text-emerald-600" />
+                <span className="text-emerald-800 font-medium">
                   Popped item: "{poppedItem}"
                 </span>
               </div>

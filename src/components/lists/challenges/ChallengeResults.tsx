@@ -46,7 +46,7 @@ export function ChallengeResults({
   const scorePercentage = (result.score / maxScore) * 100;
 
   const getPerformanceLevel = (percentage: number) => {
-    if (percentage >= 95) return { level: 'Legendaris', color: 'text-purple-600', icon: Crown };
+    if (percentage >= 95) return { level: 'Legendaris', color: 'text-emerald-600', icon: Crown };
     if (percentage >= 85) return { level: 'Luar Biasa', color: 'text-yellow-600', icon: Trophy };
     if (percentage >= 75) return { level: 'Hebat', color: 'text-blue-600', icon: Medal };
     if (percentage >= 65) return { level: 'Baik', color: 'text-green-600', icon: Award };
@@ -109,7 +109,7 @@ export function ChallengeResults({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <Card className="border-2 border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-6 h-6 text-yellow-600" />
@@ -118,7 +118,7 @@ export function ChallengeResults({
           </CardHeader>
           <CardContent>
             <div className="text-center space-y-4">
-              <div className="text-5xl font-bold text-indigo-600">
+              <div className="text-5xl font-bold text-cyan-600">
                 {result.score}
               </div>
               <div className="text-lg text-gray-600">
@@ -210,10 +210,10 @@ export function ChallengeResults({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <Card className="border-2 border-purple-200">
+          <Card className="border-2 border-emerald-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Gift className="w-6 h-6 text-purple-600" />
+                <Gift className="w-6 h-6 text-emerald-600" />
                 Pencapaian Baru Terbuka!
               </CardTitle>
             </CardHeader>
@@ -225,7 +225,7 @@ export function ChallengeResults({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 * index }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-purple-200"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-emerald-50 border border-emerald-200"
                   >
                     <div className="text-2xl">{achievement.icon}</div>
                     <div>

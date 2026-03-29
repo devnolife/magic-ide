@@ -24,7 +24,7 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
     dragon_scale: { name: "Dragon Scale", quantity: 5, rarity: 'rare', color: 'bg-red-500' },
     phoenix_feather: { name: "Phoenix Feather", quantity: 2, rarity: 'legendary', color: 'bg-orange-500' },
     unicorn_hair: { name: "Unicorn Hair", quantity: 10, rarity: 'common', color: 'bg-blue-500' },
-    moonstone: { name: "Moonstone", quantity: 3, rarity: 'rare', color: 'bg-purple-500' }
+    moonstone: { name: "Moonstone", quantity: 3, rarity: 'rare', color: 'bg-emerald-500' }
   });
 
   const [newIngredientName, setNewIngredientName] = useState('');
@@ -108,7 +108,7 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
     switch (rarity) {
       case 'common': return 'bg-green-100 text-green-800 border-green-200';
       case 'rare': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'legendary': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'legendary': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -122,15 +122,15 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
   return (
     <div className="space-y-6">
       {/* Lesson Header */}
-      <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-200">
+      <Card className="bg-gradient-to-r from-emerald-50 to-cyan-50 border-2 border-emerald-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
               <Package className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-purple-800">Lesson 1: Spell Ingredient Catalog</CardTitle>
-              <CardDescription className="text-purple-600">
+              <CardTitle className="text-2xl text-emerald-800">Lesson 1: Spell Ingredient Catalog</CardTitle>
+              <CardDescription className="text-emerald-600">
                 Master the ancient art of Dictionary creation with magical ingredient management
               </CardDescription>
             </div>
@@ -139,10 +139,10 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
       </Card>
 
       {/* Learning Objectives */}
-      <Card className="border-purple-200">
+      <Card className="border-emerald-200">
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-purple-500" />
+            <Sparkles className="w-5 h-5 text-emerald-500" />
             <span>Magical Learning Objectives</span>
           </CardTitle>
         </CardHeader>
@@ -178,7 +178,7 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Ingredient Cabinet */}
-        <Card className="border-purple-200">
+        <Card className="border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">🧪</span>
@@ -214,8 +214,8 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     className={`p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer ${selectedIngredient === key
-                        ? 'border-purple-400 bg-purple-50 shadow-lg'
-                        : 'border-gray-200 hover:border-purple-300 hover:bg-purple-25'
+                        ? 'border-emerald-400 bg-emerald-50 shadow-lg'
+                        : 'border-gray-200 hover:border-emerald-300 hover:bg-emerald-25'
                       }`}
                     onClick={() => setSelectedIngredient(selectedIngredient === key ? null : key)}
                   >
@@ -269,10 +269,10 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
         {/* Control Panel */}
         <div className="space-y-6">
           {/* Add New Ingredient */}
-          <Card className="border-indigo-200">
+          <Card className="border-cyan-200">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Plus className="w-5 h-5 text-indigo-500" />
+                <Plus className="w-5 h-5 text-cyan-500" />
                 <span>Ingredient Creation Ritual</span>
               </CardTitle>
             </CardHeader>
@@ -288,7 +288,7 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
                 value={newIngredientQuantity}
                 onChange={(e) => setNewIngredientQuantity(e.target.value)}
               />
-              <Button onClick={addIngredient} className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600">
+              <Button onClick={addIngredient} className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600">
                 <Plus className="w-4 h-4 mr-2" />
                 Enchant New Ingredient
               </Button>

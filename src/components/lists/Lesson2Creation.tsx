@@ -61,7 +61,7 @@ const templates: ListTemplate[] = [
     description: 'List dengan berbagai tipe data',
     code: 'mixed = ["John", 25, True, 3.14]',
     preview: ['John', '25', 'True', '3.14'],
-    color: 'from-purple-400 to-purple-600'
+    color: 'from-emerald-400 to-emerald-600'
   }
 ];
 
@@ -424,9 +424,9 @@ export function Lesson2Creation({ onComplete }: LessonProps) {
                     Setiap elemen dipisahkan dengan koma (,) dan string ditulis dalam tanda kutip.
                   </p>
                 </div>
-                <div className="bg-purple-50 p-4 rounded">
-                  <h5 className="font-semibold text-purple-800 mb-2">🚀 Next:</h5>
-                  <p className="text-purple-700">
+                <div className="bg-emerald-50 p-4 rounded">
+                  <h5 className="font-semibold text-emerald-800 mb-2">🚀 Next:</h5>
+                  <p className="text-emerald-700">
                     List yang sudah dibuat bisa dimodifikasi dengan berbagai operasi!
                   </p>
                 </div>
@@ -466,7 +466,7 @@ export function Lesson2Creation({ onComplete }: LessonProps) {
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <Badge className="bg-purple-500 text-white">3</Badge>
+                    <Badge className="bg-emerald-500 text-white">3</Badge>
                     <div>
                       <p className="font-medium">Buat list campuran</p>
                       <p className="text-gray-600">Mix antara teks, angka, atau boolean</p>

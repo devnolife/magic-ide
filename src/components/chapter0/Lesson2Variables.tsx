@@ -63,7 +63,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
       case 'string': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'integer': return 'bg-green-100 text-green-800 border-green-200';
       case 'float': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'boolean': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'boolean': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -188,10 +188,10 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
       </Alert>
 
       {/* Variable Creator */}
-      <Card className="border-purple-200">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-emerald-200">
+        <CardHeader className="bg-emerald-50">
           <CardTitle className="flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
+            <Sparkles className="w-5 h-5 text-emerald-600" />
             <span>Magic Variable Creator</span>
           </CardTitle>
         </CardHeader>
@@ -254,11 +254,11 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
       </Card>
 
       {/* Magic Warehouse */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Database className="w-5 h-5 text-indigo-600" />
+              <Database className="w-5 h-5 text-cyan-600" />
               <span>Magic Warehouse</span>
             </div>
             <Badge variant="secondary">
@@ -268,7 +268,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
         </CardHeader>
         <CardContent className="p-6">
           {/* Warehouse Grid */}
-          <div className="relative min-h-[400px] bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-6 border-2 border-dashed border-indigo-200">
+          <div className="relative min-h-[400px] bg-gradient-to-br from-cyan-50 to-emerald-50 rounded-lg p-6 border-2 border-dashed border-cyan-200">
 
             {/* Floating Values Animation */}
             <AnimatePresence>
@@ -426,7 +426,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-8 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs">
+                    <div className="w-12 h-8 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs">
                       Buku
                     </div>
                     <span className="text-sm">Kotak berlabel "Buku" berisi koleksi buku</span>
@@ -468,7 +468,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-8 bg-purple-200 rounded border-2 border-purple-400 flex items-center justify-center text-xs font-mono">
+                    <div className="w-12 h-8 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-mono">
                       aktif
                     </div>
                     <span className="text-sm font-mono">True (boolean)</span>
@@ -547,8 +547,8 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
       </div>
 
       {/* Code Examples */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             💡 Contoh Penggunaan Variabel dalam Python
           </CardTitle>

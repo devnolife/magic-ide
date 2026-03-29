@@ -461,10 +461,10 @@ Great work on mastering both dictionaries and objects! 🎉`);
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-200">
+      <Card className="bg-gradient-to-r from-pink-50 to-emerald-50 border-2 border-pink-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-emerald-500 rounded-lg flex items-center justify-center">
               <Wand2 className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -478,23 +478,23 @@ Great work on mastering both dictionaries and objects! 🎉`);
       </Card>
 
       {/* Features Overview */}
-      <Card className="border-purple-200">
+      <Card className="border-emerald-200">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <BookOpen className="w-5 h-5 text-purple-500" />
+            <BookOpen className="w-5 h-5 text-emerald-500" />
             <span>Master These Advanced Concepts</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
               <div className="flex items-center space-x-2 mb-2">
                 <span className="text-2xl">📚</span>
                 <span className="font-semibold">Complex Dictionaries</span>
               </div>
               <p className="text-sm text-gray-600">Nested structures, comprehensions, and advanced methods</p>
             </div>
-            <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+            <div className="p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
               <div className="flex items-center space-x-2 mb-2">
                 <span className="text-2xl">🏗️</span>
                 <span className="font-semibold">Object Design</span>
@@ -527,14 +527,14 @@ Great work on mastering both dictionaries and objects! 🎉`);
         <TabsContent value="playground" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Code Editor */}
-            <Card className="border-purple-200">
+            <Card className="border-emerald-200">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span className="flex items-center space-x-2">
-                    <Code className="w-5 h-5 text-purple-500" />
+                    <Code className="w-5 h-5 text-emerald-500" />
                     <span>Spell Code Editor</span>
                   </span>
-                  <Button onClick={runCode} disabled={isRunning} className="bg-gradient-to-r from-purple-500 to-pink-500">
+                  <Button onClick={runCode} disabled={isRunning} className="bg-gradient-to-r from-emerald-500 to-pink-500">
                     <Play className="w-4 h-4 mr-2" />
                     {isRunning ? 'Casting...' : 'Cast Spell'}
                   </Button>
@@ -577,7 +577,7 @@ Great work on mastering both dictionaries and objects! 🎉`);
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Card className="border-indigo-200 cursor-pointer hover:border-indigo-400 transition-colors h-full">
+                <Card className="border-cyan-200 cursor-pointer hover:border-cyan-400 transition-colors h-full">
                   <CardHeader>
                     <CardTitle className="text-lg">{example.title}</CardTitle>
                     <CardDescription>{example.description}</CardDescription>

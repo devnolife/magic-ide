@@ -138,28 +138,28 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
       {/* Header */}
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-full flex items-center justify-center">
             <BookOpen className="w-6 h-6 text-gray-800" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-gray-800">📜 Advanced Spellbook Arsenal</h2>
-            <p className="text-purple-600">Master powerful methods from the ancient grimoires</p>
+            <p className="text-emerald-600">Master powerful methods from the ancient grimoires</p>
           </div>
         </div>
       </div>
 
       <Tabs defaultValue="methods">
         <TabsList className="grid w-full grid-cols-4 bg-gray-800">
-          <TabsTrigger value="methods" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="methods" className="data-[state=active]:bg-emerald-600">
             Method Arsenal
           </TabsTrigger>
-          <TabsTrigger value="comparison" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="comparison" className="data-[state=active]:bg-emerald-600">
             Before/After
           </TabsTrigger>
-          <TabsTrigger value="chains" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="chains" className="data-[state=active]:bg-emerald-600">
             Method Chains
           </TabsTrigger>
-          <TabsTrigger value="performance" className="data-[state=active]:bg-purple-600">
+          <TabsTrigger value="performance" className="data-[state=active]:bg-emerald-600">
             Performance
           </TabsTrigger>
         </TabsList>
@@ -167,10 +167,10 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
         <TabsContent value="methods" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Method Selector */}
-            <Card className="bg-white border-purple-500/30">
+            <Card className="bg-white border-emerald-500/30">
               <CardHeader>
                 <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-purple-400" />
+                  <Zap className="w-5 h-5 text-emerald-400" />
                   Spell Method Selector
                 </CardTitle>
               </CardHeader>
@@ -185,13 +185,13 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                       <Button
                         variant={selectedMethod === method.id ? "default" : "outline"}
                         className={`w-full justify-start h-auto p-4 ${selectedMethod === method.id
-                            ? 'bg-purple-600 border-purple-400'
+                            ? 'bg-emerald-600 border-emerald-400'
                             : 'bg-gray-700/50 border-gray-600 text-gray-300'
                           }`}
                         onClick={() => setSelectedMethod(method.id)}
                       >
                         <div className="flex items-start gap-3 w-full">
-                          <div className="p-2 bg-blue-500/20 rounded-lg text-purple-300">
+                          <div className="p-2 bg-blue-500/20 rounded-lg text-emerald-300">
                             {method.icon}
                           </div>
                           <div className="flex-1 text-left">
@@ -248,7 +248,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                     <Button
                       onClick={executeMethod}
                       disabled={isAnimating}
-                      className="flex-1 bg-purple-600 hover:bg-purple-700"
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700"
                     >
                       {isAnimating ? (
                         <Timer className="w-4 h-4 mr-1 animate-spin" />
@@ -268,7 +268,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                   </div>
 
                   {selectedMethod && (
-                    <div className="text-sm text-purple-600 bg-blue-500/20 p-3 rounded-lg">
+                    <div className="text-sm text-emerald-600 bg-blue-500/20 p-3 rounded-lg">
                       <strong>Selected Method:</strong> {listMethods.find(m => m.id === selectedMethod)?.name}
                       <br />
                       <strong>Description:</strong> {listMethods.find(m => m.id === selectedMethod)?.description}
@@ -381,8 +381,8 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                   </div>
                 </div>
 
-                <div className="bg-blue-500/20 border border-purple-400 rounded-lg p-4">
-                  <h4 className="text-purple-300 font-semibold mb-3">Enumerate Spell</h4>
+                <div className="bg-blue-500/20 border border-emerald-400 rounded-lg p-4">
+                  <h4 className="text-emerald-300 font-semibold mb-3">Enumerate Spell</h4>
                   <code className="block bg-black/50 p-3 rounded text-green-400 mb-3">
                     {'for index, spell in enumerate(["Fire", "Water", "Earth"]):'}
                     <br />
@@ -392,7 +392,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                     {["Fire", "Water", "Earth"].map((spell, index) => (
                       <motion.div
                         key={index}
-                        className="flex items-center gap-3 bg-purple-600/20 p-2 rounded"
+                        className="flex items-center gap-3 bg-emerald-600/20 p-2 rounded"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.2 }}
@@ -400,7 +400,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                         <div className="w-8 h-8 bg-white0 rounded-full flex items-center justify-center text-gray-800 font-bold">
                           {index}
                         </div>
-                        <div className="text-purple-600">Spell {index}: {spell}</div>
+                        <div className="text-emerald-600">Spell {index}: {spell}</div>
                       </motion.div>
                     ))}
                   </div>
@@ -434,7 +434,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
                         className="flex items-center justify-between bg-gray-700/50 p-3 rounded-lg"
                       >
                         <div className="flex items-center gap-2">
-                          <div className="text-purple-300">{method.icon}</div>
+                          <div className="text-emerald-300">{method.icon}</div>
                           <span className="text-gray-800">{method.name}</span>
                         </div>
                         <Badge className={`${getComplexityColor(method.complexity)} bg-gray-800 border-0`}>

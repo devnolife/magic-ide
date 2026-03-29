@@ -147,7 +147,7 @@ export default function Pelajaran1ApaItuPemrograman({ onComplete }: Lesson1Props
             </CardContent>
           </Card>
 
-          <Card className="border-purple-200">
+          <Card className="border-emerald-200">
             <CardContent className="p-6 text-center space-y-4">
               <div className="text-4xl">⚡</div>
               <h3 className="font-semibold">Kelebihan Komputer</h3>
@@ -163,8 +163,8 @@ export default function Pelajaran1ApaItuPemrograman({ onComplete }: Lesson1Props
       </div>
 
       {/* Programming Languages Preview */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             <Zap className="w-5 h-5 mr-2 inline" />
             Bahasa yang Digunakan untuk Berbicara dengan Komputer

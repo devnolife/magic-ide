@@ -83,8 +83,8 @@ const dataTypeZones: DataTypeZone[] = [
     id: 'boolean',
     name: 'Boolean Island',
     icon: '✅',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50 border-purple-200',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50 border-emerald-200',
     description: 'Pulau untuk True dan False',
     examples: ['True', 'False'],
     checkFunction: (value: string) => value === 'True' || value === 'False'
@@ -196,10 +196,10 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
       </Alert>
 
       {/* Adventure Park Map */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="flex items-center space-x-2">
-            <MapPin className="w-5 h-5 text-indigo-600" />
+            <MapPin className="w-5 h-5 text-cyan-600" />
             <span>Data Type Adventure Park</span>
             <Badge variant="secondary">{correctGuesses}/3 zona dikunjungi</Badge>
           </CardTitle>
@@ -276,10 +276,10 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
       </Card>
 
       {/* Type Checker Game */}
-      <Card className="border-purple-200">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-emerald-200">
+        <CardHeader className="bg-emerald-50">
           <CardTitle className="flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
+            <Sparkles className="w-5 h-5 text-emerald-600" />
             <span>Type Detective Game</span>
           </CardTitle>
         </CardHeader>
@@ -574,8 +574,8 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
       </div>
 
       {/* Type Conversion */}
-      <Card className="border-indigo-200">
-        <CardHeader className="bg-indigo-50">
+      <Card className="border-cyan-200">
+        <CardHeader className="bg-cyan-50">
           <CardTitle className="text-center">
             🔄 Konversi Antar Tipe Data
           </CardTitle>

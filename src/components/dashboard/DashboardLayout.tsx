@@ -8,7 +8,7 @@ import { DashboardFooter } from './DashboardFooter';
 
 export function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       <NavigationBar />
 
       <div className="flex flex-col lg:flex-row">

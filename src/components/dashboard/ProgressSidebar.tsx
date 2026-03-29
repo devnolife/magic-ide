@@ -36,7 +36,7 @@ export function ProgressSidebar() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
-              <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+              <Badge className="bg-gradient-to-r from-blue-500 to-emerald-600 text-white">
                 {userStatsData.level}
               </Badge>
               <div className="mt-2">
@@ -106,7 +106,7 @@ export function ProgressSidebar() {
         <Card className="bg-white/70 backdrop-blur-md border-white/20 shadow-lg">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center space-x-2">
-              <Award className="w-5 h-5 text-purple-500" />
+              <Award className="w-5 h-5 text-emerald-500" />
               <span>Pencapaian</span>
             </CardTitle>
           </CardHeader>

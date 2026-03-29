@@ -495,7 +495,7 @@ print("Final list:", my_list)`);
             <span className="font-semibold">{completedChallenges.size}/{challenges.length} Challenges</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Award className="w-5 h-5 text-purple-500" />
+            <Award className="w-5 h-5 text-emerald-500" />
             <span className="font-semibold">{userAchievements.size}/{achievements.length} Achievements</span>
           </div>
         </div>
@@ -722,7 +722,7 @@ print("Final list:", my_list)`);
                         key={index}
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="px-3 py-2 bg-purple-500 text-white rounded flex items-center space-x-2"
+                        className="px-3 py-2 bg-emerald-500 text-white rounded flex items-center space-x-2"
                       >
                         <Badge variant="secondary" className="bg-white/20 text-white">
                           [{index}]

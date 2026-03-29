@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     : user?.username?.slice(0, 2).toUpperCase() ?? "AD";
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen flex bg-gradient-to-br from-gray-50 via-blue-50 to-emerald-50">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-purple-900 via-purple-800 to-blue-900 text-white transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-emerald-900 via-emerald-800 to-blue-900 text-white transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -61,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Logo */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
             <Link href="/admin" className="flex items-center gap-2">
-              <Shield className="h-7 w-7 text-purple-300" />
+              <Shield className="h-7 w-7 text-emerald-300" />
               <span className="text-lg font-bold tracking-tight">Admin Panel</span>
             </Link>
             <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     active
                       ? "bg-white/15 text-white"
-                      : "text-purple-200 hover:bg-white/10 hover:text-white"
+                      : "text-emerald-200 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
@@ -96,20 +96,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* User section */}
           <div className="px-4 py-4 border-t border-white/10">
             <div className="flex items-center gap-3 mb-3">
-              <Avatar className="h-9 w-9 border-2 border-purple-400">
-                <AvatarFallback className="bg-purple-600 text-white text-xs">
+              <Avatar className="h-9 w-9 border-2 border-emerald-400">
+                <AvatarFallback className="bg-emerald-600 text-white text-xs">
                   {initials}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{user?.name || user?.username}</p>
-                <p className="text-xs text-purple-300 truncate">{user?.role}</p>
+                <p className="text-xs text-emerald-300 truncate">{user?.role}</p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start text-purple-200 hover:text-white hover:bg-white/10"
+              className="w-full justify-start text-emerald-200 hover:text-white hover:bg-white/10"
               onClick={() => logout()}
             >
               <LogOut className="h-4 w-4 mr-2" />
@@ -127,7 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Menu className="h-6 w-6 text-gray-700" />
           </button>
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-purple-600" />
+            <Shield className="h-5 w-5 text-emerald-600" />
             <span className="font-semibold text-gray-800">Admin Panel</span>
           </div>
         </header>

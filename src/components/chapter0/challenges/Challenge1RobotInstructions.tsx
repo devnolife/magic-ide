@@ -301,7 +301,7 @@ export default function Challenge1RobotInstructions({ onComplete, difficulty }: 
                     className="p-3 bg-white rounded-lg shadow-sm border"
                   >
                     <div className="flex items-center gap-3">
-                      <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200">
                         {index + 1}
                       </Badge>
                       <span className="text-2xl">{step.icon}</span>

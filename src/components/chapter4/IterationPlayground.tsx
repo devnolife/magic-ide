@@ -321,11 +321,11 @@ print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
               <div className="text-2xl font-bold text-green-600">{examples.length}</div>
               <div className="text-sm text-green-700">Examples Available</div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg border border-purple-200">
-              <div className="text-2xl font-bold text-purple-600">
+            <div className="text-center p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+              <div className="text-2xl font-bold text-emerald-600">
                 {Math.round((completedChallenges.length / challenges.length) * 100)}%
               </div>
-              <div className="text-sm text-purple-700">Mastery Level</div>
+              <div className="text-sm text-emerald-700">Mastery Level</div>
             </div>
           </div>
         </CardContent>
@@ -384,11 +384,11 @@ print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
                 {examples.map((example) => (
                   <div
                     key={example.id}
-                    className="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-purple-300 hover:bg-purple-50 transition-all"
+                    className="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-emerald-300 hover:bg-emerald-50 transition-all"
                     onClick={() => loadExample(example)}
                   >
                     <h4 className="font-semibold text-sm mb-2">{example.title}</h4>
-                    <div className="flex items-center space-x-1 text-purple-600 text-xs">
+                    <div className="flex items-center space-x-1 text-emerald-600 text-xs">
                       <Play className="w-3 h-3" />
                       <span>Load Example</span>
                     </div>
@@ -422,7 +422,7 @@ print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
         </Card>
 
         {/* Code Editor */}
-        <Card className="lg:col-span-2 border-purple-200">
+        <Card className="lg:col-span-2 border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">🪄</span>

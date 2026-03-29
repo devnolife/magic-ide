@@ -21,7 +21,7 @@ export function HeroSection() {
       >
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
           Selamat Datang di Platform{' '}
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
             Belajar Python
           </span>
         </h1>
@@ -87,7 +87,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Card className="bg-gradient-to-r from-blue-500 to-purple-600 border-0 shadow-xl text-white">
+          <Card className="bg-gradient-to-r from-blue-500 to-emerald-600 border-0 shadow-xl text-white">
             <CardContent className="p-6">
               <div className="text-center">
                 <Sparkles className="w-12 h-12 mx-auto mb-4" />

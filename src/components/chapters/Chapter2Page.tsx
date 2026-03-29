@@ -9,16 +9,16 @@ export function Chapter2Page() {
     <div className="min-h-screen bg-white relative">
       {/* Magical particle pattern background */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+        <div className="absolute top-20 left-20 w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
         <div className="absolute top-32 left-40 w-1 h-1 bg-blue-500 rounded-full animate-bounce"></div>
         <div className="absolute top-28 left-60 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
-        <div className="absolute top-40 left-80 w-1 h-1 bg-purple-500 rounded-full animate-pulse"></div>
+        <div className="absolute top-40 left-80 w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
         <div className="absolute top-60 left-32 w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
         <div className="absolute top-80 left-16 w-1 h-1 bg-yellow-500 rounded-full animate-ping"></div>
-        <div className="absolute top-96 left-48 w-2 h-2 bg-purple-300 rounded-full animate-pulse"></div>
+        <div className="absolute top-96 left-48 w-2 h-2 bg-emerald-300 rounded-full animate-pulse"></div>
         <div className="absolute top-20 right-20 w-1 h-1 bg-blue-600 rounded-full animate-bounce"></div>
         <div className="absolute top-48 right-32 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></div>
-        <div className="absolute top-72 right-16 w-1 h-1 bg-purple-600 rounded-full animate-pulse"></div>
+        <div className="absolute top-72 right-16 w-1 h-1 bg-emerald-600 rounded-full animate-pulse"></div>
         <div className="absolute bottom-32 left-1/4 w-2 h-2 bg-blue-300 rounded-full animate-bounce"></div>
         <div className="absolute bottom-48 right-1/3 w-1 h-1 bg-yellow-600 rounded-full animate-ping"></div>
       </div>
@@ -34,7 +34,7 @@ export function Chapter2Page() {
                 <span className="text-3xl">🧙‍♂️</span>
               </div>
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent mb-3">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-pink-600 bg-clip-text text-transparent mb-3">
               ✨ Master List Wizardry
             </h1>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-2">

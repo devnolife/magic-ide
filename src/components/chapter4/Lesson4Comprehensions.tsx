@@ -169,15 +169,15 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
   return (
     <div className="space-y-6">
       {/* Lesson Header */}
-      <Card className="bg-gradient-to-r from-violet-50 to-purple-50 border-2 border-violet-200">
+      <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-2 border-blue-200">
         <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-violet-800">Lesson 4: Spell Comprehension Magic</CardTitle>
-              <CardDescription className="text-violet-600">
+              <CardTitle className="text-2xl text-blue-800">Lesson 4: Spell Comprehension Magic</CardTitle>
+              <CardDescription className="text-blue-600">
                 Master the art of elegant spell crafting with comprehensions and generators
               </CardDescription>
             </div>
@@ -186,10 +186,10 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
       </Card>
 
       {/* Learning Objectives */}
-      <Card className="border-violet-200">
+      <Card className="border-blue-200">
         <CardHeader>
           <CardTitle className="text-lg flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-violet-500" />
+            <Sparkles className="w-5 h-5 text-blue-500" />
             <span>Comprehension Mastery Goals</span>
           </CardTitle>
         </CardHeader>
@@ -225,10 +225,10 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Configuration Panel */}
-        <Card className="border-violet-200">
+        <Card className="border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Filter className="w-5 h-5 text-violet-500" />
+              <Filter className="w-5 h-5 text-blue-500" />
               <span>Spell Configuration</span>
             </CardTitle>
             <CardDescription>
@@ -301,7 +301,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
               <Button
                 onClick={() => { setActiveTab('list'); runListComprehension(); }}
                 disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-violet-500 to-purple-500"
+                className="w-full bg-gradient-to-r from-blue-500 to-emerald-500"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 List Comprehension
@@ -309,7 +309,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
               <Button
                 onClick={() => { setActiveTab('dict'); runDictComprehension(); }}
                 disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500"
+                className="w-full bg-gradient-to-r from-emerald-500 to-pink-500"
               >
                 <Code className="w-4 h-4 mr-2" />
                 Dict Comprehension
@@ -317,7 +317,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
               <Button
                 onClick={() => { setActiveTab('generator'); runGeneratorDemo(); }}
                 disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-indigo-500 to-blue-500"
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-500"
               >
                 <Zap className="w-4 h-4 mr-2" />
                 Generator Expression
@@ -330,7 +330,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
         </Card>
 
         {/* Visualization Panel */}
-        <Card className="border-purple-200">
+        <Card className="border-emerald-200">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <span className="text-2xl">✨</span>
@@ -397,7 +397,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
                         </div>
                         <div>
                           {step.condition && step.transformed !== null && (
-                            <Badge className="bg-violet-500">
+                            <Badge className="bg-blue-500">
                               {typeof step.transformed === 'object'
                                 ? JSON.stringify(step.transformed)
                                 : step.transformed}
@@ -417,7 +417,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
                   <motion.div
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 1, repeat: Infinity }}
-                    className="text-center text-violet-600 font-medium"
+                    className="text-center text-blue-600 font-medium"
                   >
                     ✨ Casting comprehension spell...
                   </motion.div>
@@ -430,9 +430,9 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-4 bg-violet-50 border border-violet-200 rounded-lg"
+                className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
               >
-                <h4 className="font-semibold text-violet-800 mb-2">Final Result:</h4>
+                <h4 className="font-semibold text-blue-800 mb-2">Final Result:</h4>
                 <div className="font-mono text-sm bg-white p-3 rounded border">
                   {typeof result[0] === 'object' ? JSON.stringify(result[0], null, 2) : JSON.stringify(result)}
                 </div>
@@ -455,7 +455,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <motion.div
-                className="bg-gradient-to-r from-violet-500 to-purple-500 h-3 rounded-full"
+                className="bg-gradient-to-r from-blue-500 to-emerald-500 h-3 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${(completedTasks.length / 4) * 100}%` }}
                 transition={{ duration: 0.5 }}

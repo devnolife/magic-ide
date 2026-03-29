@@ -35,7 +35,7 @@ const sampleList: ListItem[] = [
   { id: 2, value: "javascript", color: "from-yellow-400 to-yellow-600", index: 2 },
   { id: 3, value: "go", color: "from-green-400 to-green-600", index: 3 },
   { id: 4, value: "rust", color: "from-orange-400 to-orange-600", index: 4 },
-  { id: 5, value: "swift", color: "from-purple-400 to-purple-600", index: 5 }
+  { id: 5, value: "swift", color: "from-emerald-400 to-emerald-600", index: 5 }
 ];
 
 export function Lesson4IndexingSlicing({ onComplete }: LessonProps) {
@@ -123,7 +123,7 @@ export function Lesson4IndexingSlicing({ onComplete }: LessonProps) {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-2xl mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-600 text-white text-2xl mb-4"
         >
           🎯
         </motion.div>

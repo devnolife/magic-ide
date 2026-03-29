@@ -105,7 +105,7 @@ export default async function ChaptersPage() {
             <div className="text-sm text-muted-foreground">Challenges Solved</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600">0h</div>
+            <div className="text-3xl font-bold text-emerald-600">0h</div>
             <div className="text-sm text-muted-foreground">Time Spent</div>
           </div>
         </div>

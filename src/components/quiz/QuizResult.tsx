@@ -178,7 +178,7 @@ export function QuizResult({
               {!passed && (
                 <Button
                   onClick={onRetry}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                  className="bg-gradient-to-r from-blue-500 to-emerald-600 hover:from-blue-600 hover:to-emerald-700 text-white"
                 >
                   <RotateCcw className="h-4 w-4 mr-2" />
                   Coba Lagi

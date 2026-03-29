@@ -160,7 +160,7 @@ export default function ChallengeSelection({
           </p>
 
           {/* Overall Progress */}
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-purple-50 to-blue-50 mb-6">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-emerald-50 to-blue-50 mb-6">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
@@ -169,7 +169,7 @@ export default function ChallengeSelection({
                   <div className="text-sm text-gray-600">Tantangan Selesai</div>
                 </div>
                 <div className="text-center">
-                  <Star className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                  <Star className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-800">{totalScore}</div>
                   <div className="text-sm text-gray-600">Total Skor</div>
                 </div>
@@ -199,7 +199,7 @@ export default function ChallengeSelection({
                 size="sm"
                 onClick={() => setSelectedDifficulty(difficulty)}
                 className={selectedDifficulty === difficulty ?
-                  'bg-gradient-to-r from-purple-500 to-blue-500 text-white' :
+                  'bg-gradient-to-r from-emerald-500 to-blue-500 text-white' :
                   'hover:bg-gray-200'
                 }
               >

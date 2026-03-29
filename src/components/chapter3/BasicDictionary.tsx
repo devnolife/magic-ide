@@ -235,7 +235,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
   const AccessDemo = () => (
     <div className={styles.conceptDemo}>
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <Search className="w-6 h-6 text-purple-500" />
+        <Search className="w-6 h-6 text-emerald-500" />
         Finding Information
       </h3>
       
@@ -318,7 +318,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
             <p className="text-sm text-gray-600">dict[key] = value</p>
           </div>
           <div className="p-4 bg-white rounded-lg border border-green-200">
-            <Search className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+            <Search className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
             <p className="font-semibold">How to find values</p>
             <p className="text-sm text-gray-600">dict[key]</p>
           </div>

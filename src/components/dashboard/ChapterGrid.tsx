@@ -59,7 +59,7 @@ export function ChapterGrid() {
             key={filter.value}
             variant={activeFilter === filter.value ? "default" : "outline"}
             className={`cursor-pointer transition-all ${activeFilter === filter.value
-              ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+              ? 'bg-gradient-to-r from-blue-500 to-emerald-600 text-white'
               : 'bg-white/50 backdrop-blur-sm border-white/20 hover:bg-white/70'
               }`}
             onClick={() => setActiveFilter(filter.value)}

@@ -86,7 +86,7 @@ export function ChallengeSelection({
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-4"
       >
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
           🏆 Pusat Tantangan Chapter 1
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -101,7 +101,7 @@ export function ChallengeSelection({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50">
+        <Card className="border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-cyan-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
@@ -211,18 +211,18 @@ export function ChallengeSelection({
             >
               <Card className={`h-full border-2 transition-all duration-200 ${isLocked ? 'border-gray-200' :
                 isCompleted ? 'border-green-200 bg-green-50/30' :
-                  'border-indigo-200 hover:border-indigo-300 hover:shadow-lg'
+                  'border-cyan-200 hover:border-cyan-300 hover:shadow-lg'
                 }`}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-lg ${isLocked ? 'bg-gray-100' :
                         isCompleted ? 'bg-green-100' :
-                          'bg-indigo-100'
+                          'bg-cyan-100'
                         }`}>
                         <IconComponent className={`w-6 h-6 ${isLocked ? 'text-gray-400' :
                           isCompleted ? 'text-green-600' :
-                            'text-indigo-600'
+                            'text-cyan-600'
                           }`} />
                       </div>
                       <div>

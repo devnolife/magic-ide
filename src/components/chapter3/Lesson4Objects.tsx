@@ -231,7 +231,7 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
     switch (rarity) {
       case 'common': return 'bg-gray-100 text-gray-800';
       case 'rare': return 'bg-blue-100 text-blue-800';
-      case 'legendary': return 'bg-purple-100 text-purple-800';
+      case 'legendary': return 'bg-emerald-100 text-emerald-800';
       case 'mythical': return 'bg-pink-100 text-pink-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -511,17 +511,17 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
           </Card>
 
           {/* Creature Statistics */}
-          <Card className="border-indigo-200">
+          <Card className="border-cyan-200">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-indigo-500" />
+                <Shield className="w-5 h-5 text-cyan-500" />
                 <span>Sanctuary Stats</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-indigo-600">{creatures.length}</div>
+                  <div className="text-2xl font-bold text-cyan-600">{creatures.length}</div>
                   <div className="text-sm text-gray-600">Total Creatures</div>
                 </div>
                 <div className="text-center">
@@ -531,7 +531,7 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
                   <div className="text-sm text-gray-600">Average Level</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-2xl font-bold text-emerald-600">
                     {creatures.filter(c => c.rarity === 'legendary' || c.rarity === 'mythical').length}
                   </div>
                   <div className="text-sm text-gray-600">Legendary+</div>
