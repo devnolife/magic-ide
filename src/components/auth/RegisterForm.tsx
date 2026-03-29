@@ -79,72 +79,73 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   };
 
   const inputClass = (field: string) =>
-    `pl-11 h-12 rounded-xl border-2 bg-emerald-50/50 focus:bg-white transition-colors ${
+    `pl-9 h-10 text-sm rounded-xl border-2 bg-emerald-50/50 focus:bg-white transition-colors ${
       errors[field] ? 'border-red-300 bg-red-50/50' : 'border-emerald-100 focus:border-emerald-400'
     }`;
 
   return (
     <Card className="w-full max-w-md mx-auto bg-white/80 backdrop-blur-xl border-emerald-100 shadow-xl shadow-emerald-100/50 rounded-3xl overflow-hidden">
-      <CardContent className="p-8">
-        {/* Header */}
-        <div className="text-center mb-6">
+      <CardContent className="p-6 sm:p-7">
+        {/* Header — compact */}
+        <div className="text-center mb-4">
           <motion.div
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-400 to-emerald-500 rounded-2xl mb-4 shadow-lg shadow-blue-200"
+            className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-400 to-emerald-500 rounded-xl mb-2 shadow-lg shadow-blue-200"
             whileHover={{ rotate: -5, scale: 1.05 }}
           >
-            <UserPlus className="h-8 w-8 text-white" />
+            <UserPlus className="h-6 w-6 text-white" />
           </motion.div>
-          <h2 className="text-2xl font-extrabold text-gray-800">
+          <h2 className="text-xl font-extrabold text-gray-800">
             Buat Akun Baru 🚀
           </h2>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 text-sm">
             Bergabung dengan GuruPintar
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-600 mb-1.5">
-              Nama Lengkap
-            </label>
-            <div className="relative">
-              <User className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-blue-400 h-5 w-5" />
-              <Input
-                id="name" name="name" type="text"
-                value={formData.name} onChange={handleChange}
-                className="pl-11 h-12 rounded-xl border-2 border-emerald-100 bg-emerald-50/50 focus:bg-white focus:border-emerald-400 transition-colors"
-                placeholder="Nama kamu (opsional)"
-                disabled={isLoading}
-              />
+        <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Row 1: Name + Username side by side */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label htmlFor="name" className="block text-xs font-semibold text-gray-600 mb-1">
+                Nama Lengkap
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400 h-4 w-4" />
+                <Input
+                  id="name" name="name" type="text"
+                  value={formData.name} onChange={handleChange}
+                  className="pl-9 h-10 text-sm rounded-xl border-2 border-emerald-100 bg-emerald-50/50 focus:bg-white focus:border-emerald-400 transition-colors"
+                  placeholder="Opsional"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="username" className="block text-xs font-semibold text-gray-600 mb-1">
+                Username <span className="text-red-400">*</span>
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 h-4 w-4" />
+                <Input
+                  id="username" name="username" type="text"
+                  value={formData.username} onChange={handleChange}
+                  className={inputClass('username')}
+                  placeholder="Username"
+                  disabled={isLoading}
+                />
+              </div>
+              {errors.username && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.username}</p>}
             </div>
           </div>
 
-          {/* Username */}
+          {/* Email — full width */}
           <div>
-            <label htmlFor="username" className="block text-sm font-semibold text-gray-600 mb-1.5">
-              Username <span className="text-red-400">*</span>
-            </label>
-            <div className="relative">
-              <User className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-emerald-400 h-5 w-5" />
-              <Input
-                id="username" name="username" type="text"
-                value={formData.username} onChange={handleChange}
-                className={inputClass('username')}
-                placeholder="Pilih username"
-                disabled={isLoading}
-              />
-            </div>
-            {errors.username && <p className="mt-1 text-sm text-red-500">⚠️ {errors.username}</p>}
-          </div>
-
-          {/* Email */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-600 mb-1.5">
+            <label htmlFor="email" className="block text-xs font-semibold text-gray-600 mb-1">
               Email <span className="text-red-400">*</span>
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-emerald-400 h-5 w-5" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 h-4 w-4" />
               <Input
                 id="email" name="email" type="email"
                 value={formData.email} onChange={handleChange}
@@ -153,72 +154,73 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 disabled={isLoading}
               />
             </div>
-            {errors.email && <p className="mt-1 text-sm text-red-500">⚠️ {errors.email}</p>}
+            {errors.email && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.email}</p>}
           </div>
 
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-600 mb-1.5">
-              Password <span className="text-red-400">*</span>
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-emerald-400 h-5 w-5" />
-              <Input
-                id="password" name="password"
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password} onChange={handleChange}
-                className={`pr-11 ${inputClass('password')}`}
-                placeholder="Minimal 6 karakter"
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
-                disabled={isLoading}
-              >
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-              </button>
+          {/* Row 2: Password + Confirm side by side */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label htmlFor="password" className="block text-xs font-semibold text-gray-600 mb-1">
+                Password <span className="text-red-400">*</span>
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 h-4 w-4" />
+                <Input
+                  id="password" name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password} onChange={handleChange}
+                  className={`pr-9 ${inputClass('password')}`}
+                  placeholder="Min 6 karakter"
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
+                  disabled={isLoading}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {errors.password && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.password}</p>}
             </div>
-            {errors.password && <p className="mt-1 text-sm text-red-500">⚠️ {errors.password}</p>}
-          </div>
 
-          {/* Confirm Password */}
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-600 mb-1.5">
-              Konfirmasi Password <span className="text-red-400">*</span>
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-emerald-400 h-5 w-5" />
-              <Input
-                id="confirmPassword" name="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={formData.confirmPassword} onChange={handleChange}
-                className={`pr-11 ${inputClass('confirmPassword')}`}
-                placeholder="Ulangi password"
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
-                disabled={isLoading}
-              >
-                {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-              </button>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-xs font-semibold text-gray-600 mb-1">
+                Konfirmasi <span className="text-red-400">*</span>
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 h-4 w-4" />
+                <Input
+                  id="confirmPassword" name="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={formData.confirmPassword} onChange={handleChange}
+                  className={`pr-9 ${inputClass('confirmPassword')}`}
+                  placeholder="Ulangi"
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
+                  disabled={isLoading}
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {errors.confirmPassword && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.confirmPassword}</p>}
             </div>
-            {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">⚠️ {errors.confirmPassword}</p>}
           </div>
 
           {/* Submit */}
           <Button
             type="submit"
-            className="w-full h-12 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl transition-all text-base mt-2"
+            className="w-full h-11 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl transition-all text-sm"
             disabled={isLoading}
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Membuat akun...
               </span>
             ) : (
@@ -228,7 +230,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
           {/* Switch to Login */}
           {onSwitchToLogin && (
-            <div className="text-center pt-2">
+            <div className="text-center">
               <p className="text-sm text-gray-500">
                 Sudah punya akun?{' '}
                 <button
