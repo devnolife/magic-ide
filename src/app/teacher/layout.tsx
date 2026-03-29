@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import {
@@ -33,7 +32,6 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const sidebarLinks = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
@@ -53,37 +51,9 @@ export default function TeacherLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, isLoading, logout } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto" />
-          <p className="mt-4 text-muted-foreground">Memuat...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user || (user.role !== "TEACHER" && user.role !== "ADMIN")) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <School className="h-16 w-16 text-destructive mx-auto" />
-          <h2 className="text-xl font-bold">Akses Ditolak</h2>
-          <p className="text-muted-foreground">
-            Halaman ini hanya untuk guru dan admin.
-          </p>
-          <Link href="/dashboard">
-            <Button variant="outline">Kembali ke Dashboard</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <SidebarProvider

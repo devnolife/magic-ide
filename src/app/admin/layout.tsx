@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import {
@@ -27,7 +26,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
   BookOpen,
@@ -54,37 +52,9 @@ function getPageTitle(pathname: string): string {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, logout } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600 mx-auto" />
-          <p className="mt-4 text-muted-foreground">Memuat...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user || user.role !== "ADMIN") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Shield className="h-16 w-16 text-destructive mx-auto" />
-          <h2 className="text-xl font-bold">Akses Ditolak</h2>
-          <p className="text-muted-foreground">
-            Halaman ini hanya untuk admin.
-          </p>
-          <Link href="/dashboard">
-            <Button variant="outline">Kembali ke Dashboard</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <SidebarProvider

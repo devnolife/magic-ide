@@ -33,21 +33,30 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
+  const setCookie = (token: string) => {
+    document.cookie = `auth-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+  };
+
+  const clearCookie = () => {
+    document.cookie = 'auth-token=; path=/; max-age=0';
+  };
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
     checkAuthStatus();
   }, []);
 
   const checkAuthStatus = async () => {
     try {
-      // Check if we're on the client side before accessing localStorage
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('auth-token');
         if (token) {
+          // Ensure cookie is in sync with localStorage
+          setCookie(token);
+
           const response = await fetch('/api/auth/me', {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -59,6 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setUser(data.user);
           } else {
             localStorage.removeItem('auth-token');
+            clearCookie();
           }
         }
       }
@@ -66,6 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.error('Auth check failed:', error);
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth-token');
+        clearCookie();
       }
     } finally {
       setIsLoading(false);
@@ -87,13 +98,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const data = await response.json();
         if (typeof window !== 'undefined') {
           localStorage.setItem('auth-token', data.token);
+          setCookie(data.token);
         }
         setUser(data.user);
 
-        // Redirect based on role
+        // Check for redirect query param first, then fallback to role-based redirect
+        const params = new URLSearchParams(window.location.search);
+        const redirectParam = params.get('redirect');
         const role = data.user.role;
-        const redirectUrl = role === 'ADMIN' ? '/admin' : role === 'TEACHER' ? '/teacher' : '/dashboard';
-        window.location.href = redirectUrl;
+        const roleRedirect = role === 'ADMIN' ? '/admin' : role === 'TEACHER' ? '/teacher' : '/dashboard';
+        window.location.href = redirectParam || roleRedirect;
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Login failed');
@@ -126,6 +140,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth-token');
+        clearCookie();
       }
       setUser(null);
     } catch (error) {
@@ -150,6 +165,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const data = await response.json();
         if (typeof window !== 'undefined') {
           localStorage.setItem('auth-token', data.token);
+          setCookie(data.token);
         }
         setUser(data.user);
       } else {
@@ -175,7 +191,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {isLoading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto" />
+            <p className="mt-4 text-sm text-muted-foreground">Memuat...</p>
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
