@@ -24,36 +24,60 @@ export async function GET(request: NextRequest) {
 
     const userId = session.user.id;
 
-    // Get user's progress across all chapters
-    const progress = await prisma.userProgress.findMany({
+    // Get ALL chapters with lesson counts
+    const chapters = await prisma.chapter.findMany({
+      where: { isActive: true },
+      include: {
+        _count: { select: { lessons: true } },
+      },
+      orderBy: { number: 'asc' },
+    });
+
+    // Get user's progress for chapters they've started
+    const userProgress = await prisma.userProgress.findMany({
       where: { userId },
       include: {
-        chapter: {
-          select: {
-            id: true,
-            number: true,
-            title: true,
-            description: true,
-          },
-        },
         lessonProgress: {
           include: {
             lesson: {
-              select: {
-                id: true,
-                number: true,
-                title: true,
-                description: true,
-              },
+              select: { id: true, number: true, title: true },
             },
           },
         },
       },
-      orderBy: {
-        chapter: {
-          number: 'asc',
-        },
-      },
+    });
+
+    // Build a map of progress by chapterId
+    const progressMap = new Map(
+      userProgress.map((p) => [p.chapterId, p])
+    );
+
+    // Merge: every chapter gets progress data (even if not started)
+    const progress = chapters.map((ch) => {
+      const up = progressMap.get(ch.id);
+      const totalLessons = ch._count.lessons;
+      const completedLessons = up?.completedLessons ?? 0;
+
+      let status: 'not-started' | 'in-progress' | 'completed' = 'not-started';
+      if (completedLessons > 0 && completedLessons >= totalLessons && totalLessons > 0) {
+        status = 'completed';
+      } else if (completedLessons > 0 || up) {
+        status = 'in-progress';
+      }
+
+      return {
+        chapterId: ch.id,
+        chapterNumber: ch.number,
+        chapterTitle: ch.title,
+        chapterDescription: ch.description,
+        totalLessons,
+        completedLessons,
+        totalPoints: up?.totalPoints ?? 0,
+        timeSpent: up?.timeSpent ?? 0,
+        status,
+        progressPercent: totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0,
+        lessonProgress: up?.lessonProgress ?? [],
+      };
     });
 
     return NextResponse.json({ progress });
