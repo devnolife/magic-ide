@@ -89,6 +89,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
           localStorage.setItem('auth-token', data.token);
         }
         setUser(data.user);
+
+        // Redirect based on role
+        const role = data.user.role;
+        const redirectUrl = role === 'ADMIN' ? '/admin' : role === 'TEACHER' ? '/teacher' : '/dashboard';
+        window.location.href = redirectUrl;
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Login failed');

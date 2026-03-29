@@ -10,8 +10,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 0,
-          title: 'Programming Fundamentals',
-          description: 'Learn the basics of programming and Python',
+          title: 'Dasar-Dasar Pemrograman',
+          description: 'Pelajari dasar-dasar pemrograman dan Python',
         },
       }),
       prisma.chapter.upsert({
@@ -19,8 +19,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 1,
-          title: 'Lists and Arrays',
-          description: 'Master Python lists and array operations',
+          title: 'Variabel dan Tipe Data',
+          description: 'Menguasai variabel, tipe data, dan operasi dasar Python',
         },
       }),
       prisma.chapter.upsert({
@@ -28,8 +28,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 2,
-          title: 'Advanced Lists',
-          description: 'Advanced list operations and comprehensions',
+          title: 'List dan Array',
+          description: 'Operasi list lanjutan dan list comprehension',
         },
       }),
       prisma.chapter.upsert({
@@ -37,8 +37,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 3,
-          title: 'Dictionaries',
-          description: 'Python dictionaries and data structures',
+          title: 'Dictionary',
+          description: 'Dictionary dan struktur data Python',
         },
       }),
       prisma.chapter.upsert({
@@ -46,8 +46,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 4,
-          title: 'Loops and Iteration',
-          description: 'Master loops and iteration patterns',
+          title: 'Perulangan',
+          description: 'Menguasai loop dan pola iterasi',
         },
       }),
       prisma.chapter.upsert({
@@ -55,17 +55,26 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 5,
-          title: 'Functions',
-          description: 'Create and use functions in Python',
+          title: 'Fungsi',
+          description: 'Membuat dan menggunakan fungsi di Python',
         },
       }),
     ]);
 
     // Create sample lessons for each chapter
+    const lessonTitles: Record<number, string[]> = {
+      0: ['Apa Itu Pemrograman', 'Mengenal Python', 'Instalasi & Setup', 'Program Pertama'],
+      1: ['Variabel & Memori', 'Tipe Data Dasar', 'Operasi Aritmatika', 'Input & Output'],
+      2: ['Membuat List', 'Operasi List', 'Slicing & Indexing', 'List Comprehension'],
+      3: ['Membuat Dictionary', 'Akses & Modifikasi', 'Method Dictionary', 'Nested Dictionary'],
+      4: ['For Loop', 'While Loop', 'Loop Control', 'Nested Loop'],
+      5: ['Membuat Fungsi', 'Parameter & Return', 'Scope Variabel', 'Lambda & Built-in'],
+    };
+
     for (const chapter of chapters) {
-      const lessonCount = 4; // 4 lessons per chapter
+      const titles = lessonTitles[chapter.number] || ['Pelajaran 1', 'Pelajaran 2', 'Pelajaran 3', 'Pelajaran 4'];
       
-      for (let i = 1; i <= lessonCount; i++) {
+      for (let i = 1; i <= titles.length; i++) {
         await prisma.lesson.upsert({
           where: {
             chapterId_number: {
@@ -77,18 +86,18 @@ export async function seedDatabase() {
           create: {
             chapterId: chapter.id,
             number: i,
-            title: `Lesson ${i}: ${chapter.title.split(' ')[0]} Basics`,
-            description: `Learn the fundamentals of ${chapter.title.toLowerCase()}`,
+            title: `Pelajaran ${i}: ${titles[i - 1]}`,
+            description: `Mempelajari ${titles[i - 1].toLowerCase()} dalam ${chapter.title.toLowerCase()}`,
             content: JSON.stringify({
               type: 'lesson',
               sections: [
                 {
-                  title: 'Introduction',
-                  content: `Welcome to lesson ${i} of ${chapter.title}`,
+                  title: 'Pendahuluan',
+                  content: `Selamat datang di pelajaran ${i}: ${titles[i - 1]}`,
                 },
                 {
-                  title: 'Practice',
-                  content: 'Try the exercises below',
+                  title: 'Latihan',
+                  content: 'Coba kerjakan latihan berikut',
                 },
               ],
             }),
@@ -97,9 +106,7 @@ export async function seedDatabase() {
       }
 
       // Create sample challenges for each chapter
-      const challengeCount = 3; // 3 challenges per chapter
-      
-      for (let i = 1; i <= challengeCount; i++) {
+      for (let i = 1; i <= 3; i++) {
         await prisma.challenge.upsert({
           where: {
             chapterId_number: {
@@ -111,10 +118,74 @@ export async function seedDatabase() {
           create: {
             chapterId: chapter.id,
             number: i,
-            title: `Challenge ${i}: ${chapter.title} Master`,
-            description: `Test your ${chapter.title.toLowerCase()} skills`,
+            title: `Tantangan ${i}: ${chapter.title}`,
+            description: `Uji kemampuan ${chapter.title.toLowerCase()} kamu`,
             difficulty: i === 1 ? 'EASY' : i === 2 ? 'MEDIUM' : 'HARD',
-            points: i * 10, // 10, 20, 30 points
+            points: i * 10,
+          },
+        });
+      }
+    }
+
+    // Create sample quizzes for first 3 chapters
+    for (let ci = 0; ci < 3; ci++) {
+      const chapter = chapters[ci];
+
+      const quiz = await prisma.quiz.upsert({
+        where: { id: `seed-quiz-ch${chapter.number}` },
+        update: {},
+        create: {
+          id: `seed-quiz-ch${chapter.number}`,
+          chapterId: chapter.id,
+          title: `Kuis ${chapter.title}`,
+          description: `Kuis untuk menguji pemahaman materi ${chapter.title}`,
+          timeLimit: 15,
+        },
+      });
+
+      const sampleQuestions = [
+        {
+          questionText: `Apa fungsi utama dari ${chapter.title.toLowerCase()}?`,
+          questionType: 'MULTIPLE_CHOICE' as const,
+          options: JSON.stringify([
+            { label: 'A', text: 'Untuk membuat program lebih kompleks', isCorrect: false },
+            { label: 'B', text: `Untuk ${chapter.description?.toLowerCase() || 'memahami konsep dasar'}`, isCorrect: true },
+            { label: 'C', text: 'Tidak ada fungsi khusus', isCorrect: false },
+            { label: 'D', text: 'Hanya untuk dekorasi kode', isCorrect: false },
+          ]),
+          correctAnswer: 'B',
+          points: 10,
+          order: 1,
+        },
+        {
+          questionText: 'Python adalah bahasa pemrograman yang bersifat interpreted. Benar atau Salah?',
+          questionType: 'TRUE_FALSE' as const,
+          correctAnswer: 'true',
+          points: 10,
+          order: 2,
+        },
+        {
+          questionText: 'Tuliskan output dari: print("Hello World")',
+          questionType: 'SHORT_ANSWER' as const,
+          correctAnswer: 'Hello World',
+          points: 10,
+          order: 3,
+        },
+      ];
+
+      for (const q of sampleQuestions) {
+        await prisma.question.upsert({
+          where: { id: `seed-q-ch${chapter.number}-${q.order}` },
+          update: {},
+          create: {
+            id: `seed-q-ch${chapter.number}-${q.order}`,
+            quizId: quiz.id,
+            questionText: q.questionText,
+            questionType: q.questionType,
+            options: q.options || null,
+            correctAnswer: q.correctAnswer,
+            points: q.points,
+            order: q.order,
           },
         });
       }
@@ -134,23 +205,68 @@ export async function seedDatabase() {
       },
     });
 
-    // Create sample user
+    // Create sample teacher
+    const teacherPassword = await hashPassword('guru123');
+    const teacher = await prisma.user.upsert({
+      where: { username: 'guru1' },
+      update: {},
+      create: {
+        username: 'guru1',
+        email: 'guru1@pythonlearning.com',
+        password: teacherPassword,
+        name: 'Pak Budi',
+        role: 'TEACHER',
+      },
+    });
+
+    // Create sample student
     const userPassword = await hashPassword('user123');
-    await prisma.user.upsert({
+    const student = await prisma.user.upsert({
       where: { username: 'student' },
       update: {},
       create: {
         username: 'student',
         email: 'student@pythonlearning.com',
         password: userPassword,
-        name: 'Sample Student',
+        name: 'Andi Pratama',
         role: 'USER',
       },
     });
 
+    // Create sample classroom and assign student
+    const classroom = await prisma.classroom.upsert({
+      where: { id: 'seed-classroom-1' },
+      update: {},
+      create: {
+        id: 'seed-classroom-1',
+        name: 'Python Kelas 10A',
+        description: 'Kelas Python untuk siswa kelas 10A',
+        teacherId: teacher.id,
+      },
+    });
+
+    await prisma.classroomStudent.upsert({
+      where: {
+        classroomId_studentId: {
+          classroomId: classroom.id,
+          studentId: student.id,
+        },
+      },
+      update: {},
+      create: {
+        classroomId: classroom.id,
+        studentId: student.id,
+      },
+    });
+
     console.log('Database seeded successfully!');
-    console.log('Admin credentials: admin / admin123');
-    console.log('Student credentials: student / user123');
+    console.log('');
+    console.log('=== Akun Login ===');
+    console.log('Admin    : admin / admin123');
+    console.log('Guru     : guru1 / guru123');
+    console.log('Murid    : student / user123');
+    console.log('');
+    console.log('Kelas: Python Kelas 10A (guru1)');
     
   } catch (error) {
     console.error('Error seeding database:', error);
