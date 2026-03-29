@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useChapterProgress } from '@/hooks/useChapterProgress';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -113,11 +114,33 @@ const lessons: LessonData[] = [
   }
 ];
 
+// Map frontend lesson IDs to DB lesson numbers (seed creates 4 lessons per chapter)
+const lessonIdToNumber: Record<string, number> = {
+  'introduction': 1,
+  'creation': 2,
+  'operations': 3,
+  'indexing': 4,
+};
+
 export function ListContainer() {
   const [activeLesson, setActiveLesson] = useState('introduction');
   const [lessonProgress, setLessonProgress] = useState<Record<string, boolean>>({});
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('lessons');
+  const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(1);
+
+  // Sync DB progress to local lessonProgress state
+  useEffect(() => {
+    if (loading) return;
+    const progress: Record<string, boolean> = {};
+    for (const [id, num] of Object.entries(lessonIdToNumber)) {
+      if (completedLessonNumbers.has(num)) {
+        progress[id] = true;
+      }
+    }
+    // Also keep any locally-completed lessons (methods, playground)
+    setLessonProgress(prev => ({ ...prev, ...progress }));
+  }, [completedLessonNumbers, loading]);
 
   // Mock user progress for challenges
   const [userProgress] = useState<UserProgress>({
@@ -144,6 +167,13 @@ export function ListContainer() {
       ...prev,
       [lessonId]: true
     }));
+
+    // Save to DB if this lesson has a DB mapping
+    const lessonNumber = lessonIdToNumber[lessonId];
+    if (lessonNumber) {
+      const lesson = lessons.find(l => l.id === lessonId);
+      saveLesson(lessonNumber, lesson?.title);
+    }
   };
 
   const handleChallengeSelect = (challengeId: string) => {

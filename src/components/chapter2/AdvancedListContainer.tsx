@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useChapterProgress } from '@/hooks/useChapterProgress';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -90,13 +91,40 @@ const lessons: LessonData[] = [
   }
 ];
 
+// Map frontend lesson IDs to DB lesson numbers
+const lessonIdToNumber: Record<string, number> = {
+  'comprehension': 1,
+  'nested-lists': 2,
+  'list-methods': 3,
+  'list-tricks': 4,
+};
+
 export function AdvancedListContainer() {
   const [activeLesson, setActiveLesson] = useState<string>('comprehension');
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [showPlayground, setShowPlayground] = useState(false);
+  const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(2);
+
+  // Sync DB progress to local state
+  useEffect(() => {
+    if (loading) return;
+    const completed = new Set<string>();
+    for (const [id, num] of Object.entries(lessonIdToNumber)) {
+      if (completedLessonNumbers.has(num)) {
+        completed.add(id);
+      }
+    }
+    setCompletedLessons(prev => new Set([...prev, ...completed]));
+  }, [completedLessonNumbers, loading]);
 
   const handleLessonComplete = (lessonId: string) => {
     setCompletedLessons(prev => new Set([...prev, lessonId]));
+
+    const lessonNumber = lessonIdToNumber[lessonId];
+    if (lessonNumber) {
+      const lesson = lessons.find(l => l.id === lessonId);
+      saveLesson(lessonNumber, lesson?.title);
+    }
   };
 
   const overallProgress = (completedLessons.size / lessons.length) * 100;

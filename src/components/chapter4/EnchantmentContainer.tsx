@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useChapterProgress } from '@/hooks/useChapterProgress';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,9 +12,37 @@ import { Lesson3NestedLoops } from './Lesson3NestedLoops';
 import { Lesson4Comprehensions } from './Lesson4Comprehensions';
 import { IterationPlayground } from './IterationPlayground';
 
+// Map frontend lesson IDs to DB lesson numbers
+const lessonIdToNumber: Record<string, number> = {
+  'lesson1': 1,
+  'lesson2': 2,
+  'lesson3': 3,
+  'lesson4': 4,
+};
+
 export function EnchantmentContainer() {
   const [currentLesson, setCurrentLesson] = useState('lesson1');
   const [unlockedLessons, setUnlockedLessons] = useState(['lesson1']);
+  const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(4);
+
+  // Sync DB progress to local state
+  useEffect(() => {
+    if (loading) return;
+    const unlocked = ['lesson1'];
+    const lessonIds = ['lesson1', 'lesson2', 'lesson3', 'lesson4'];
+    for (let i = 0; i < lessonIds.length; i++) {
+      const num = i + 1;
+      if (completedLessonNumbers.has(num) && i + 1 < lessonIds.length) {
+        if (!unlocked.includes(lessonIds[i + 1])) {
+          unlocked.push(lessonIds[i + 1]);
+        }
+      }
+    }
+    if (completedLessonNumbers.size >= 4) {
+      unlocked.push('playground');
+    }
+    setUnlockedLessons(unlocked);
+  }, [completedLessonNumbers, loading]);
 
   const lessons = [
     {
@@ -75,6 +104,13 @@ export function EnchantmentContainer() {
       if (!unlockedLessons.includes(nextLessonId)) {
         setUnlockedLessons(prev => [...prev, nextLessonId]);
       }
+    }
+
+    // Save to DB
+    const lessonNumber = lessonIdToNumber[completedLessonId];
+    if (lessonNumber) {
+      const lesson = lessons.find(l => l.id === completedLessonId);
+      saveLesson(lessonNumber, lesson?.title);
     }
   };
 
