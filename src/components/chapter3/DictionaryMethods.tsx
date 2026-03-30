@@ -125,7 +125,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
             <div className={styles.codeExample}>
               <div className="text-gray-400"># Get all keys (labels)</div>
               <div>student_ids = students.keys()</div>
-              <div className="text-gray-400"># Result: ['alice', 'bob', 'charlie']</div>
+              <div className="text-gray-400"># Result: [&apos;alice&apos;, &apos;bob&apos;, &apos;charlie&apos;]</div>
             </div>
           </div>
 
@@ -156,7 +156,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
               ))}
               {extractedKeys.length === 0 && (
                 <div className="text-center text-gray-500 py-8">
-                  Click "Run .keys() Method" to see the result
+                  Click &quot;Run .keys() Method&quot; to see the result
                 </div>
               )}
             </div>
@@ -238,7 +238,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
               ))}
               {extractedValues.length === 0 && (
                 <div className="text-center text-gray-500 py-8">
-                  Click "Run .values() Method" to see the result
+                  Click &quot;Run .values() Method&quot; to see the result
                 </div>
               )}
             </div>
@@ -283,7 +283,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
             <div className={styles.codeExample}>
               <div className="text-gray-400"># Get key-value pairs</div>
               <div>for key, value in students.items():</div>
-              <div className="ml-4">print(f"{'{key}'}: {'{value}'}")</div>
+              <div className="ml-4">print(f&quot;{'{key}'}: {'{value}'}&quot;)</div>
             </div>
           </div>
 
@@ -319,7 +319,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
               ))}
               {extractedItems.length === 0 && (
                 <div className="text-center text-gray-500 py-8">
-                  Click "Run .items() Method" to see the result
+                  Click &quot;Run .items() Method&quot; to see the result
                 </div>
               )}
             </div>
@@ -344,7 +344,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-green-800 mb-2">Excellent Work!</h3>
         <p className="text-green-700 mb-6">
-          You've mastered the three essential dictionary methods. Now you can:
+          You&apos;ve mastered the three essential dictionary methods. Now you can:
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -409,7 +409,7 @@ export function DictionaryMethods({ onComplete }: DictionaryMethodsProps) {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Lightbulb className="w-5 h-5 text-amber-500" />
-            Dictionary Methods You'll Master
+            Dictionary Methods You&apos;ll Master
           </CardTitle>
         </CardHeader>
         <CardContent>

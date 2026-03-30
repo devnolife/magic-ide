@@ -56,8 +56,8 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
     teachers: false,
     courses: false
   });
-  const [selectedPath, setSelectedPath] = useState<string[]>([]);
-  const [pathResult, setPathResult] = useState<any>(null);
+  const [_selectedPath, setSelectedPath] = useState<string[]>([]);
+  const [pathResult, setPathResult] = useState<Record<string, unknown> | string | number | boolean | null>(null);
   const [newStudentName, setNewStudentName] = useState('');
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [breadcrumb, setBreadcrumb] = useState<string[]>([]);
@@ -74,16 +74,16 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
     setBreadcrumb(path);
 
     try {
-      let result = academy;
+      let result: unknown = academy;
       for (const segment of path) {
-        result = result[segment as keyof typeof result] as any;
+        result = (result as Record<string, unknown>)[segment];
       }
-      setPathResult(result);
+      setPathResult(result as Record<string, unknown> | string | number | boolean | null);
 
       if (!completedTasks.includes('navigate_path')) {
         setCompletedTasks(prev => [...prev, 'navigate_path']);
       }
-    } catch (error) {
+    } catch (_error) {
       setPathResult(null);
     }
   };
@@ -130,7 +130,7 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
   };
 
   const iterateAllRecords = () => {
-    const allRecords: any[] = [];
+    const allRecords: { department: string; name: string; data: unknown }[] = [];
 
     Object.entries(academy).forEach(([deptName, deptData]) => {
       if (typeof deptData === 'object' && deptData !== null) {
@@ -487,11 +487,11 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
               </Button>
               <Button onClick={() => navigateToPath(['students', 'alice'])} variant="outline" className="w-full justify-start">
                 <span className="mr-2">👤</span>
-                Alice's Record
+                Alice&apos;s Record
               </Button>
               <Button onClick={() => navigateToPath(['students', 'alice', 'level'])} variant="outline" className="w-full justify-start">
                 <span className="mr-2">📊</span>
-                Alice's Level
+                Alice&apos;s Level
               </Button>
             </CardContent>
           </Card>

@@ -80,7 +80,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
         }
 
         // Load past attempts
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('auth-token');
         if (token) {
           const attemptsRes = await fetch('/api/challenges', {
             headers: { Authorization: `Bearer ${token}` },
@@ -115,7 +115,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
 
   const saveChallengeResult = useCallback(async (challengeNumber: number, score: number, timeSpent: number) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth-token');
       if (!token) return;
 
       const dbChallenge = dbChallenges.find(c => c.number === challengeNumber);
@@ -180,8 +180,8 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
       );
     }
 
-    const handleComplete = (score: number, timeSpent: number) => {
-      saveChallengeResult(challengeNum, score, timeSpent);
+    const handleComplete = (result: { score: number; timeSpent: number }) => {
+      saveChallengeResult(challengeNum, result.score, result.timeSpent);
     };
 
     const renderChallenge = () => {
@@ -195,7 +195,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
             <Challenge1RobotInstructions
               {...commonProps}
               onComplete={(success: boolean, score: number) => {
-                if (success) handleComplete(score, 0);
+                if (success) handleComplete({ score, timeSpent: 0 });
               }}
             />
           );
@@ -204,7 +204,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
             <Challenge2VariableMemory
               {...commonProps}
               onComplete={(success: boolean, score: number) => {
-                if (success) handleComplete(score, 0);
+                if (success) handleComplete({ score, timeSpent: 0 });
               }}
             />
           );
@@ -213,7 +213,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
             <Challenge3TypeDetective
               {...commonProps}
               onComplete={(success: boolean, score: number) => {
-                if (success) handleComplete(score, 0);
+                if (success) handleComplete({ score, timeSpent: 0 });
               }}
             />
           );
@@ -222,7 +222,7 @@ export function Chapter0Challenges({ challengeId }: Chapter0ChallengesProps) {
             <Challenge4OperationMaster
               {...commonProps}
               onComplete={(success: boolean, score: number) => {
-                if (success) handleComplete(score, 0);
+                if (success) handleComplete({ score, timeSpent: 0 });
               }}
             />
           );

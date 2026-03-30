@@ -12,7 +12,7 @@ interface Lesson2Props {
   onComplete?: () => void;
 }
 
-export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
+export default function Pelajaran2VariabelMemori({ onComplete: _onComplete }: Lesson2Props) {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       {/* Header */}
@@ -103,7 +103,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
                     <div className="w-16 h-12 bg-blue-200 rounded border-2 border-blue-400 flex items-center justify-center text-xs font-bold">
                       nama
                     </div>
-                    <span className="text-sm">"Alice"</span>
+                    <span className="text-sm">&quot;Alice&quot;</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-16 h-12 bg-green-200 rounded border-2 border-green-400 flex items-center justify-center text-xs font-bold">
@@ -115,7 +115,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
                     <div className="w-16 h-12 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs font-bold">
                       hobi
                     </div>
-                    <span className="text-sm">["membaca", "musik"]</span>
+                    <span className="text-sm">[&quot;membaca&quot;, &quot;musik&quot;]</span>
                   </div>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
-                  nama = "Alice"
+                  nama = &quot;Alice&quot;
                 </div>
                 <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
                   umur_siswa = 16
@@ -181,13 +181,13 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
-                  2nama = "Alice"  # Dimulai angka
+                  2nama = &quot;Alice&quot;  # Dimulai angka
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
                   nama-siswa = 16  # Pakai tanda minus
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
-                  class = "XII"    # Kata reserved
+                  class = &quot;XII&quot;    # Kata reserved
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
                   nama siswa = 85  # Ada spasi
@@ -218,8 +218,8 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
               <div className="text-4xl">📝</div>
               <h3 className="font-semibold">1. Deklarasi</h3>
               <p className="text-sm text-muted-foreground">
-                Saat Anda menulis <code className="bg-gray-200 px-1 rounded">nama = "Alice"</code>,
-                Python membuat kotak baru bernama "nama"
+                Saat Anda menulis <code className="bg-gray-200 px-1 rounded">nama = &quot;Alice&quot;</code>,
+                Python membuat kotak baru bernama &quot;nama&quot;
               </p>
             </div>
 
@@ -227,7 +227,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
               <div className="text-4xl">📦</div>
               <h3 className="font-semibold">2. Penyimpanan</h3>
               <p className="text-sm text-muted-foreground">
-                Python menyimpan nilai "Alice" di kotak tersebut dan mengingat
+                Python menyimpan nilai &quot;Alice&quot; di kotak tersebut dan mengingat
                 lokasinya di memori
               </p>
             </div>
@@ -237,7 +237,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
               <h3 className="font-semibold">3. Pengambilan</h3>
               <p className="text-sm text-muted-foreground">
                 Ketika Anda menulis <code className="bg-gray-200 px-1 rounded">print(nama)</code>,
-                Python mencari kotak "nama" dan mengambil isinya
+                Python mencari kotak &quot;nama&quot; dan mengambil isinya
               </p>
             </div>
           </div>
@@ -256,12 +256,12 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
             <CardContent>
               <div className="bg-gray-900 text-white p-4 rounded font-mono text-sm space-y-1">
                 <div className="text-green-400"># Informasi siswa</div>
-                <div className="text-blue-300">nama_lengkap = "Alice Wonderland"</div>
+                <div className="text-blue-300">nama_lengkap = &quot;Alice Wonderland&quot;</div>
                 <div className="text-blue-300">umur = 16</div>
-                <div className="text-blue-300">kelas = "XI IPA 2"</div>
+                <div className="text-blue-300">kelas = &quot;XI IPA 2&quot;</div>
                 <div className="text-blue-300">rata_rata_nilai = 87.5</div>
                 <div className="text-blue-300">status_aktif = True</div>
-                <div className="text-white mt-2">print("Siswa:", nama_lengkap, "Umur:", umur)</div>
+                <div className="text-white mt-2">print(&quot;Siswa:&quot;, nama_lengkap, &quot;Umur:&quot;, umur)</div>
               </div>
             </CardContent>
           </Card>
@@ -276,7 +276,7 @@ export default function Pelajaran2VariabelMemori({ onComplete }: Lesson2Props) {
                 <div className="text-blue-300">phi = 3.14159</div>
                 <div className="text-blue-300">jari_jari = 7</div>
                 <div className="text-blue-300">luas = phi * jari_jari * jari_jari</div>
-                <div className="text-white mt-2">print("Luas lingkaran:", luas)</div>
+                <div className="text-white mt-2">print(&quot;Luas lingkaran:&quot;, luas)</div>
                 <div className="text-yellow-300"># Output: Luas lingkaran: 153.9379</div>
               </div>
             </CardContent>

@@ -20,7 +20,7 @@ interface DictionaryItem {
 export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
   const [currentDemo, setCurrentDemo] = useState<'concept' | 'creation' | 'access' | 'complete'>('concept');
   const [dictionaryItems, setDictionaryItems] = useState<DictionaryItem[]>([]);
-  const [animationStep, setAnimationStep] = useState(0);
+  const [_animationStep, _setAnimationStep] = useState(0);
   const [userInput, setUserInput] = useState({ key: '', value: '' });
   const [searchKey, setSearchKey] = useState('');
   const [searchResult, setSearchResult] = useState<string | null>(null);
@@ -138,16 +138,16 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
             <div className="text-gray-400"># Creating a dictionary</div>
             <div>phone_book = {'{'}
               <div className="ml-4">
-                <div><span className="text-blue-400">"Alice"</span>: <span className="text-green-400">"555-0123"</span>,</div>
-                <div><span className="text-blue-400">"Bob"</span>: <span className="text-green-400">"555-0456"</span>,</div>
-                <div><span className="text-blue-400">"Charlie"</span>: <span className="text-green-400">"555-0789"</span></div>
+                <div><span className="text-blue-400">&quot;Alice&quot;</span>: <span className="text-green-400">&quot;555-0123&quot;</span>,</div>
+                <div><span className="text-blue-400">&quot;Bob&quot;</span>: <span className="text-green-400">&quot;555-0456&quot;</span>,</div>
+                <div><span className="text-blue-400">&quot;Charlie&quot;</span>: <span className="text-green-400">&quot;555-0789&quot;</span></div>
               </div>
             {'}'}</div>
           </div>
           
           <Button onClick={runCodeDemo} className="mt-4 w-full flex items-center gap-2">
             <Play className="w-4 h-4" />
-            I understand! Let's continue
+            I understand! Let&apos;s continue
           </Button>
         </div>
       </div>
@@ -206,7 +206,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
           
           <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">
-              <strong>Code:</strong> student["{userInput.key || 'key'}"] = "{userInput.value || 'value'}"
+              <strong>Code:</strong> student[&quot;{userInput.key || 'key'}&quot;] = &quot;{userInput.value || 'value'}&quot;
             </p>
           </div>
         </div>
@@ -271,7 +271,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
           
           <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-800">
-              <strong>Code:</strong> student["{searchKey || 'key'}"]
+              <strong>Code:</strong> student[&quot;{searchKey || 'key'}&quot;]
             </p>
           </div>
         </div>
@@ -303,7 +303,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-green-800 mb-2">Great Job!</h3>
         <p className="text-green-700 mb-6">
-          You've learned the basics of Python dictionaries. You now understand:
+          You&apos;ve learned the basics of Python dictionaries. You now understand:
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -360,7 +360,7 @@ export function BasicDictionary({ onComplete }: BasicDictionaryProps) {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Lightbulb className="w-5 h-5 text-amber-500" />
-            What You'll Learn
+            What You&apos;ll Learn
           </CardTitle>
         </CardHeader>
         <CardContent>

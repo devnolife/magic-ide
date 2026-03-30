@@ -183,7 +183,7 @@ export function StepByStepGuide({
               Congratulations! 🎉
             </h3>
             <p className="text-green-700">
-              You've successfully completed all steps in this learning guide!
+              You&apos;ve successfully completed all steps in this learning guide!
             </p>
           </CardContent>
         </Card>
@@ -198,7 +198,7 @@ export function StepByStepGuide({
               <p className="font-semibold text-amber-900">Learning Tip:</p>
               <p className="text-amber-800 text-sm">
                 Take your time with each step. Understanding is more important than speed.
-                Don't hesitate to revisit previous steps if needed!
+                Don&apos;t hesitate to revisit previous steps if needed!
               </p>
             </div>
           </div>

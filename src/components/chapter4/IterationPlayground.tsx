@@ -276,11 +276,11 @@ print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
     }
   };
 
-  const loadChallenge = (challenge: any) => {
+  const loadChallenge = (challenge: { template: string }) => {
     setCurrentCode(challenge.template);
   };
 
-  const loadExample = (example: any) => {
+  const loadExample = (example: { code: string }) => {
     setCurrentCode(example.code);
   };
 
@@ -478,7 +478,7 @@ print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
                     animate={{ opacity: 1 }}
                     className="mt-2 text-blue-300"
                   >
-                    # Code loaded successfully! Press "Execute Spell" to run.
+                    # Code loaded successfully! Press &quot;Execute Spell&quot; to run.
                   </motion.div>
                 )}
               </div>

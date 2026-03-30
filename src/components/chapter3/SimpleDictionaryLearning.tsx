@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { CheckCircle, Circle, ArrowRight, ArrowLeft, BookOpen, Target, Lightbulb } from 'lucide-react';
 import { BasicDictionary } from './BasicDictionary';
 import { DictionaryMethods } from './DictionaryMethods';
@@ -285,7 +284,7 @@ export function SimpleDictionaryLearning() {
             {/* Concepts being learned */}
             <div className="flex flex-wrap gap-2 mt-4">
               <Lightbulb className="w-5 h-5 text-amber-500" />
-              <span className="font-medium text-gray-700">You'll learn:</span>
+              <span className="font-medium text-gray-700">You&apos;ll learn:</span>
               {learningSteps[currentStep].concepts.map((concept, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
                   {concept}
@@ -339,7 +338,7 @@ export function SimpleDictionaryLearning() {
               </span>
             </div>
             <p className="text-green-700">
-              You've completed {completedSteps.length} lesson{completedSteps.length !== 1 ? 's' : ''}. 
+              You&apos;ve completed {completedSteps.length} lesson{completedSteps.length !== 1 ? 's' : ''}. 
               Keep going to master Python dictionaries!
             </p>
           </CardContent>
@@ -355,7 +354,7 @@ export function SimpleDictionaryLearning() {
               Congratulations!
             </h2>
             <p className="text-orange-700 text-lg">
-              You've mastered Python dictionaries! You're now ready to use them in real projects.
+              You&apos;ve mastered Python dictionaries! You&apos;re now ready to use them in real projects.
             </p>
             <Button className="mt-4 bg-orange-500 hover:bg-orange-600">
               Continue to Advanced Topics

@@ -1,20 +1,16 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Gamepad2,
   Trophy,
   Star,
-  Target,
   CheckCircle2,
-  Code,
-  Play,
   RotateCcw,
   Lightbulb,
   Zap,
@@ -32,8 +28,8 @@ interface Challenge {
   title: string;
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
-  initialList: any[];
-  targetResult: any[];
+  initialList: (string | number | boolean)[];
+  targetResult: (string | number | boolean)[];
   hints: string[];
   maxOperations?: number;
   points: number;
@@ -148,7 +144,7 @@ const achievements: Achievement[] = [
 export function InteractivePlayground({ onComplete }: LessonProps) {
   const [activeTab, setActiveTab] = useState('challenges');
   const [currentChallenge, setCurrentChallenge] = useState<Challenge | null>(null);
-  const [currentList, setCurrentList] = useState<any[]>([]);
+  const [currentList, setCurrentList] = useState<(string | number | boolean)[]>([]);
   const [operationCount, setOperationCount] = useState(0);
   const [completedChallenges, setCompletedChallenges] = useState<Set<string>>(new Set());
   const [userAchievements, setUserAchievements] = useState<Set<string>>(new Set());
@@ -158,7 +154,7 @@ export function InteractivePlayground({ onComplete }: LessonProps) {
   const [newItem, setNewItem] = useState('');
 
   // Free play mode state
-  const [freePlayList, setFreePlayList] = useState<any[]>([]);
+  const [freePlayList, setFreePlayList] = useState<(string | number | boolean)[]>([]);
   const [codeInput, setCodeInput] = useState(`# Python List Operations Playground
 # Create a list and try different operations
 
@@ -180,6 +176,7 @@ print("Final list:", my_list)`);
 
   useEffect(() => {
     checkAchievements();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completedChallenges, freePlayLists.length]);
 
   const checkAchievements = () => {
@@ -214,9 +211,9 @@ print("Final list:", my_list)`);
     setOperationHistory([]);
   };
 
-  const executeOperation = (operation: string, ...args: any[]) => {
+  const executeOperation = (operation: string, ...args: (string | number | boolean)[]) => {
     const newList = [...currentList];
-    let result: any[] = newList;
+    const result: (string | number | boolean)[] = newList;
     let operationStr = '';
 
     try {
@@ -226,7 +223,7 @@ print("Final list:", my_list)`);
           operationStr = `list.append(${JSON.stringify(args[0])})`;
           break;
         case 'insert':
-          newList.splice(args[0], 0, args[1]);
+          newList.splice(args[0] as number, 0, args[1]);
           operationStr = `list.insert(${args[0]}, ${JSON.stringify(args[1])})`;
           break;
         case 'remove':
@@ -239,7 +236,7 @@ print("Final list:", my_list)`);
           }
           break;
         case 'pop':
-          const poppedItem = args[0] !== undefined ? newList.splice(args[0], 1)[0] : newList.pop();
+          const _poppedItem = args[0] !== undefined ? newList.splice(args[0] as number, 1)[0] : newList.pop();
           operationStr = args[0] !== undefined ? `list.pop(${args[0]})` : `list.pop()`;
           break;
         case 'sort':
@@ -269,12 +266,12 @@ print("Final list:", my_list)`);
         checkChallengeCompletion(newList);
       }
 
-    } catch (error: any) {
-      toast.error(`Error: ${error.message}`);
+    } catch (error: unknown) {
+      toast.error(`Error: ${(error as Error).message}`);
     }
   };
 
-  const checkChallengeCompletion = (list: any[]) => {
+  const checkChallengeCompletion = (list: (string | number | boolean)[]) => {
     if (!currentChallenge) return;
 
     const isCompleted = JSON.stringify(list) === JSON.stringify(currentChallenge.targetResult);
@@ -333,7 +330,7 @@ print("Final list:", my_list)`);
     try {
       // Simple code execution simulation for list operations
       const lines = codeInput.split('\n').filter(line => line.trim() && !line.trim().startsWith('#'));
-      let currentList: any[] = [];
+      let currentList: (string | number | boolean)[] = [];
       let listVariableName = 'my_list';
 
       for (const line of lines) {
@@ -801,7 +798,7 @@ print("Final list:", my_list)`);
                   </div>
 
                   <div className="text-xs text-gray-600">
-                    💡 Click "Run" to execute your code and see the results!
+                    💡 Click &quot;Run&quot; to execute your code and see the results!
                   </div>
                 </div>
               </Card>
@@ -851,7 +848,7 @@ print("Final list:", my_list)`);
             🎉 Congratulations! Chapter Complete!
           </h3>
           <p className="text-gray-600">
-            You've mastered all Python list operations and challenges. Total Score: {totalPoints} points!
+            You&apos;ve mastered all Python list operations and challenges. Total Score: {totalPoints} points!
           </p>
         </motion.div>
       )}

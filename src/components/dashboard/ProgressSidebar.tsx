@@ -9,7 +9,6 @@ import {
   Clock,
   Target,
   Zap,
-  BookOpen,
   Flame,
   Star,
   Award,

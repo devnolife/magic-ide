@@ -188,7 +188,7 @@ export default function CertificatesPage() {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("auth-token");
         const res = await fetch("/api/certificates", {
           headers: { Authorization: `Bearer ${token}` },
         });

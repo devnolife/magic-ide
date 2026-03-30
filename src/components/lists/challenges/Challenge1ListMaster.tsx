@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Users,
@@ -19,14 +18,21 @@ import {
   Star
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { SubChallenge, TestCase, ChallengeSession } from '@/types/challenges';
+import { SubChallenge, ChallengeSession } from '@/types/challenges';
 import { CodeEditor } from '@/components/CodeEditor';
+
+interface TestResult {
+  description: string;
+  passed: boolean;
+  points: number;
+  maxPoints: number;
+}
 
 interface Challenge1Props {
   session?: ChallengeSession;
   setSession?: (session: ChallengeSession | ((prev: ChallengeSession) => ChallengeSession)) => void;
   onHint?: (level: number) => void;
-  onComplete?: (results: any[]) => void;
+  onComplete?: (results: unknown[]) => void;
   setScore?: (score: number | ((prev: number) => number)) => void;
   maxPossibleScore?: number;
 }
@@ -252,12 +258,13 @@ export function Challenge1ListMaster({
   onHint,
   onComplete,
   setScore,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   maxPossibleScore
 }: Challenge1Props) {
   const [currentSubChallenge, setCurrentSubChallenge] = useState(0);
   const [code, setCode] = useState(subChallenges[0].starterCode || '');
-  const [results, setResults] = useState<any[]>([]);
-  const [showHints, setShowHints] = useState(false);
+  const [results, setResults] = useState<TestResult[]>([]);
+  const [_showHints, setShowHints] = useState(false);
   const [usedHints, setUsedHints] = useState<Set<number>>(new Set());
 
   const challenge = subChallenges[currentSubChallenge];

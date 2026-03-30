@@ -12,7 +12,7 @@ interface Lesson3Props {
   onComplete?: () => void;
 }
 
-export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
+export default function Pelajaran3TipeData({ onComplete: _onComplete }: Lesson3Props) {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       {/* Header */}
@@ -177,19 +177,19 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 </p>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-blue-300">nama = "Alice"</div>
-                  <div className="text-blue-300">pesan = 'Halo Dunia!'</div>
-                  <div className="text-blue-300">alamat = "Jl. Merdeka No. 17"</div>
-                  <div className="text-blue-3000">angka_teks = "123"  # Ini string, bukan angka!</div>
+                  <div className="text-blue-300">nama = &quot;Alice&quot;</div>
+                  <div className="text-blue-300">pesan = &apos;Halo Dunia!&apos;</div>
+                  <div className="text-blue-300">alamat = &quot;Jl. Merdeka No. 17&quot;</div>
+                  <div className="text-blue-3000">angka_teks = &quot;123&quot;  # Ini string, bukan angka!</div>
                 </div>
 
                 <div className="text-sm space-y-1">
                   <div><strong>Karakteristik:</strong></div>
                   <ul className="ml-4 space-y-1">
-                    <li>• Diapit tanda kutip (" atau ')</li>
+                    <li>• Diapit tanda kutip (&quot; atau &apos;)</li>
                     <li>• Bisa berisi huruf, angka, simbol</li>
                     <li>• Bisa digabung dengan operator +</li>
-                    <li>• Bisa kosong: ""</li>
+                    <li>• Bisa kosong: &quot;&quot;</li>
                   </ul>
                 </div>
               </div>
@@ -309,9 +309,9 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 </p>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-orange-300">warna = ["merah", "biru", "hijau"]</div>
+                  <div className="text-orange-300">warna = [&quot;merah&quot;, &quot;biru&quot;, &quot;hijau&quot;]</div>
                   <div className="text-orange-300">angka = [1, 2, 3, 4, 5]</div>
-                  <div className="text-orange-300">campuran = ["Alice", 25, True]</div>
+                  <div className="text-orange-300">campuran = [&quot;Alice&quot;, 25, True]</div>
                   <div className="text-orange-300">kosong = []</div>
                 </div>
 
@@ -338,7 +338,7 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  None adalah tipe data khusus yang menyatakan "tidak ada nilai" atau "kosong".
+                  None adalah tipe data khusus yang menyatakan &quot;tidak ada nilai&quot; atau &quot;kosong&quot;.
                 </p>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
@@ -351,7 +351,7 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                   <div><strong>Karakteristik:</strong></div>
                   <ul className="ml-4 space-y-1">
                     <li>• Menunjukkan ketiadaan nilai</li>
-                    <li>• Berbeda dengan 0 atau ""</li>
+                    <li>• Berbeda dengan 0 atau &quot;&quot;</li>
                     <li>• Sering digunakan sebagai default</li>
                     <li>• Hanya ada satu nilai: None</li>
                   </ul>
@@ -381,15 +381,15 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 <h4 className="font-semibold">Mengubah ke String:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
                   <div className="text-blue-300">angka = 123</div>
-                  <div className="text-blue-300">teks = str(angka)  # "123"</div>
-                  <div className="text-blue-300">bool_teks = str(True)  # "True"</div>
+                  <div className="text-blue-300">teks = str(angka)  # &quot;123&quot;</div>
+                  <div className="text-blue-300">bool_teks = str(True)  # &quot;True&quot;</div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <h4 className="font-semibold">Mengubah ke Integer:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-green-300">teks = "456"</div>
+                  <div className="text-green-300">teks = &quot;456&quot;</div>
                   <div className="text-green-300">angka = int(teks)  # 456</div>
                   <div className="text-green-300">dari_float = int(7.9)  # 7</div>
                 </div>
@@ -398,7 +398,7 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
               <div className="space-y-3">
                 <h4 className="font-semibold">Mengubah ke Float:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-yellow-300">teks = "3.14"</div>
+                  <div className="text-yellow-300">teks = &quot;3.14&quot;</div>
                   <div className="text-yellow-300">desimal = float(teks)  # 3.14</div>
                   <div className="text-yellow-300">dari_int = float(5)  # 5.0</div>
                 </div>
@@ -409,8 +409,8 @@ export default function Pelajaran3TipeData({ onComplete }: Lesson3Props) {
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
                   <div className="text-emerald-300">bool(1)      # True</div>
                   <div className="text-emerald-300">bool(0)      # False</div>
-                  <div className="text-emerald-300">bool("hi")   # True</div>
-                  <div className="text-emerald-300">bool("")     # False</div>
+                  <div className="text-emerald-300">bool(&quot;hi&quot;)   # True</div>
+                  <div className="text-emerald-300">bool(&quot;&quot;)     # False</div>
                 </div>
               </div>
             </div>

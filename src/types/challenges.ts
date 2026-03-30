@@ -2,12 +2,12 @@ export interface ChallengeContainerProps {
   challengeId: string;
   title: string;
   description: string;
-  theme: string;
+  theme?: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   timeLimit?: number;
-  requiredSkills: string[];
+  requiredSkills?: string[];
   onComplete: (result: ChallengeResult) => void;
-  onHint: (hintLevel: number) => void;
+  onHint?: (hintLevel: number) => void;
   children: React.ReactNode;
 }
 
@@ -98,14 +98,14 @@ export interface RecipeStep {
 export interface VariableBox {
   id: string;
   name: string;
-  value: any;
+  value: string | number | boolean | null;
   type: string;
   locked: boolean;
 }
 
 export interface DataClue {
   id: string;
-  value: any;
+  value: string | number | boolean;
   correctType: string;
   category: string;
   difficulty: number;
@@ -114,15 +114,15 @@ export interface DataClue {
 export interface OperationChain {
   id: string;
   steps: OperationStep[];
-  expectedResult: any;
+  expectedResult: string | number | boolean;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface OperationStep {
   id: string;
   operation: string;
-  operands: any[];
-  result?: any;
+  operands: (string | number | boolean)[];
+  result?: string | number | boolean;
   operator: '+' | '-' | '*' | '/' | '%' | '**' | '==' | '!=' | '<' | '>' | 'and' | 'or' | 'not';
 }
 
@@ -134,13 +134,13 @@ export interface ChallengeResult {
   efficiency: number;
   accuracy: number;
   completed: boolean;
-  solutions: any[];
+  solutions: unknown[];
   perfectSolution?: boolean;
 }
 
 export interface TestCase {
-  input: any;
-  expectedOutput: any;
+  input: unknown;
+  expectedOutput: unknown;
   description: string;
   points: number;
   hidden?: boolean;

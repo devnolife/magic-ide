@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -96,7 +96,7 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
   const [currentDataset, setCurrentDataset] = useState<'numbers' | 'strings' | 'mixed'>('numbers');
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [methodResult, setMethodResult] = useState<any>(null);
+  const [methodResult, setMethodResult] = useState<string | number | boolean | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [completedMethods, setCompletedMethods] = useState<Set<string>>(new Set());
   const [operationHistory, setOperationHistory] = useState<string[]>([]);
@@ -105,6 +105,7 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
 
   useEffect(() => {
     loadDataset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDataset]);
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export function Lesson5Methods({ onComplete }: LessonProps) {
     setMethodResult(null);
   };
 
-  const getColorForValue = (value: any): string => {
+  const getColorForValue = (value: string | number | boolean): string => {
     if (typeof value === 'number') {
       return 'from-blue-400 to-blue-600';
     } else if (typeof value === 'string') {

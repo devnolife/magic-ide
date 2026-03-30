@@ -42,7 +42,7 @@ export default function ChapterPage({ params }: { params: Promise<{ id: string }
       }
 
       // Check if previous chapter is completed
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth-token');
       if (!token) {
         setAccessState('locked');
         return;

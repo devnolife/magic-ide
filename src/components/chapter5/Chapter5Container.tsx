@@ -5,13 +5,11 @@ import { useChapterProgress } from '@/hooks/useChapterProgress';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Lesson1ForLoops } from './Lesson1ForLoops';
-import { Lesson2WhileLoops } from './Lesson2WhileLoops';
-import { Lesson3NestedLoops } from './Lesson3NestedLoops';
-import { Lesson4Comprehensions } from './Lesson4Comprehensions';
-import { IterationPlayground } from './IterationPlayground';
+import { Lesson1OOP } from './Lesson1OOP';
+import { Lesson2ErrorHandling } from './Lesson2ErrorHandling';
+import { Lesson3FileOperations } from './Lesson3FileOperations';
+import { Lesson4Modules } from './Lesson4Modules';
 
-// Map frontend lesson IDs to DB lesson numbers
 const lessonIdToNumber: Record<string, number> = {
   'lesson1': 1,
   'lesson2': 2,
@@ -19,12 +17,15 @@ const lessonIdToNumber: Record<string, number> = {
   'lesson4': 4,
 };
 
-export function EnchantmentContainer() {
+interface Chapter5ContainerProps {
+  onComplete?: () => void;
+}
+
+export function Chapter5Container({ onComplete }: Chapter5ContainerProps) {
   const [currentLesson, setCurrentLesson] = useState('lesson1');
   const [unlockedLessons, setUnlockedLessons] = useState(['lesson1']);
-  const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(4);
+  const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(5);
 
-  // Sync DB progress to local state
   useEffect(() => {
     if (loading) return;
     const unlocked = ['lesson1'];
@@ -37,67 +38,58 @@ export function EnchantmentContainer() {
         }
       }
     }
-    if (completedLessonNumbers.size >= 4) {
-      unlocked.push('playground');
-    }
     setUnlockedLessons(unlocked);
-  }, [completedLessonNumbers, loading]);
+
+    if (completedLessonNumbers.size >= 4 && onComplete) {
+      onComplete();
+    }
+  }, [completedLessonNumbers, loading, onComplete]);
 
   const lessons = [
     {
       id: 'lesson1',
-      title: 'For Loop Incantations',
-      description: 'Master the art of controlled repetition with for loops and ranges',
-      icon: '🔁',
+      title: 'OOP & Classes',
+      description: 'Kuasai pemrograman berorientasi objek dengan class dan inheritance',
+      icon: '🏗️',
       difficulty: 'Apprentice',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200'
+      color: 'from-violet-500 to-violet-600',
+      bgColor: 'bg-violet-50',
+      borderColor: 'border-violet-200',
     },
     {
       id: 'lesson2',
-      title: 'While Circle Rituals',
-      description: 'Learn conditional repetition and infinite circle management',
-      icon: '⚡',
+      title: 'Error Handling',
+      description: 'Pelajari cara menangani error dengan try/except/finally',
+      icon: '🛡️',
       difficulty: 'Adept',
-      color: 'from-emerald-500 to-emerald-600',
-      bgColor: 'bg-emerald-50',
-      borderColor: 'border-emerald-200'
+      color: 'from-rose-500 to-rose-600',
+      bgColor: 'bg-rose-50',
+      borderColor: 'border-rose-200',
     },
     {
       id: 'lesson3',
-      title: 'Nested Circle Mastery',
-      description: 'Explore multi-dimensional loops and complex iteration patterns',
-      icon: '🌀',
+      title: 'File Operations',
+      description: 'Baca dan tulis file dengan Python I/O',
+      icon: '📂',
       difficulty: 'Expert',
-      color: 'from-fuchsia-500 to-fuchsia-600',
-      bgColor: 'bg-fuchsia-50',
-      borderColor: 'border-fuchsia-200'
+      color: 'from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-200',
     },
     {
       id: 'lesson4',
-      title: 'Comprehension Sorcery',
-      description: 'Master advanced list/dict comprehensions and generator magic',
-      icon: '✨',
+      title: 'Modules & Packages',
+      description: 'Organisasi kode dengan modul dan paket Python',
+      icon: '📦',
       difficulty: 'Master',
       color: 'from-cyan-500 to-cyan-600',
       bgColor: 'bg-cyan-50',
-      borderColor: 'border-cyan-200'
+      borderColor: 'border-cyan-200',
     },
-    {
-      id: 'playground',
-      title: 'Iteration Playground',
-      description: 'Free practice arena for all loop and iteration techniques',
-      icon: '🎭',
-      difficulty: 'Grandmaster',
-      color: 'from-rose-500 to-rose-600',
-      bgColor: 'bg-rose-50',
-      borderColor: 'border-rose-200'
-    }
   ];
 
   const unlockNextLesson = (completedLessonId: string) => {
-    const currentIndex = lessons.findIndex(lesson => lesson.id === completedLessonId);
+    const currentIndex = lessons.findIndex(l => l.id === completedLessonId);
     if (currentIndex < lessons.length - 1) {
       const nextLessonId = lessons[currentIndex + 1].id;
       if (!unlockedLessons.includes(nextLessonId)) {
@@ -105,7 +97,6 @@ export function EnchantmentContainer() {
       }
     }
 
-    // Save to DB
     const lessonNumber = lessonIdToNumber[completedLessonId];
     if (lessonNumber) {
       const lesson = lessons.find(l => l.id === completedLessonId);
@@ -118,44 +109,43 @@ export function EnchantmentContainer() {
       case 'Apprentice': return 'bg-green-100 text-green-800';
       case 'Adept': return 'bg-blue-100 text-blue-800';
       case 'Expert': return 'bg-yellow-100 text-yellow-800';
-      case 'Master': return 'bg-emerald-100 text-emerald-800';
-      case 'Grandmaster': return 'bg-red-100 text-red-800';
+      case 'Master': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Enchantment Academy Header */}
-      <Card className="mb-8 bg-gradient-to-r from-blue-50 via-emerald-50 to-fuchsia-50 border-2 border-blue-200 shadow-xl">
+      {/* Chapter Header */}
+      <Card className="mb-8 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-cyan-50 border-2 border-violet-200 shadow-xl">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <span className="text-6xl">⭕</span>
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 rounded-full animate-spin"></div>
-              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-emerald-400 rounded-full animate-spin [animation-direction:reverse]"></div>
-              <div className="absolute top-1 -left-4 w-2 h-2 bg-fuchsia-400 rounded-full animate-ping"></div>
+              <span className="text-6xl">🧙‍♂️</span>
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-violet-400 rounded-full animate-ping" />
+              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-fuchsia-400 rounded-full animate-bounce" />
+              <div className="absolute top-1 -left-4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-fuchsia-600 bg-clip-text text-transparent">
-            Master Circula&apos;s Enchantment Academy
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+            Akademi Konsep Lanjutan Python
           </CardTitle>
           <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Step into the sacred circles where loops and iterations become infinite sources of magical power.
-            Each lesson unlocks deeper mysteries of repetitive enchantments and algorithmic sorcery.
+            Pelajari teknik-teknik Python tingkat lanjut: OOP, Error Handling, File I/O, dan Modules.
+            Setiap pelajaran membuka kekuatan baru dalam perjalanan coding-mu!
           </CardDescription>
         </CardHeader>
       </Card>
 
       {/* Lesson Navigation */}
       <Tabs value={currentLesson} onValueChange={setCurrentLesson}>
-        <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/80 backdrop-blur-sm border border-blue-200 shadow-lg">
+        <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm border border-violet-200 shadow-lg">
           {lessons.map((lesson) => (
             <TabsTrigger
               key={lesson.id}
               value={lesson.id}
               disabled={!unlockedLessons.includes(lesson.id)}
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${lesson.color} data-[state=active]:text-white 
+              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${lesson.color} data-[state=active]:text-white
                          disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 relative group`}
             >
               <div className="flex flex-col items-center space-y-1 p-2">
@@ -173,50 +163,47 @@ export function EnchantmentContainer() {
           ))}
         </TabsList>
 
-        {/* Lesson Content */}
         <TabsContent value="lesson1" className="space-y-6">
-          <Lesson1ForLoops onComplete={() => unlockNextLesson('lesson1')} />
+          <Lesson1OOP onComplete={() => unlockNextLesson('lesson1')} />
         </TabsContent>
 
         <TabsContent value="lesson2" className="space-y-6">
-          <Lesson2WhileLoops onComplete={() => unlockNextLesson('lesson2')} />
+          <Lesson2ErrorHandling onComplete={() => unlockNextLesson('lesson2')} />
         </TabsContent>
 
         <TabsContent value="lesson3" className="space-y-6">
-          <Lesson3NestedLoops onComplete={() => unlockNextLesson('lesson3')} />
+          <Lesson3FileOperations onComplete={() => unlockNextLesson('lesson3')} />
         </TabsContent>
 
         <TabsContent value="lesson4" className="space-y-6">
-          <Lesson4Comprehensions onComplete={() => unlockNextLesson('lesson4')} />
-        </TabsContent>
-
-        <TabsContent value="playground" className="space-y-6">
-          <IterationPlayground onComplete={() => unlockNextLesson('playground')} />
+          <Lesson4Modules onComplete={() => unlockNextLesson('lesson4')} />
         </TabsContent>
       </Tabs>
 
       {/* Progress Indicator */}
-      <Card className="mt-8 bg-gradient-to-r from-blue-50 to-fuchsia-50 border border-blue-200">
+      <Card className="mt-8 bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-200">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Enchantment Progress</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Progress Chapter 5</h3>
             <Badge variant="outline" className="bg-white">
-              {unlockedLessons.length} / {lessons.length} Circles Mastered
+              {unlockedLessons.length} / {lessons.length} Pelajaran Terbuka
             </Badge>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3 mb-4 overflow-hidden">
-            <div className={`h-full bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-full transition-all duration-500 ease-out`} />
+            <div
+              className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${(unlockedLessons.length / lessons.length) * 100}%` }}
+            />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {lessons.map((lesson, _index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {lessons.map((lesson) => (
               <div key={lesson.id} className="flex items-center space-x-2">
                 <div className={`w-3 h-3 rounded-full ${unlockedLessons.includes(lesson.id)
-                  ? 'bg-gradient-to-r from-blue-500 to-fuchsia-500'
+                  ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500'
                   : 'bg-gray-300'
-                  }`} />
-                <span className={`text-sm ${unlockedLessons.includes(lesson.id) ? 'text-gray-800' : 'text-gray-400'
-                  }`}>
-                  {lesson.title.split(' ')[0]}
+                }`} />
+                <span className={`text-sm ${unlockedLessons.includes(lesson.id) ? 'text-gray-800' : 'text-gray-400'}`}>
+                  {lesson.title}
                 </span>
               </div>
             ))}

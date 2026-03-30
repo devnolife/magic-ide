@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -161,7 +161,7 @@ export function Lesson1Introduction({ onComplete }: LessonProps) {
                 </ul>
                 <div className="bg-blue-50 p-4 rounded-lg mt-4">
                   <code className="text-sm text-blue-800">
-                    shopping_cart = ["Apel", "Roti", "Susu"]
+                    shopping_cart = [&quot;Apel&quot;, &quot;Roti&quot;, &quot;Susu&quot;]
                   </code>
                 </div>
               </div>

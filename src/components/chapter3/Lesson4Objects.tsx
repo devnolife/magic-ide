@@ -147,7 +147,7 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
     }
   };
 
-  const useAbility = (creatureId: string, abilityIndex: number) => {
+  const activateAbility = (creatureId: string, abilityIndex: number) => {
     const creature = creatures.find(c => c.id === creatureId);
     if (!creature) return;
 
@@ -383,7 +383,7 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
                             variant="outline"
                             onClick={(e) => {
                               e.stopPropagation();
-                              useAbility(creature.id, index);
+                              activateAbility(creature.id, index);
                             }}
                             disabled={creature.mana < 20}
                             className="text-xs"
@@ -463,7 +463,7 @@ export function Lesson4Objects({ onComplete }: Lesson4ObjectsProps) {
                   <Button
                     key={type}
                     variant={newCreatureType === type ? "default" : "outline"}
-                    onClick={() => setNewCreatureType(type as any)}
+                    onClick={() => setNewCreatureType(type as 'dragon' | 'phoenix' | 'unicorn' | 'griffin')}
                     className="flex items-center space-x-2"
                   >
                     <span>{getTypeIcon(type)}</span>

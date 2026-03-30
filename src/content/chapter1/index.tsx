@@ -19,7 +19,7 @@ interface Lesson {
   title: string;
   description: string;
   duration: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<Record<string, unknown>>;
   completed: boolean;
 }
 
@@ -208,7 +208,7 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
         <h2 className="text-2xl font-bold text-center">Daftar Pelajaran</h2>
 
         <div className="grid gap-6">
-          {lessons.map((lesson, index) => (
+          {lessons.map((lesson, _index) => (
             <Card
               key={lesson.id}
               className={`transition-all hover:shadow-lg ${lesson.completed

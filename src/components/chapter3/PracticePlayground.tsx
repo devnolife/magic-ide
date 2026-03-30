@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Play, RotateCcw, CheckCircle, Code, Lightbulb, Download } from 'lucide-react';
-import styles from './SimpleLearning.module.css';
 
 interface PracticePlaygroundProps {
   onComplete: () => void;
@@ -383,13 +382,13 @@ print("Subject popularity:", subject_count)
             <div className="bg-gray-900 text-green-400 p-4 rounded-lg h-96 overflow-auto font-mono text-sm">
               {output || (
                 <div className="text-gray-500">
-                  Click "Run Code" to see the output here...
+                  Click &quot;Run Code&quot; to see the output here...
                   <br /><br />
                   💡 <span className="text-gray-400">Tips:</span>
                   <br />• Use print() to display results
                   <br />• Try different dictionary operations
                   <br />• Experiment with the provided examples
-                  <br />• Don't be afraid to make mistakes - that's how you learn!
+                  <br />• Don&apos;t be afraid to make mistakes - that&apos;s how you learn!
                 </div>
               )}
             </div>
@@ -475,13 +474,13 @@ print("Subject popularity:", subject_count)
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-green-800 mb-2">Ready to Graduate?</h3>
             <p className="text-green-700">
-              You've explored dictionary concepts through hands-on practice.
+              You&apos;ve explored dictionary concepts through hands-on practice.
               When you feel confident with dictionary operations, mark this section as complete!
             </p>
           </div>
 
           <div className="mb-6">
-            <h4 className="font-semibold text-green-800 mb-3">✅ Skills You've Practiced:</h4>
+            <h4 className="font-semibold text-green-800 mb-3">✅ Skills You&apos;ve Practiced:</h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-green-700">
               <div>Dictionary creation & access</div>
               <div>Nested data structures</div>

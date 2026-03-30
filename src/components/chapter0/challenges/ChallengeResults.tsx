@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import {
   Trophy,
   Star,
@@ -39,14 +38,14 @@ interface ChallengeResultsProps {
 }
 
 export default function ChallengeResults({
-  challengeId,
+  challengeId: _challengeId,
   challengeTitle,
   difficulty,
   finalScore,
   timeSpent,
   attempts,
   mistakes,
-  hintsUsed,
+  hintsUsed: _hintsUsed,
   scoreBreakdown,
   newAchievements,
   userStats,

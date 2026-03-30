@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
 import {
   Clock,
   Zap,
@@ -15,7 +13,6 @@ import {
   Star,
   Trophy,
   CheckCircle2,
-  AlertTriangle,
   Brain,
   Timer
 } from 'lucide-react';
@@ -57,7 +54,7 @@ export function ChallengeContainer({
   });
 
   const [score, setScore] = useState(0);
-  const [maxPossibleScore, setMaxPossibleScore] = useState(1000);
+  const [maxPossibleScore, _setMaxPossibleScore] = useState(1000);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Timer effect
@@ -87,6 +84,7 @@ export function ChallengeContainer({
     if (timeLimit && timer.seconds >= timeLimit) {
       handleTimeUp();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer.seconds, timeLimit]);
 
   const formatTime = (seconds: number): string => {
@@ -118,7 +116,7 @@ export function ChallengeContainer({
       ...prev,
       hintsUsed: prev.hintsUsed + 1
     }));
-    onHint(level);
+    onHint?.(level);
 
     // Apply hint penalty to score
     const penalty = Math.floor(maxPossibleScore * (level * 0.05));
@@ -149,7 +147,7 @@ export function ChallengeContainer({
     onComplete(result);
   };
 
-  const handleChallengeComplete = (subChallengeResults: any[]) => {
+  const handleChallengeComplete = (subChallengeResults: unknown[]) => {
     setTimer(prev => ({ ...prev, isActive: false }));
     setSession(prev => ({ ...prev, endTime: new Date() }));
 
@@ -185,9 +183,9 @@ export function ChallengeContainer({
     return Math.round((timeEfficiency + hintEfficiency) / 2);
   };
 
-  const calculateAccuracy = (results: any[]): number => {
+  const calculateAccuracy = (results: unknown[]): number => {
     if (results.length === 0) return 0;
-    const correct = results.filter(r => r.correct).length;
+    const correct = results.filter((r): r is { correct: boolean } => r !== null && typeof r === 'object' && 'correct' in r && (r as { correct: boolean }).correct).length;
     return Math.round((correct / results.length) * 100);
   };
 
@@ -262,7 +260,7 @@ export function ChallengeContainer({
         </Card>
 
         {/* Required Skills */}
-        {requiredSkills.length > 0 && (
+        {requiredSkills && requiredSkills.length > 0 && (
           <Card>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 mb-2">
@@ -287,7 +285,7 @@ export function ChallengeContainer({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        {React.isValidElement(children) && React.cloneElement(children as any, {
+        {React.isValidElement(children) && React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
           session,
           setSession,
           onHint: handleHint,

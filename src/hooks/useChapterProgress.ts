@@ -29,7 +29,7 @@ export function useChapterProgress(chapterNumber: number): UseChapterProgressRet
   useEffect(() => {
     const loadData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('auth-token');
 
         const metaRes = await fetch(`/api/chapters/${chapterNumber}/lessons`);
         if (metaRes.ok) {
@@ -75,7 +75,7 @@ export function useChapterProgress(chapterNumber: number): UseChapterProgressRet
     setSavingLesson(lessonNumber);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth-token');
       if (!token || !chapterMeta) {
         setSavingLesson(null);
         return;

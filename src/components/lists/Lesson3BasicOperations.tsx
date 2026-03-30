@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -383,7 +383,7 @@ export function Lesson3BasicOperations({ onComplete }: LessonProps) {
               <div className="flex items-center space-x-2">
                 <Trash2 className="w-4 h-4 text-emerald-600" />
                 <span className="text-emerald-800 font-medium">
-                  Popped item: "{poppedItem}"
+                  Popped item: &quot;{poppedItem}&quot;
                 </span>
               </div>
             </motion.div>

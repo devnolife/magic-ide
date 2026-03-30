@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,6 @@ import {
   CheckCircle,
   Sparkles,
   Database,
-  Copy,
   Eye
 } from 'lucide-react';
 
@@ -415,21 +414,21 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                     <div className="w-12 h-8 bg-blue-200 rounded border-2 border-blue-400 flex items-center justify-center text-xs">
                       Baju
                     </div>
-                    <span className="text-sm">Kotak berlabel "Baju" berisi pakaian</span>
+                    <span className="text-sm">Kotak berlabel &quot;Baju&quot; berisi pakaian</span>
                   </div>
 
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-8 bg-green-200 rounded border-2 border-green-400 flex items-center justify-center text-xs">
                       Sepatu
                     </div>
-                    <span className="text-sm">Kotak berlabel "Sepatu" berisi alas kaki</span>
+                    <span className="text-sm">Kotak berlabel &quot;Sepatu&quot; berisi alas kaki</span>
                   </div>
 
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-8 bg-emerald-200 rounded border-2 border-emerald-400 flex items-center justify-center text-xs">
                       Buku
                     </div>
-                    <span className="text-sm">Kotak berlabel "Buku" berisi koleksi buku</span>
+                    <span className="text-sm">Kotak berlabel &quot;Buku&quot; berisi koleksi buku</span>
                   </div>
                 </div>
               </div>
@@ -457,7 +456,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                     <div className="w-12 h-8 bg-blue-200 rounded border-2 border-blue-400 flex items-center justify-center text-xs font-mono">
                       nama
                     </div>
-                    <span className="text-sm font-mono">"Alice" (string)</span>
+                    <span className="text-sm font-mono">&quot;Alice&quot; (string)</span>
                   </div>
 
                   <div className="flex items-center space-x-3">
@@ -495,7 +494,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
-                  nama = "Alice"
+                  nama = &quot;Alice&quot;
                 </div>
                 <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
                   umur_siswa = 16
@@ -504,7 +503,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                   nilai2 = 85
                 </div>
                 <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
-                  _private = "rahasia"
+                  _private = &quot;rahasia&quot;
                 </div>
               </div>
               <ul className="mt-4 space-y-1 text-sm">
@@ -523,13 +522,13 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
             <CardContent className="p-6">
               <div className="space-y-3">
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
-                  2nama = "Alice"  # Dimulai angka
+                  2nama = &quot;Alice&quot;  # Dimulai angka
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
                   nama-siswa = 16  # Pakai tanda minus
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
-                  class = "XII"    # Kata reserved
+                  class = &quot;XII&quot;    # Kata reserved
                 </div>
                 <div className="bg-gray-900 text-red-400 p-2 rounded font-mono text-sm">
                   print = 42       # Nama fungsi built-in
@@ -558,12 +557,12 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
             <div>
               <h3 className="font-semibold mb-3">Menyimpan Data Pribadi:</h3>
               <div className="bg-gray-900 text-white p-4 rounded font-mono text-sm space-y-1">
-                <div className="text-blue-300">nama = "Budi Santoso"</div>
+                <div className="text-blue-300">nama = &quot;Budi Santoso&quot;</div>
                 <div className="text-blue-300">umur = 17</div>
                 <div className="text-blue-300">tinggi = 170.5</div>
                 <div className="text-blue-300">siswa_aktif = True</div>
                 <div className="text-gray-500"># Menggunakan variabel</div>
-                <div className="text-yellow-300">print("Halo,", nama)</div>
+                <div className="text-yellow-300">print(&quot;Halo,&quot;, nama)</div>
                 <div className="text-green-400"># Output: Halo, Budi Santoso</div>
               </div>
             </div>
@@ -575,7 +574,7 @@ export default function Lesson2Variables({ onComplete, isCompleted }: LessonProp
                 <div className="text-blue-300">lebar = 5</div>
                 <div className="text-blue-300">luas = panjang * lebar</div>
                 <div className="text-gray-500"># luas sekarang berisi 50</div>
-                <div className="text-yellow-300">print("Luas:", luas)</div>
+                <div className="text-yellow-300">print(&quot;Luas:&quot;, luas)</div>
                 <div className="text-green-400"># Output: Luas: 50</div>
               </div>
             </div>

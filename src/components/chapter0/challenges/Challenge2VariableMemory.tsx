@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ interface Challenge2Props {
 
 interface WarehouseItem {
   id: string;
-  value: any;
+  value: string | number | boolean;
   type: string;
   description: string;
   icon: string;
@@ -173,7 +173,7 @@ export default function Challenge2VariableMemory({ onComplete, difficulty }: Cha
     if (!box || box.locked) return;
 
     // Try to parse the value
-    let parsedValue: any = customValue;
+    let parsedValue: string | number | boolean = customValue;
     let valueType = 'string';
 
     if (customValue === 'true' || customValue === 'false') {
@@ -435,7 +435,7 @@ export default function Challenge2VariableMemory({ onComplete, difficulty }: Cha
                           onClick={() => assignItemToBox(selectedItem, box.id)}
                           className="w-full bg-blue-500 hover:bg-blue-600"
                         >
-                          Simpan "{selectedItem.description}"
+                          Simpan &quot;{selectedItem.description}&quot;
                         </Button>
                       )}
 

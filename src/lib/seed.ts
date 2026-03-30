@@ -55,8 +55,8 @@ export async function seedDatabase() {
         update: {},
         create: {
           number: 5,
-          title: 'Fungsi',
-          description: 'Membuat dan menggunakan fungsi di Python',
+          title: 'Advanced Python',
+          description: 'Konsep lanjutan Python: OOP, Error Handling, File I/O, dan Modules',
         },
       }),
     ]);
@@ -68,7 +68,7 @@ export async function seedDatabase() {
       2: ['Membuat List', 'Operasi List', 'Slicing & Indexing', 'List Comprehension'],
       3: ['Membuat Dictionary', 'Akses & Modifikasi', 'Method Dictionary', 'Nested Dictionary'],
       4: ['For Loop', 'While Loop', 'Loop Control', 'Nested Loop'],
-      5: ['Membuat Fungsi', 'Parameter & Return', 'Scope Variabel', 'Lambda & Built-in'],
+      5: ['Object-Oriented Programming', 'Error Handling', 'File Operations', 'Modules & Packages'],
     };
 
     for (const chapter of chapters) {

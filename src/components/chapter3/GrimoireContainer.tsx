@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useChapterProgress } from '@/hooks/useChapterProgress';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Lesson1Dictionary } from './Lesson1Dictionary';
@@ -339,7 +339,7 @@ export function GrimoireContainer() {
 
           {/* Module Status Grid */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-            {lessons.map((lesson, index) => (
+            {lessons.map((lesson, _index) => (
               <div
                 key={lesson.id}
                 className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all duration-200 border ${unlockedLessons.includes(lesson.id)

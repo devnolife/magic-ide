@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -60,7 +59,7 @@ export default function LeaderboardPage() {
     const fetchLeaderboard = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("auth-token");
         const params = new URLSearchParams({ period });
         if (classroomId !== "all") params.set("classroomId", classroomId);
 

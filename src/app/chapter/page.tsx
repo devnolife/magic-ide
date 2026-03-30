@@ -1,12 +1,74 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Clock, BookOpen, Trophy, Play } from 'lucide-react';
-import { getAllChapters } from '@/lib/chapters';
+import { Clock, BookOpen, Trophy, Play, Loader2 } from 'lucide-react';
+import { getAllChapters, type Chapter } from '@/lib/chapters';
 
-export default async function ChaptersPage() {
-  const chapters = await getAllChapters();
+interface ChapterProgress {
+  chapterNumber: number;
+  completedLessons: number;
+  totalLessons: number;
+  totalPoints: number;
+  timeSpent: number;
+  status: string;
+}
+
+export default function ChaptersPage() {
+  const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [progressData, setProgressData] = useState<ChapterProgress[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [progressError, setProgressError] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const chaptersResult = await getAllChapters();
+      setChapters(chaptersResult);
+
+      const token = localStorage.getItem('auth-token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      const res = await fetch('/api/progress', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) throw new Error('Failed to fetch progress');
+
+      const data = await res.json();
+      setProgressData(data.progress ?? []);
+    } catch {
+      setProgressError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const completedChapters = progressData.filter(
+    (p) => p.status === 'completed'
+  ).length;
+
+  const totalLessonsCompleted = progressData.reduce(
+    (sum, p) => sum + p.completedLessons,
+    0
+  );
+
+  const totalTimeSpent = progressData.reduce(
+    (sum, p) => sum + (p.timeSpent ?? 0),
+    0
+  );
+  const timeSpentHours = Math.round(totalTimeSpent / 3600000);
+
+  const totalChapters = chapters.length;
 
   return (
     <div className="space-y-8">
@@ -93,19 +155,43 @@ export default async function ChaptersPage() {
         <h2 className="text-2xl font-semibold mb-4">Your Progress</h2>
         <div className="grid md:grid-cols-4 gap-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary">0/6</div>
+            {loading ? (
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+            ) : (
+              <div className="text-3xl font-bold text-primary">
+                {progressError ? '—' : `${completedChapters}/${totalChapters}`}
+              </div>
+            )}
             <div className="text-sm text-muted-foreground">Chapters Completed</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-600">0</div>
+            {loading ? (
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-green-600" />
+            ) : (
+              <div className="text-3xl font-bold text-green-600">
+                {progressError ? '—' : totalLessonsCompleted}
+              </div>
+            )}
             <div className="text-sm text-muted-foreground">Lessons Completed</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-orange-600">0</div>
+            {loading ? (
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-orange-600" />
+            ) : (
+              <div className="text-3xl font-bold text-orange-600">
+                {progressError ? '—' : progressData.reduce((sum, p) => sum + (p.totalPoints ?? 0), 0)}
+              </div>
+            )}
             <div className="text-sm text-muted-foreground">Challenges Solved</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-emerald-600">0h</div>
+            {loading ? (
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-emerald-600" />
+            ) : (
+              <div className="text-3xl font-bold text-emerald-600">
+                {progressError ? '—' : `${timeSpentHours}h`}
+              </div>
+            )}
             <div className="text-sm text-muted-foreground">Time Spent</div>
           </div>
         </div>

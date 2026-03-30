@@ -59,7 +59,7 @@ export function Chapter4Page() {
               ⭕ Enchantment Circle Mastery
             </h1>
             <p className="text-xl text-gray-700 max-w-4xl mx-auto mb-3">
-              Master Circula's Sacred Academy - Harness the infinite power of loops, iteration, and repetitive magic
+              Master Circula&apos;s Sacred Academy - Harness the infinite power of loops, iteration, and repetitive magic
             </p>
             <div className="text-sm text-gray-600 opacity-80 mb-2">
               🔁 For Loop Incantations • ⚡ While Circle Rituals • 🎯 List Comprehension Mastery • 🌊 Iterator Enchantments

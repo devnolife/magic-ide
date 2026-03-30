@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Return user data (excluding password)
-    const { password, ...userWithoutPassword } = session.user;
+    const { password: _password, ...userWithoutPassword } = session.user;
 
     // Also update streak if needed (for daily visits without re-login)
     const today = new Date();

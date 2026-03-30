@@ -17,7 +17,7 @@ export function Lesson3NestedLoops({ onComplete }: Lesson3NestedLoopsProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentPosition, setCurrentPosition] = useState({ row: -1, col: -1 });
   const [visitedCells, setVisitedCells] = useState<Set<string>>(new Set());
-  const [pattern, setPattern] = useState<'traverse' | 'pattern' | 'search'>('traverse');
+  const [_pattern, _setPattern] = useState<'traverse' | 'pattern' | 'search'>('traverse');
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [iterationCount, setIterationCount] = useState(0);
 
@@ -251,7 +251,7 @@ export function Lesson3NestedLoops({ onComplete }: Lesson3NestedLoopsProps) {
               <div className="text-blue-300"># Nested loop incantation</div>
               <div>for row in range({gridSize.rows}):</div>
               <div className="ml-4">for col in range({gridSize.cols}):</div>
-              <div className="ml-8 text-yellow-300">print(f"Position: ({'{row}'}, {'{col}'})")</div>
+              <div className="ml-8 text-yellow-300">print(f&quot;Position: ({'{row}'}, {'{col}'})&quot;)</div>
               <div className="ml-8">process_cell(row, col)</div>
             </div>
 

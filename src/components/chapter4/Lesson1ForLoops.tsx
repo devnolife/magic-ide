@@ -14,7 +14,7 @@ interface Lesson1ForLoopsProps {
 
 interface AnimationStep {
   index: number;
-  value: any;
+  value: number;
   action: string;
   isActive: boolean;
 }
@@ -118,6 +118,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
 
   useEffect(() => {
     generateRange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentRange]);
 
   useEffect(() => {
@@ -231,7 +232,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
             <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
               <div className="text-blue-300"># Range loop incantation</div>
               <div>for i in range({currentRange.start}, {currentRange.end}, {currentRange.step}):</div>
-              <div className="ml-4 text-yellow-300">print(f"Current number: {'{i}'}")</div>
+              <div className="ml-4 text-yellow-300">print(f&quot;Current number: {'{i}'}&quot;)</div>
             </div>
 
             {/* Animation Controls */}
@@ -351,7 +352,7 @@ export function Lesson1ForLoops({ onComplete }: Lesson1ForLoopsProps) {
               <div className="ml-4 text-yellow-300">print(item)</div>
               <div className="mt-2 text-blue-300"># With enumerate</div>
               <div>for index, item in enumerate(items):</div>
-              <div className="ml-4 text-yellow-300">print(f"{'{index}'}: {'{item}'}")</div>
+              <div className="ml-4 text-yellow-300">print(f&quot;{'{index}'}: {'{item}'}&quot;)</div>
             </div>
 
             {/* Results Display */}

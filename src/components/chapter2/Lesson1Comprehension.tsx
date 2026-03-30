@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Sparkles,
@@ -67,7 +66,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
     }
   };
 
-  const getFilteredData = () => {
+  const _getFilteredData = () => {
     const condition = conditions.find(c => c.id === selectedCondition);
     if (!condition) return inputData;
 
@@ -112,7 +111,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
       </div>
 
       {/* Comprehension Stage Selector */}
-      <Tabs value={comprehensionStage} onValueChange={(value) => setComprehensionStage(value as any)}>
+      <Tabs value={comprehensionStage} onValueChange={(value) => setComprehensionStage(value as 'basic' | 'filtered' | 'nested')}>
         <TabsList className="grid w-full grid-cols-3 bg-gray-100">
           <TabsTrigger value="basic" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-gray-800">
             Mantra Dasar
@@ -166,7 +165,7 @@ export function Lesson1Comprehension({ onComplete }: LessonComponentProps) {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => setInputData(['hello', 'world', 'magic', 'code'] as any)}
+                    onClick={() => setInputData(['hello', 'world', 'magic', 'code'] as unknown as number[])}
                     className="border-blue-500/50 text-blue-300"
                   >
                     Words

@@ -46,7 +46,7 @@ export function ChapterGrid({ onProgressLoaded }: ChapterGridProps) {
 
   const fetchProgress = useCallback(async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth-token');
       if (!token) {
         // No token → show all chapters as locked except first
         const fallback = chaptersData.map((ch, i) => ({

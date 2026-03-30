@@ -68,7 +68,7 @@ export function Chapter0Page() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('auth-token');
 
         // Fetch chapter metadata (chapterId + lesson IDs)
         const metaRes = await fetch('/api/chapters/0/lessons');
@@ -144,7 +144,7 @@ export function Chapter0Page() {
 
     // Save to database
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth-token');
       if (!token || !chapterMeta) {
         setSavingLesson(null);
         return;

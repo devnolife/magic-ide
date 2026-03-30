@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { motion } from "framer-motion";
 import {
-  School,
   Users,
   Plus,
   Search,

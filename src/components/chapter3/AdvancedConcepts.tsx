@@ -19,6 +19,19 @@ interface Product {
   inStock: boolean;
 }
 
+interface AnalysisResult {
+  totalProducts: number;
+  categories: string[];
+  averagePrice: number;
+  averageRating: number;
+  inStockCount: number;
+  priceRanges: {
+    budget: number;
+    mid: number;
+    premium: number;
+  };
+}
+
 export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
   const [currentDemo, setCurrentDemo] = useState<'comprehension' | 'analysis' | 'realworld' | 'complete'>('comprehension');
   const [products] = useState<Record<string, Product>>({
@@ -30,7 +43,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
   });
 
   const [filteredProducts, setFilteredProducts] = useState<Record<string, Product>>({});
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('');
 
@@ -47,22 +60,22 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
     switch (filterType) {
       case 'expensive':
         result = Object.fromEntries(
-          Object.entries(products).filter(([_, product]) => product.price > 100)
+          Object.entries(products).filter(([_key, product]) => product.price > 100)
         );
         break;
       case 'electronics':
         result = Object.fromEntries(
-          Object.entries(products).filter(([_, product]) => product.category === 'Electronics')
+          Object.entries(products).filter(([_key, product]) => product.category === 'Electronics')
         );
         break;
       case 'instock':
         result = Object.fromEntries(
-          Object.entries(products).filter(([_, product]) => product.inStock)
+          Object.entries(products).filter(([_key, product]) => product.inStock)
         );
         break;
       case 'highrated':
         result = Object.fromEntries(
-          Object.entries(products).filter(([_, product]) => product.rating >= 4.5)
+          Object.entries(products).filter(([_key, product]) => product.rating >= 4.5)
         );
         break;
     }
@@ -294,7 +307,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
               </div>
             ) : (
               <div className="text-center text-gray-500 py-8">
-                Click "Run Data Analysis" to see insights
+                Click &quot;Run Data Analysis&quot; to see insights
               </div>
             )}
           </div>
@@ -321,7 +334,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
             </p>
             <div className="mt-3 p-2 bg-blue-100 rounded text-xs font-mono">
               user = response.json()
-              <br />name = user["profile"]["name"]
+              <br />name = user[&quot;profile&quot;][&quot;name&quot;]
             </div>
           </div>
 
@@ -334,8 +347,8 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
             </p>
             <div className="mt-3 p-2 bg-green-100 rounded text-xs font-mono">
               player = {'{'}
-              <br />&nbsp;&nbsp;"level": 15,
-              <br />&nbsp;&nbsp;"items": ["sword", "potion"]
+              <br />&nbsp;&nbsp;&quot;level&quot;: 15,
+              <br />&nbsp;&nbsp;&quot;items&quot;: [&quot;sword&quot;, &quot;potion&quot;]
               <br />{'}'}</div>
           </div>
 
@@ -347,8 +360,8 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
               all rely heavily on dictionary operations.
             </p>
             <div className="mt-3 p-2 bg-emerald-100 rounded text-xs font-mono">
-              sales = {'{'}"Q1": 1000, "Q2": 1200{'}'}
-              <br />growth = sales["Q2"] - sales["Q1"]
+              sales = {'{'}&quot;Q1&quot;: 1000, &quot;Q2&quot;: 1200{'}'}
+              <br />growth = sales[&quot;Q2&quot;] - sales[&quot;Q1&quot;]
             </div>
           </div>
 
@@ -361,8 +374,8 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
             </p>
             <div className="mt-3 p-2 bg-orange-100 rounded text-xs font-mono">
               config = {'{'}
-              <br />&nbsp;&nbsp;"debug": True,
-              <br />&nbsp;&nbsp;"database_url": "..."
+              <br />&nbsp;&nbsp;&quot;debug&quot;: True,
+              <br />&nbsp;&nbsp;&quot;database_url&quot;: &quot;...&quot;
               <br />{'}'}</div>
           </div>
 
@@ -389,8 +402,8 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
             </p>
             <div className="mt-3 p-2 bg-pink-100 rounded text-xs font-mono">
               post = {'{'}
-              <br />&nbsp;&nbsp;"title": "...",
-              <br />&nbsp;&nbsp;"author": {'{}'}
+              <br />&nbsp;&nbsp;&quot;title&quot;: &quot;...&quot;,
+              <br />&nbsp;&nbsp;&quot;author&quot;: {'{}'}
               <br />{'}'}</div>
           </div>
         </div>
@@ -409,7 +422,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
           </div>
           <p className="text-gray-700 text-center">
             Mastering dictionaries opens doors to web development, data analysis, game development,
-            API integration, and virtually every area of programming. They're one of the most
+            API integration, and virtually every area of programming. They&apos;re one of the most
             versatile and powerful data structures in Python!
           </p>
         </div>
@@ -423,7 +436,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
         <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
         <h3 className="text-3xl font-bold text-green-800 mb-4">Outstanding Achievement!</h3>
         <p className="text-green-700 mb-8 text-lg">
-          You've completed the advanced dictionary concepts! You're now equipped with
+          You&apos;ve completed the advanced dictionary concepts! You&apos;re now equipped with
           professional-level dictionary skills.
         </p>
 
@@ -452,7 +465,7 @@ export function AdvancedConcepts({ onComplete }: AdvancedConceptsProps) {
         </div>
 
         <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-6 mb-6">
-          <h4 className="font-bold text-orange-900 mb-3">🎓 You're Ready For:</h4>
+          <h4 className="font-bold text-orange-900 mb-3">🎓 You&apos;re Ready For:</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
             <div className="text-orange-800">✅ Web Development</div>
             <div className="text-orange-800">✅ Data Science</div>

@@ -14,7 +14,6 @@ import {
   Utensils,
   Flame,
   Shuffle,
-  ArrowRight,
   ArrowUp,
   ArrowDown,
   Plus
@@ -83,7 +82,7 @@ const recipes: Record<string, Recipe> = {
 };
 
 export default function Challenge1RobotInstructions({ onComplete, difficulty }: Challenge1Props) {
-  const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[difficulty]);
+  const [currentRecipe] = useState<Recipe>(recipes[difficulty]);
   const [userSteps, setUserSteps] = useState<RecipeStep[]>([]);
   const [availableSteps, setAvailableSteps] = useState<RecipeStep[]>([]);
   const [attempts, setAttempts] = useState(0);
@@ -92,6 +91,7 @@ export default function Challenge1RobotInstructions({ onComplete, difficulty }: 
 
   useEffect(() => {
     shuffleSteps();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentRecipe]);
 
   const shuffleSteps = () => {

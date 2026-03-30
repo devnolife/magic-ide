@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, type ElementType } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,7 +33,7 @@ interface Operation {
   id: string;
   name: string;
   symbol: string;
-  icon: any;
+  icon: ElementType;
   color: string;
   bgColor: string;
   description: string;
@@ -237,12 +237,12 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
       }
 
       // Final result step
-      const finalStep: CalculationStep = {
+      void ({
         step: 4,
         operation: 'Hasil:',
         result: result,
         explanation: explanation
-      };
+      } satisfies CalculationStep);
 
       setCalculationSteps(prev => [...prev.slice(0, -1), {
         ...prev[prev.length - 1],
@@ -278,7 +278,7 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
     setSelectedOperation(null);
   };
 
-  const useExample = (example: { input: string; result: string; explanation: string }) => {
+  const applyExample = (example: { input: string; result: string; explanation: string }) => {
     const parts = example.input.split(' ');
     if (parts.length >= 3) {
       setInput1(parts[0]);
@@ -467,7 +467,7 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
                     key={index}
                     variant="outline"
                     size="sm"
-                    onClick={() => useExample(example)}
+                    onClick={() => applyExample(example)}
                     className="justify-start font-mono text-xs"
                   >
                     {example.input} → {example.result}
@@ -553,11 +553,11 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
-                  <div className="text-green-400">nama = "Alice"</div>
-                  <div className="text-green-400">salam = "Halo "</div>
+                  <div className="text-green-400">nama = &quot;Alice&quot;</div>
+                  <div className="text-green-400">salam = &quot;Halo &quot;</div>
                   <div className="text-blue-300">print(salam + nama)</div>
                   <div className="text-gray-500"># Output: Halo Alice</div>
-                  <div className="text-blue-3000">print("Hi! " * 3)</div>
+                  <div className="text-blue-3000">print(&quot;Hi! &quot; * 3)</div>
                   <div className="text-gray-500"># Output: Hi! Hi! Hi!</div>
                 </div>
               </div>

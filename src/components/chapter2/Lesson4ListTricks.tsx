@@ -4,10 +4,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import {
-  Brain,
+
   RotateCcw,
   Layers,
   ArrowLeftRight,
@@ -57,7 +56,7 @@ export function Lesson4ListTricks({ onComplete }: LessonComponentProps) {
   const [activeTechnique, setActiveTechnique] = useState('stack');
   const [magicStack, setMagicStack] = useState<string[]>([]);
   const [spellQueue, setSpellQueue] = useState<string[]>([]);
-  const [twoPointerData, setTwoPointerData] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+  const [twoPointerData, _setTwoPointerData] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const [leftPointer, setLeftPointer] = useState(0);
   const [rightPointer, setRightPointer] = useState(7);
   const [targetSum, setTargetSum] = useState(9);

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CodeEditor } from '@/components/CodeEditor';
 import { motion } from 'framer-motion';
@@ -602,7 +601,7 @@ Great work on mastering both dictionaries and objects! 🎉`);
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-amber-800">
                 <span className="text-2xl">💡</span>
-                <span>Master's Tips</span>
+                <span>Master&apos;s Tips</span>
               </CardTitle>
             </CardHeader>
             <CardContent>

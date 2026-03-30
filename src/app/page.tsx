@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  BookOpen, Code2, Trophy, Users, Sparkles, ArrowRight,
+  BookOpen, Code2, Trophy, Sparkles, ArrowRight,
   Brain, ListChecks, BookMarked, Repeat, FunctionSquare, Braces
 } from 'lucide-react';
 

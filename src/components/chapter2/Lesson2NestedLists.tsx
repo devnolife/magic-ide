@@ -10,7 +10,7 @@ import {
   GitBranch,
   Search,
   Layers,
-  Map,
+
   ChevronDown,
   ChevronRight,
   Compass,

@@ -138,7 +138,7 @@ export default function MemoryVisualizer({ title, description }: MemoryVisualize
             </Button>
           </div>
           <div className="text-sm text-muted-foreground text-center">
-            Contoh nilai: "Alice", 25, True, [1,2,3]
+            Contoh nilai: &quot;Alice&quot;, 25, True, [1,2,3]
           </div>
         </div>
 

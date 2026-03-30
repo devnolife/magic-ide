@@ -242,7 +242,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
                 className="mt-1 font-mono"
               />
               <p className="text-xs text-gray-600 mt-1">
-                Use 'counter' as the variable name (e.g., counter &lt; 10, counter != 5)
+                Use &apos;counter&apos; as the variable name (e.g., counter &lt; 10, counter != 5)
               </p>
             </div>
 
@@ -273,7 +273,7 @@ export function Lesson2WhileLoops({ onComplete }: Lesson2WhileLoopsProps) {
               <div className="text-blue-300"># While loop incantation</div>
               <div>counter = {counter}</div>
               <div>while {condition}:</div>
-              <div className="ml-4 text-yellow-300">print(f"Counter: {'{counter}'}")</div>
+              <div className="ml-4 text-yellow-300">print(f&quot;Counter: {'{counter}'}&quot;)</div>
               <div className="ml-4">counter += 1</div>
             </div>
 

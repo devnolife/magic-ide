@@ -1,20 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import {
   Target,
   Eye,
   Scissors,
-  ArrowRight,
   CheckCircle2,
-  Play,
-  RefreshCw
+  Play
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -41,7 +37,7 @@ const sampleList: ListItem[] = [
 export function Lesson4IndexingSlicing({ onComplete }: LessonProps) {
   const [currentMode, setCurrentMode] = useState<'indexing' | 'slicing'>('indexing');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [showNegativeIndex, setShowNegativeIndex] = useState(false);
+  const [_showNegativeIndex, _setShowNegativeIndex] = useState(false);
   const [sliceStart, setSliceStart] = useState([0]);
   const [sliceEnd, setSliceEnd] = useState([3]);
   const [sliceStep, setSliceStep] = useState([1]);
@@ -57,6 +53,7 @@ export function Lesson4IndexingSlicing({ onComplete }: LessonProps) {
     if (currentMode === 'slicing') {
       updateSliceResult();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliceStart, sliceEnd, sliceStep, currentMode]);
 
   useEffect(() => {
@@ -284,7 +281,7 @@ export function Lesson4IndexingSlicing({ onComplete }: LessonProps) {
               <div className="flex items-center space-x-2">
                 <Eye className="w-4 h-4 text-blue-600" />
                 <span className="text-blue-800 font-medium">
-                  languages[{selectedIndex}] = "{getItemAtIndex(selectedIndex)?.value}"
+                  languages[{selectedIndex}] = &quot;{getItemAtIndex(selectedIndex)?.value}&quot;
                 </span>
               </div>
               {selectedIndex < 0 && (

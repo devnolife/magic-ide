@@ -19,7 +19,6 @@ import {
   Clock,
   CheckCircle,
   PlayCircle,
-  Trophy,
   Swords
 } from 'lucide-react';
 
@@ -280,7 +279,7 @@ export function ListContainer() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {lessons.map((lesson, index) => (
+                  {lessons.map((lesson, _index) => (
                     <motion.div
                       key={lesson.id}
                       whileHover={{ scale: 1.02 }}

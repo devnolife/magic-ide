@@ -3,13 +3,14 @@ import { getChapterData } from '@/lib/chapters';
 import { notFound } from 'next/navigation';
 
 interface PlaygroundPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function PlaygroundPage({ params }: PlaygroundPageProps) {
-  const chapter = await getChapterData(params.id);
+  const { id } = await params;
+  const chapter = await getChapterData(id);
 
   if (!chapter) {
     notFound();

@@ -27,7 +27,7 @@ export function Lesson2Methods({ onComplete }: Lesson2MethodsProps) {
     shield: { name: "Mystic Shield", power: 10, element: "arcane", school: "abjuration" }
   });
 
-  const [secondGrimoire, setSecondGrimoire] = useState<Record<string, GrimoireEntry>>({
+  const [secondGrimoire, _setSecondGrimoire] = useState<Record<string, GrimoireEntry>>({
     freeze: { name: "Ice Shard", power: 20, element: "water", school: "evocation" },
     fireball: { name: "Greater Fireball", power: 35, element: "fire", school: "evocation" },
     teleport: { name: "Teleportation", power: 40, element: "arcane", school: "conjuration" }

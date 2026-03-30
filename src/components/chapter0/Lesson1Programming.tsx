@@ -427,22 +427,22 @@ export default function Lesson1Programming({ onComplete, isCompleted }: LessonPr
         <CardContent className="p-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h3 className="font-semibold">Contoh "Halo Dunia" dalam berbagai bahasa:</h3>
+              <h3 className="font-semibold">Contoh &quot;Halo Dunia&quot; dalam berbagai bahasa:</h3>
 
               <div className="space-y-3">
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
                   <div className="text-green-400 mb-1"># Python (yang akan kita pelajari)</div>
-                  <div className="text-blue-300">print("Halo Dunia")</div>
+                  <div className="text-blue-300">print(&quot;Halo Dunia&quot;)</div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
-                  <div className="text-green-400 mb-1">// JavaScript</div>
-                  <div className="text-blue-300">console.log("Halo Dunia");</div>
+                  <div className="text-green-400 mb-1">{"// JavaScript"}</div>
+                  <div className="text-blue-300">console.log(&quot;Halo Dunia&quot;);</div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
-                  <div className="text-green-400 mb-1">/* Java */</div>
-                  <div className="text-blue-300">System.out.println("Halo Dunia");</div>
+                  <div className="text-green-400 mb-1">{"/* Java */"}</div>
+                  <div className="text-blue-300">System.out.println(&quot;Halo Dunia&quot;);</div>
                 </div>
               </div>
             </div>

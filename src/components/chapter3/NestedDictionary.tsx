@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, FolderTree, ArrowDown, Plus, Search, Lightbulb } from 'lucide-react';
+import { CheckCircle, FolderTree, Plus, Search, Lightbulb } from 'lucide-react';
 import styles from './SimpleLearning.module.css';
 
 interface NestedDictionaryProps {
@@ -48,7 +48,7 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
   });
 
   const [selectedPath, setSelectedPath] = useState<string[]>([]);
-  const [pathResult, setPathResult] = useState<any>(null);
+  const [pathResult, setPathResult] = useState<unknown>(null);
   const [newGrade, setNewGrade] = useState({ student: '', subject: '', grade: '' });
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [highlightedPath, setHighlightedPath] = useState<string[]>([]);
@@ -65,16 +65,16 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
     setHighlightedPath(path);
 
     try {
-      let result: any = classData;
+      let result: unknown = classData;
       for (const segment of path) {
-        result = result[segment];
+        result = (result as Record<string, unknown>)[segment];
       }
       setPathResult(result);
 
       if (!completedTasks.includes('navigate_nested')) {
         setCompletedTasks(prev => [...prev, 'navigate_nested']);
       }
-    } catch (error) {
+    } catch (_error) {
       setPathResult('Path not found');
     }
 
@@ -161,15 +161,15 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
             <div className="text-gray-400"># Nested dictionary structure</div>
             <div>class_data = {'{'}</div>
             <div className="ml-2">
-              <div><span className="text-blue-400">"students"</span>: {'{'}</div>
+              <div><span className="text-blue-400">&quot;students&quot;</span>: {'{'}</div>
               <div className="ml-2">
-                <div><span className="text-green-400">"alice"</span>: {'{'}</div>
+                <div><span className="text-green-400">&quot;alice&quot;</span>: {'{'}</div>
                 <div className="ml-2">
-                  <div><span className="text-yellow-400">"name"</span>: <span className="text-orange-400">"Alice Johnson"</span>,</div>
-                  <div><span className="text-yellow-400">"grades"</span>: {'{'}</div>
+                  <div><span className="text-yellow-400">&quot;name&quot;</span>: <span className="text-orange-400">&quot;Alice Johnson&quot;</span>,</div>
+                  <div><span className="text-yellow-400">&quot;grades&quot;</span>: {'{'}</div>
                   <div className="ml-2">
-                    <div><span className="text-pink-400">"math"</span>: <span className="text-cyan-400">95</span>,</div>
-                    <div><span className="text-pink-400">"science"</span>: <span className="text-cyan-400">88</span></div>
+                    <div><span className="text-pink-400">&quot;math&quot;</span>: <span className="text-cyan-400">95</span>,</div>
+                    <div><span className="text-pink-400">&quot;science&quot;</span>: <span className="text-cyan-400">88</span></div>
                   </div>
                   <div>{'}'}</div>
                 </div>
@@ -381,7 +381,7 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
           {newGrade.student && newGrade.subject && (
             <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
               <p className="text-sm text-emerald-800">
-                <strong>Code:</strong> class_data["students"]["{newGrade.student}"]["grades"]["{newGrade.subject}"] = {newGrade.grade || 0}
+                <strong>Code:</strong> class_data[&quot;students&quot;][&quot;{newGrade.student}&quot;][&quot;grades&quot;][&quot;{newGrade.subject}&quot;] = {newGrade.grade || 0}
               </p>
             </div>
           )}
@@ -423,7 +423,7 @@ export function NestedDictionary({ onComplete }: NestedDictionaryProps) {
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-green-800 mb-2">Fantastic Progress!</h3>
         <p className="text-green-700 mb-6">
-          You've mastered nested dictionaries! You can now handle complex data structures like:
+          You&apos;ve mastered nested dictionaries! You can now handle complex data structures like:
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

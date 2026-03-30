@@ -18,8 +18,8 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
   const [condition, setCondition] = useState('x % 2 == 0');
   const [transformation, setTransformation] = useState('x * x');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<any[]>([]);
-  const [stepByStep, setStepByStep] = useState<Array<{ value: any, condition: boolean, transformed: any }>>([]);
+  const [result, setResult] = useState<unknown[]>([]);
+  const [stepByStep, setStepByStep] = useState<Array<{ value: number, condition: boolean, transformed: number | string | Record<number, string | number> | null }>>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState('list');
 
@@ -38,7 +38,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
     }
   };
 
-  const evaluateTransformation = (x: number): any => {
+  const evaluateTransformation = (x: number): number | string => {
     try {
       if (transformation.includes('x * x')) return x * x;
       if (transformation.includes('x ** 2')) return x ** 2;
@@ -92,7 +92,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
     setStepByStep([]);
 
     const steps = [];
-    const finalResult: Record<string, any> = {};
+    const finalResult: Record<string, number | string> = {};
 
     for (let i = 0; i < inputList.length; i++) {
       const value = inputList[i];
@@ -400,7 +400,7 @@ export function Lesson4Comprehensions({ onComplete }: Lesson4ComprehensionsProps
                             <Badge className="bg-blue-500">
                               {typeof step.transformed === 'object'
                                 ? JSON.stringify(step.transformed)
-                                : step.transformed}
+                                : String(step.transformed)}
                             </Badge>
                           )}
                         </div>

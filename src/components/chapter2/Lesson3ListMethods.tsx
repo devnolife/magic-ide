@@ -118,7 +118,7 @@ export function Lesson3ListMethods({ onComplete }: LessonComponentProps) {
     setIsAnimating(false);
   };
 
-  const getMethodComplexity = (methodId: string) => {
+  const _getMethodComplexity = (methodId: string) => {
     const method = listMethods.find(m => m.id === methodId);
     return method?.complexity || 'O(1)';
   };

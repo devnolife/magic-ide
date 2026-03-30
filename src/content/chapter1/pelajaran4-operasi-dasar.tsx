@@ -13,7 +13,7 @@ interface Lesson4Props {
   onComplete?: () => void;
 }
 
-export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
+export default function Pelajaran4OperasiDasar({ onComplete: _onComplete }: Lesson4Props) {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       {/* Header */}
@@ -170,7 +170,7 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
               <div className="space-y-4">
                 <div className="space-y-3">
                   <div className="p-3 bg-gray-100 rounded">
-                    <div className="font-mono text-sm mb-2">"Halo" + " " + "Dunia"</div>
+                    <div className="font-mono text-sm mb-2">&quot;Halo&quot; + &quot; &quot; + &quot;Dunia&quot;</div>
                     <div className="flex items-center space-x-2">
                       <div className="px-2 py-1 bg-blue-200 rounded text-xs">Halo</div>
                       <span>+</span>
@@ -183,7 +183,7 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
                   </div>
 
                   <div className="p-3 bg-gray-100 rounded">
-                    <div className="font-mono text-sm mb-2">"Python" * 3</div>
+                    <div className="font-mono text-sm mb-2">&quot;Python&quot; * 3</div>
                     <div className="flex items-center space-x-2">
                       <div className="px-2 py-1 bg-blue-200 rounded text-xs">Python</div>
                       <span>× 3</span>
@@ -195,8 +195,8 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
                   <div className="text-green-400 mb-2"># Contoh penggabungan</div>
-                  <div className="text-blue-300">nama = "Alice"</div>
-                  <div className="text-blue-300">salam = "Halo " + nama + "!"</div>
+                  <div className="text-blue-300">nama = &quot;Alice&quot;</div>
+                  <div className="text-blue-300">salam = &quot;Halo &quot; + nama + &quot;!&quot;</div>
                   <div className="text-blue-300">print(salam)  # Halo Alice!</div>
                 </div>
               </div>
@@ -211,29 +211,29 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
               <div className="space-y-4">
                 <div className="space-y-3">
                   <div className="p-2 bg-gray-100 rounded">
-                    <div className="font-mono text-sm">len("Python")</div>
+                    <div className="font-mono text-sm">len(&quot;Python&quot;)</div>
                     <div className="text-xs text-muted-foreground">Panjang string → 6</div>
                   </div>
 
                   <div className="p-2 bg-gray-100 rounded">
-                    <div className="font-mono text-sm">"HELLO".lower()</div>
-                    <div className="text-xs text-muted-foreground">Huruf kecil → "hello"</div>
+                    <div className="font-mono text-sm">&quot;HELLO&quot;.lower()</div>
+                    <div className="text-xs text-muted-foreground">Huruf kecil → &quot;hello&quot;</div>
                   </div>
 
                   <div className="p-2 bg-gray-100 rounded">
-                    <div className="font-mono text-sm">"hello".upper()</div>
-                    <div className="text-xs text-muted-foreground">Huruf besar → "HELLO"</div>
+                    <div className="font-mono text-sm">&quot;hello&quot;.upper()</div>
+                    <div className="text-xs text-muted-foreground">Huruf besar → &quot;HELLO&quot;</div>
                   </div>
 
                   <div className="p-2 bg-gray-100 rounded">
-                    <div className="font-mono text-sm">"Python" in "I love Python"</div>
+                    <div className="font-mono text-sm">&quot;Python&quot; in &quot;I love Python&quot;</div>
                     <div className="text-xs text-muted-foreground">Cek keberadaan → True</div>
                   </div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
                   <div className="text-green-400 mb-2"># String methods</div>
-                  <div className="text-blue-300">teks = "Belajar Python"</div>
+                  <div className="text-blue-300">teks = &quot;Belajar Python&quot;</div>
                   <div className="text-blue-300">print(len(teks))     # 14</div>
                   <div className="text-blue-300">print(teks.upper())  # BELAJAR PYTHON</div>
                 </div>
@@ -302,7 +302,7 @@ export default function Pelajaran4OperasiDasar({ onComplete }: Lesson4Props) {
                   <div className="text-blue-300">print(bisa_nyetir)  # True</div>
                   <div className="text-white mt-2">nilai = 85</div>
                   <div className="text-white">lulus = nilai &gt;= 70</div>
-                  <div className="text-white">print("Lulus:", lulus)  # True</div>
+                  <div className="text-white">print(&quot;Lulus:&quot;, lulus)  # True</div>
                 </div>
               </div>
             </div>

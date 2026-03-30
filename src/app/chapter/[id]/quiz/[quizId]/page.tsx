@@ -65,7 +65,8 @@ interface SubmitResult {
 }
 
 // Dynamically import CodeEditor to avoid SSR issues with Monaco
-let CodeEditorComponent: React.ComponentType<{
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const CodeEditorComponent: React.ComponentType<{
   code: string;
   onCodeChange: (code: string) => void;
   onRun: () => void;
@@ -327,6 +328,7 @@ export default function TakeQuizPage() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft !== null, result]);
 
   // Auto-submit when time runs out

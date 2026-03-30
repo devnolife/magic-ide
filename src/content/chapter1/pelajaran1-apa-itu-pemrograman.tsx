@@ -12,7 +12,7 @@ interface Lesson1Props {
   onComplete?: () => void;
 }
 
-export default function Pelajaran1ApaItuPemrograman({ onComplete }: Lesson1Props) {
+export default function Pelajaran1ApaItuPemrograman({ onComplete: _onComplete }: Lesson1Props) {
   const sandwichInstructions = [
     { id: '1', text: 'Ambil 2 lembar roti tawar', order: 1 },
     { id: '2', text: 'Oleskan selai pada satu lembar roti', order: 2 },
@@ -97,10 +97,10 @@ export default function Pelajaran1ApaItuPemrograman({ onComplete }: Lesson1Props
           </CardHeader>
           <CardContent className="p-6">
             <div className="space-y-4">
-              <h3 className="font-semibold">Menulis Program "Halo Dunia" 💻</h3>
+              <h3 className="font-semibold">Menulis Program &quot;Halo Dunia&quot; 💻</h3>
               <p className="text-sm text-muted-foreground">
                 Komputer juga butuh instruksi yang detail dan berurutan untuk menampilkan
-                teks "Halo Dunia" di layar.
+                teks &quot;Halo Dunia&quot; di layar.
               </p>
 
               <DragDropInstructions
@@ -178,17 +178,17 @@ export default function Pelajaran1ApaItuPemrograman({ onComplete }: Lesson1Props
               <div className="space-y-3">
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
                   <div className="text-green-400 mb-1"># Python</div>
-                  <div className="text-blue-300">print("Halo Dunia")</div>
+                  <div className="text-blue-300">print(&quot;Halo Dunia&quot;)</div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
-                  <div className="text-green-400 mb-1">// JavaScript</div>
-                  <div className="text-blue-300">console.log("Halo Dunia");</div>
+                  <div className="text-green-400 mb-1">{/* // JavaScript */}</div>
+                  <div className="text-blue-300">console.log(&quot;Halo Dunia&quot;);</div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
-                  <div className="text-green-400 mb-1">/* Java */</div>
-                  <div className="text-blue-300">System.out.println("Halo Dunia");</div>
+                  <div className="text-green-400 mb-1">{/* Java */}</div>
+                  <div className="text-blue-300">System.out.println(&quot;Halo Dunia&quot;);</div>
                 </div>
               </div>
             </div>

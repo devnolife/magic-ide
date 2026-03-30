@@ -303,7 +303,7 @@ export function Lesson1Dictionary({ onComplete }: Lesson1DictionaryProps) {
                 <span>Legendary Ingredients</span>
               </CardTitle>
               <CardDescription>
-                Rare components from the academy's vault
+                Rare components from the academy&apos;s vault
               </CardDescription>
             </CardHeader>
             <CardContent>

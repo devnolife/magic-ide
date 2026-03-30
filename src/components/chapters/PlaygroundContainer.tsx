@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Code, Play } from 'lucide-react';
+import { ArrowLeft, Code } from 'lucide-react';
 import Link from 'next/link';
 import { Chapter } from '@/lib/chapters';
 import { LearningPlatform } from '@/components/LearningPlatform';

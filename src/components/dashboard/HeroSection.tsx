@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { PlayCircle, Rocket, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { calculateOverallProgress, userStatsData, chaptersData } from '@/data/dashboardData';
@@ -123,7 +122,7 @@ export function HeroSection() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Pencapaian Terbaru</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  "Pemula yang Antusias"
+                  &quot;Pemula yang Antusias&quot;
                 </p>
                 <div className="text-xs text-gray-500">
                   🔥 Streak 3 hari

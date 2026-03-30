@@ -14,7 +14,6 @@ import {
   Users,
   Zap,
   Target,
-  Brain,
   Lock,
   PlayCircle,
   CheckCircle2,
@@ -71,7 +70,7 @@ export function ChallengeSelection({
     }
   };
 
-  const getProgressColor = (completionRate?: number) => {
+  const _getProgressColor = (completionRate?: number) => {
     if (!completionRate) return 'bg-gray-200';
     if (completionRate > 80) return 'bg-green-500';
     if (completionRate > 60) return 'bg-yellow-500';

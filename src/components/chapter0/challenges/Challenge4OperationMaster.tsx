@@ -19,7 +19,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { OperationChain, OperationStep } from '@/types/challenges';
+import { OperationChain } from '@/types/challenges';
 
 interface Challenge4Props {
   onComplete: (success: boolean, score: number) => void;
@@ -203,7 +203,7 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
   const [currentChainIndex, setCurrentChainIndex] = useState(0);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [userInputs, setUserInputs] = useState<{ [key: string]: string }>({});
-  const [chainResults, setChainResults] = useState<{ [key: string]: any }>({});
+  const [_chainResults, setChainResults] = useState<{ [key: string]: Record<string, unknown> }>({});
   const [timeRemaining, setTimeRemaining] = useState(factory.timeLimit);
   const [isActive, setIsActive] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -229,6 +229,7 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
     }, 1000);
 
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive, isCompleted, timeRemaining]);
 
   const startFactory = () => {
@@ -237,6 +238,7 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
     toast.info('🏭 Pabrik operasi dimulai! Selesaikan setiap rantai operasi dengan benar.');
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const executeOperation = (operation: string, operands: any[], operator: string): any => {
     try {
       switch (operator) {
@@ -255,12 +257,12 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
         case 'not': return !operands[0];
         default: return null;
       }
-    } catch (error) {
+    } catch {
       return null;
     }
   };
 
-  const parseUserInput = (input: string): any => {
+  const parseUserInput = (input: string): string | number | boolean => {
     const trimmed = input.trim();
 
     // Handle boolean values
@@ -294,7 +296,6 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
     const userResult = parseUserInput(userInput);
 
     // Calculate the correct result
-    let correctResult: any;
     const operands = currentStep.operands.map(operand => {
       if (operand === 'result') {
         // Get the previous step result
@@ -305,7 +306,7 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
       return operand;
     });
 
-    correctResult = executeOperation(currentStep.operation, operands, currentStep.operator);
+    const correctResult = executeOperation(currentStep.operation, operands, currentStep.operator);
 
     const isCorrect = userResult === correctResult;
 
@@ -334,7 +335,7 @@ export default function Challenge4OperationMaster({ onComplete, difficulty }: Ch
     }
   };
 
-  const completeChain = (finalResult: any, isCorrect = true) => {
+  const completeChain = (finalResult: unknown, isCorrect = true) => {
     const chainCorrect = finalResult === currentChain.expectedResult && isCorrect;
 
     setChainResults(prev => ({

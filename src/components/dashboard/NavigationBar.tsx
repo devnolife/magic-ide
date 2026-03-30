@@ -1,18 +1,14 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { MobileNavigation } from './MobileNavigation';
 import { LogoutButton } from '@/components/auth/LogoutButton';
 import { useAuth } from '@/components/auth/AuthProvider';
 import {
   Moon,
   Sun,
-  User,
-  Settings,
-  LogOut,
   Search,
-  Menu,
   Trophy,
   HelpCircle,
   Shield

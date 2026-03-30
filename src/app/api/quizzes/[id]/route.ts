@@ -72,7 +72,7 @@ export async function GET(
           const parsed = JSON.parse(q.options);
           if (Array.isArray(parsed)) {
             sanitizedOptions = JSON.stringify(
-              parsed.map(({ isCorrect, ...rest }: { isCorrect?: boolean; [key: string]: unknown }) => rest)
+              parsed.map(({ isCorrect: _isCorrect, ...rest }: { isCorrect?: boolean; [key: string]: unknown }) => rest)
             );
           }
         } catch {

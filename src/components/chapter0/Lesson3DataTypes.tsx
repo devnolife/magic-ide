@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,10 +12,6 @@ import {
   Lightbulb,
   CheckCircle,
   XCircle,
-  FileText,
-  Calculator,
-  ToggleLeft,
-  List,
   MapPin,
   Sparkles,
   ArrowRight
@@ -169,7 +165,7 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
     setSelectedZone(null);
   };
 
-  const useExample = (example: string, zoneId: string) => {
+  const applyExample = (example: string, zoneId: string) => {
     setCurrentInput(example);
     setSelectedZone(zoneId);
   };
@@ -218,7 +214,7 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
 
             {/* Type Zones */}
             <div className="grid grid-cols-3 gap-4 h-full">
-              {dataTypeZones.map((zone, index) => (
+              {dataTypeZones.map((zone) => (
                 <motion.div
                   key={zone.id}
                   className={`
@@ -249,7 +245,7 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
                           className="text-xs h-6 px-2"
                           onClick={(e) => {
                             e.stopPropagation();
-                            useExample(example, zone.id);
+                            applyExample(example, zone.id);
                           }}
                         >
                           {example}
@@ -413,14 +409,14 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
                 </p>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-green-400">nama = "Alice"</div>
-                  <div className="text-green-400">kota = 'Jakarta'</div>
-                  <div className="text-green-400">pesan = "Halo Dunia!"</div>
-                  <div className="text-green-400">angka_string = "123"</div>
+                  <div className="text-green-400">nama = &quot;Alice&quot;</div>
+                  <div className="text-green-400">kota = &apos;Jakarta&apos;</div>
+                  <div className="text-green-400">pesan = &quot;Halo Dunia!&quot;</div>
+                  <div className="text-green-400">angka_string = &quot;123&quot;</div>
                 </div>
 
                 <div className="text-sm space-y-1">
-                  <div>• Bisa pakai kutip ganda (") atau tunggal (')</div>
+                  <div>• Bisa pakai kutip ganda (&quot;) atau tunggal (&apos;)</div>
                   <div>• Angka dalam kutip = string, bukan number</div>
                 </div>
               </div>
@@ -530,8 +526,8 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
                   <div className="text-green-400">angka = [1, 2, 3, 4]</div>
-                  <div className="text-green-400">nama = ["Ali", "Budi"]</div>
-                  <div className="text-green-400">campuran = [1, "Hello", True]</div>
+                  <div className="text-green-400">nama = [&quot;Ali&quot;, &quot;Budi&quot;]</div>
+                  <div className="text-green-400">campuran = [1, &quot;Hello&quot;, True]</div>
                   <div className="text-green-400">kosong = []</div>
                 </div>
 
@@ -590,9 +586,9 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
               <div className="space-y-3">
                 <h4 className="font-semibold">String ↔ Number:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-blue-300">int("42")    # → 42</div>
-                  <div className="text-blue-300">str(42)     # → "42"</div>
-                  <div className="text-blue-300">float("3.14") # → 3.14</div>
+                  <div className="text-blue-300">int(&quot;42&quot;)    # → 42</div>
+                  <div className="text-blue-300">str(42)     # → &quot;42&quot;</div>
+                  <div className="text-blue-300">float(&quot;3.14&quot;) # → 3.14</div>
                 </div>
               </div>
 
@@ -608,16 +604,16 @@ export default function Lesson3DataTypes({ onComplete, isCompleted }: LessonProp
               <div className="space-y-3">
                 <h4 className="font-semibold">List Operations:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-blue-300">list("abc") # → ['a','b','c']</div>
-                  <div className="text-blue-3000">str([1,2])  # → "[1, 2]"</div>
+                  <div className="text-blue-300">list(&quot;abc&quot;) # → [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;]</div>
+                  <div className="text-blue-3000">str([1,2])  # → &quot;[1, 2]&quot;</div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <h4 className="font-semibold">Type Checking:</h4>
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm space-y-1">
-                  <div className="text-blue-300">type(42)    # → &lt;class 'int'&gt;</div>
-                  <div className="text-blue-300">type("hi")  # → &lt;class 'str'&gt;</div>
+                  <div className="text-blue-300">type(42)    # → &lt;class &apos;int&apos;&gt;</div>
+                  <div className="text-blue-300">type(&quot;hi&quot;)  # → &lt;class &apos;str&apos;&gt;</div>
                 </div>
               </div>
             </div>

@@ -13,7 +13,6 @@ import {
   PlayCircle,
   Eye,
   Target,
-  Shuffle,
   Timer,
   Award
 } from 'lucide-react';
@@ -115,7 +114,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
 
   const currentClue = caseData.clues[currentClueIndex];
   const totalClues = caseData.clues.length;
-  const answeredCount = Object.keys(userAnswers).length;
+  const _answeredCount = Object.keys(userAnswers).length;
 
   useEffect(() => {
     if (!isActive || isCompleted || timeRemaining <= 0) return;
@@ -131,6 +130,7 @@ export default function Challenge3TypeDetective({ onComplete, difficulty }: Chal
     }, 1000);
 
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive, isCompleted, timeRemaining]);
 
   const startInvestigation = () => {
