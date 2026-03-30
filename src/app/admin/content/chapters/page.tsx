@@ -56,7 +56,8 @@ export default function ChaptersPage() {
       const res = await fetch("/api/admin/chapters", { headers: headers() });
       if (res.ok) {
         const data = await res.json();
-        setChapters(Array.isArray(data) ? data : []);
+        const list = data.chapters ?? data;
+        setChapters(Array.isArray(list) ? list : []);
       }
     } catch {
       toast.error("Gagal memuat data bab");

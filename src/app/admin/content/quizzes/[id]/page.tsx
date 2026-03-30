@@ -90,11 +90,13 @@ export default function EditQuizPage() {
 
         if (chapRes.ok) {
           const d = await chapRes.json();
-          setChapters(Array.isArray(d) ? d : []);
+          const list = d.chapters ?? d;
+          setChapters(Array.isArray(list) ? list : []);
         }
 
         if (quizRes.ok) {
-          const quiz = await quizRes.json();
+          const raw = await quizRes.json();
+          const quiz = raw.quiz ?? raw;
           setTitle(quiz.title || "");
           setDescription(quiz.description || "");
           setChapterId(quiz.chapterId || "");

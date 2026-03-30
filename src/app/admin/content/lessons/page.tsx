@@ -70,11 +70,13 @@ export default function LessonsPage() {
       ]);
       if (chapRes.ok) {
         const d = await chapRes.json();
-        setChapters(Array.isArray(d) ? d : []);
+        const list = d.chapters ?? d;
+        setChapters(Array.isArray(list) ? list : []);
       }
       if (lessRes.ok) {
         const d = await lessRes.json();
-        setLessons(Array.isArray(d) ? d : []);
+        const list = d.lessons ?? d;
+        setLessons(Array.isArray(list) ? list : []);
       }
     } catch {
       toast.error("Gagal memuat data");

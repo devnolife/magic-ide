@@ -87,7 +87,8 @@ export default function NewQuizPage() {
         const res = await fetch("/api/admin/chapters", { headers: getHeaders() });
         if (res.ok) {
           const d = await res.json();
-          setChapters(Array.isArray(d) ? d : []);
+          const list = d.chapters ?? d;
+          setChapters(Array.isArray(list) ? list : []);
         }
       } catch {
         toast.error("Gagal memuat daftar bab");

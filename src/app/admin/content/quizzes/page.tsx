@@ -56,11 +56,13 @@ export default function QuizzesPage() {
       ]);
       if (chapRes.ok) {
         const d = await chapRes.json();
-        setChapters(Array.isArray(d) ? d : []);
+        const list = d.chapters ?? d;
+        setChapters(Array.isArray(list) ? list : []);
       }
       if (quizRes.ok) {
         const d = await quizRes.json();
-        setQuizzes(Array.isArray(d) ? d : []);
+        const list = d.quizzes ?? d;
+        setQuizzes(Array.isArray(list) ? list : []);
       }
     } catch {
       toast.error("Gagal memuat data");

@@ -41,14 +41,18 @@ export default function ContentOverviewPage() {
         fetch("/api/admin/quizzes", { headers }),
       ]);
 
-      const chaptersData = chaptersRes.ok ? await chaptersRes.json() : [];
-      const lessonsData = lessonsRes.ok ? await lessonsRes.json() : [];
-      const quizzesData = quizzesRes.ok ? await quizzesRes.json() : [];
+      const chaptersData = chaptersRes.ok ? await chaptersRes.json() : {};
+      const lessonsData = lessonsRes.ok ? await lessonsRes.json() : {};
+      const quizzesData = quizzesRes.ok ? await quizzesRes.json() : {};
+
+      const chArr = chaptersData.chapters ?? chaptersData;
+      const lArr = lessonsData.lessons ?? lessonsData;
+      const qArr = quizzesData.quizzes ?? quizzesData;
 
       setStats({
-        chapters: Array.isArray(chaptersData) ? chaptersData.length : 0,
-        lessons: Array.isArray(lessonsData) ? lessonsData.length : 0,
-        quizzes: Array.isArray(quizzesData) ? quizzesData.length : 0,
+        chapters: Array.isArray(chArr) ? chArr.length : 0,
+        lessons: Array.isArray(lArr) ? lArr.length : 0,
+        quizzes: Array.isArray(qArr) ? qArr.length : 0,
       });
     } catch {
       console.error("Gagal memuat statistik konten");
