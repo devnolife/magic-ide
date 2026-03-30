@@ -16,8 +16,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Python Learning Hub - Interactive Learning Platform",
+  title: {
+    default: "Python Learning Hub - Interactive Learning Platform",
+    template: "%s | Python Learning Hub",
+  },
   description: "Belajar pemrograman Python dengan visualisasi interaktif yang menyenangkan",
+  keywords: ["python", "belajar python", "programming", "tutorial", "interactive learning"],
+  openGraph: {
+    title: "Python Learning Hub",
+    description: "Belajar pemrograman Python dengan visualisasi interaktif yang menyenangkan",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
