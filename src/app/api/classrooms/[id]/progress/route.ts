@@ -67,8 +67,8 @@ export async function GET(
 
     const studentIds = classroomStudents.map((cs) => cs.student.id);
 
-    // Fetch progress and quiz attempts for all students in parallel
-    const [allProgress, allQuizAttempts] = await Promise.all([
+    // Fetch progress, quiz attempts, and last activity for all students in parallel
+    const [allProgress, allQuizAttempts, lastActiveByStudent] = await Promise.all([
       prisma.userProgress.findMany({
         where: { userId: { in: studentIds } },
         include: {
@@ -100,7 +100,17 @@ export async function GET(
           createdAt: 'desc',
         },
       }),
+      // Get most recent updatedAt per student from UserProgress
+      prisma.userProgress.groupBy({
+        by: ['userId'],
+        where: { userId: { in: studentIds } },
+        _max: { updatedAt: true },
+      }),
     ]);
+
+    const lastActiveMap = new Map(
+      lastActiveByStudent.map((r) => [r.userId, r._max.updatedAt])
+    );
 
     // Group data by student
     const students = classroomStudents.map((cs) => {
@@ -136,6 +146,7 @@ export async function GET(
         name: cs.student.name,
         username: cs.student.username,
         joinedAt: cs.joinedAt,
+        lastActive: lastActiveMap.get(cs.student.id) ?? null,
         progress: studentProgress,
         quizzes: studentQuizzes,
       };

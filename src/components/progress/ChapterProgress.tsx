@@ -52,7 +52,7 @@ export function ChapterProgress({
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <Progress value={progressPercent} className="h-2" />
+        <Progress value={Math.min(progressPercent, 100)} className="h-2" />
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <BookOpen className="w-3.5 h-3.5" />

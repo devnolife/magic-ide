@@ -79,7 +79,7 @@ export function useProgressTracking(): UseProgressTrackingReturn {
   const totalTimeSpent = progress.reduce((sum, ch) => sum + ch.timeSpent, 0);
   const totalLessons = progress.reduce((sum, ch) => sum + ch.totalLessons, 0);
   const completedLessons = progress.reduce((sum, ch) => sum + ch.completedLessons, 0);
-  const overallPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+  const overallPercent = totalLessons > 0 ? Math.min(Math.round((completedLessons / totalLessons) * 100), 100) : 0;
 
   return {
     progress,

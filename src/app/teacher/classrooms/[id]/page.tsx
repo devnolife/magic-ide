@@ -39,8 +39,10 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   Loader2,
   Calendar,
+  Clock,
   School,
   X,
   Download,
@@ -104,6 +106,39 @@ function formatDate(iso: string) {
   });
 }
 
+function getInactiveDays(lastActive: string | null): number | null {
+  if (!lastActive) return null;
+  return Math.floor(
+    (Date.now() - new Date(lastActive).getTime()) / (1000 * 60 * 60 * 24)
+  );
+}
+
+function formatLastActive(lastActive: string | null): string {
+  const days = getInactiveDays(lastActive);
+  if (days === null) return "Belum ada aktivitas";
+  if (days === 0) return "Hari ini";
+  if (days === 1) return "1 hari lalu";
+  return `${days} hari lalu`;
+}
+
+function getActivityColor(lastActive: string | null): string {
+  const days = getInactiveDays(lastActive);
+  if (days === null) return "text-red-600";
+  if (days <= 3) return "text-green-600";
+  if (days <= 7) return "text-yellow-600";
+  return "text-red-600";
+}
+
+function getActivityBadgeVariant(
+  lastActive: string | null
+): "default" | "secondary" | "destructive" | "outline" {
+  const days = getInactiveDays(lastActive);
+  if (days === null) return "destructive";
+  if (days <= 3) return "default";
+  if (days <= 7) return "secondary";
+  return "destructive";
+}
+
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -115,6 +150,7 @@ export default function ClassroomDetailPage() {
 
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [progress, setProgress] = useState<ProgressRow[]>([]);
+  const [lastActiveMap, setLastActiveMap] = useState<Record<string, string | null>>({});
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("students");
 
@@ -140,6 +176,9 @@ export default function ClassroomDetailPage() {
   const [editDescription, setEditDescription] = useState("");
   const [saving, setSaving] = useState(false);
 
+  // CSV export
+  const [exporting, setExporting] = useState(false);
+
   // Delete classroom
   const [deleting, setDeleting] = useState(false);
 
@@ -156,6 +195,7 @@ export default function ClassroomDetailPage() {
       }
     } catch (err) {
       console.error("Failed to fetch classroom:", err);
+      toast.error("Gagal memuat data kelas. Silakan coba lagi.");
     }
   }, [classroomId]);
 
@@ -167,9 +207,18 @@ export default function ClassroomDetailPage() {
       if (res.ok) {
         const data = await res.json();
         setProgress(Array.isArray(data) ? data : (data.progress ?? []));
+        // Extract lastActive from students array
+        if (data.students && Array.isArray(data.students)) {
+          const map: Record<string, string | null> = {};
+          for (const s of data.students) {
+            map[s.id] = s.lastActive ?? null;
+          }
+          setLastActiveMap(map);
+        }
       }
     } catch (err) {
       console.error("Failed to fetch progress:", err);
+      toast.error("Gagal memuat data progres. Silakan coba lagi.");
     }
   }, [classroomId]);
 
@@ -197,6 +246,7 @@ export default function ClassroomDetailPage() {
       if (res.ok) await fetchClassroom();
     } catch (err) {
       console.error("Remove student failed:", err);
+      toast.error("Gagal menghapus murid dari kelas. Silakan coba lagi.");
     } finally {
       setRemovingStudent(null);
     }
@@ -215,8 +265,9 @@ export default function ClassroomDetailPage() {
         const data = await res.json();
         setSearchResults(Array.isArray(data) ? data : []);
       }
-    } catch {
-      // ignore
+    } catch (err) {
+      console.error("Search users failed:", err);
+      toast.error("Gagal mencari pengguna. Silakan coba lagi.");
     } finally {
       setSearching(false);
     }
@@ -242,6 +293,7 @@ export default function ClassroomDetailPage() {
       }
     } catch (err) {
       console.error("Add student failed:", err);
+      toast.error("Gagal menambahkan murid ke kelas. Silakan coba lagi.");
     } finally {
       setAddingStudent(null);
     }
@@ -354,6 +406,42 @@ export default function ClassroomDetailPage() {
     } catch {
       toast.error("Terjadi kesalahan jaringan.");
       setDeleting(false);
+    }
+  };
+
+  /* ---------- CSV export ---------- */
+
+  const handleExportCsv = async () => {
+    setExporting(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const res = await fetch(
+        `/api/teacher/classrooms/${classroomId}/export`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Export gagal" }));
+        toast.error(err.error || "Gagal mengunduh CSV.");
+        return;
+      }
+      const blob = await res.blob();
+      const disposition = res.headers.get("Content-Disposition") ?? "";
+      const match = disposition.match(/filename="?([^"]+)"?/);
+      const filename = match?.[1] ?? "export.csv";
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast.success("CSV berhasil diunduh.");
+    } catch {
+      toast.error("Terjadi kesalahan jaringan.");
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -529,6 +617,43 @@ export default function ClassroomDetailPage() {
         </motion.div>
       )}
 
+      {/* Perlu Perhatian alert */}
+      {(() => {
+        const inactiveStudents = classroom.students.filter((s) => {
+          const days = getInactiveDays(lastActiveMap[s.id] ?? null);
+          return days === null || days > 7;
+        });
+        if (inactiveStudents.length === 0) return null;
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 border rounded-lg bg-amber-50 border-amber-300 space-y-3"
+          >
+            <h3 className="font-semibold text-amber-800 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-600" />
+              ⚠️ {inactiveStudents.length} siswa tidak aktif lebih dari 7 hari
+            </h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {inactiveStudents.map((s) => (
+                <div
+                  key={s.id}
+                  className="flex items-center justify-between p-2 rounded-md bg-amber-100/60"
+                >
+                  <span className="text-sm font-medium text-amber-900">
+                    {s.name || `@${s.username}`}
+                  </span>
+                  <span className="text-xs text-amber-700">
+                    <Clock className="h-3 w-3 inline mr-1" />
+                    {formatLastActive(lastActiveMap[s.id] ?? null)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      })()}
+
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
@@ -550,7 +675,21 @@ export default function ClassroomDetailPage() {
         <TabsContent value="students" className="mt-4 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <h2 className="text-lg font-semibold text-foreground">Daftar Murid</h2>
-            <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleExportCsv}
+                disabled={exporting}
+              >
+                {exporting ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4 mr-2" />
+                )}
+                Download CSV
+              </Button>
+              <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="sm">
                   <UserPlus className="h-4 w-4 mr-2" />
@@ -630,6 +769,7 @@ export default function ClassroomDetailPage() {
                 </div>
               </DialogContent>
             </Dialog>
+            </div>
           </div>
 
           {classroom.students.length > 0 ? (
@@ -644,6 +784,9 @@ export default function ClassroomDetailPage() {
                     </th>
                     <th className="p-3 pr-4 font-medium hidden md:table-cell">
                       Bergabung
+                    </th>
+                    <th className="p-3 pr-4 font-medium hidden md:table-cell">
+                      Terakhir Aktif
                     </th>
                     <th className="p-3 font-medium w-10"></th>
                   </tr>
@@ -665,6 +808,21 @@ export default function ClassroomDetailPage() {
                       </td>
                       <td className="p-3 pr-4 text-muted-foreground hidden md:table-cell">
                         {formatDate(student.joinedAt)}
+                      </td>
+                      <td className="p-3 pr-4 hidden md:table-cell">
+                        <Badge
+                          variant={getActivityBadgeVariant(lastActiveMap[student.id] ?? null)}
+                          className={
+                            getActivityColor(lastActiveMap[student.id] ?? null) === "text-green-600"
+                              ? "bg-green-100 text-green-800 hover:bg-green-100"
+                              : getActivityColor(lastActiveMap[student.id] ?? null) === "text-yellow-600"
+                                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                                : "bg-red-100 text-red-800 hover:bg-red-100"
+                          }
+                        >
+                          <Clock className="h-3 w-3 mr-1" />
+                          {formatLastActive(lastActiveMap[student.id] ?? null)}
+                        </Badge>
                       </td>
                       <td className="p-3">
                         <Button

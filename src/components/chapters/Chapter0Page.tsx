@@ -117,7 +117,7 @@ export function Chapter0Page() {
   }, []);
 
   const currentLesson = lessons[currentLessonIndex];
-  const progress = ((completedLessons.size) / lessons.length) * 100;
+  const progress = lessons.length > 0 ? Math.min(Math.round((completedLessons.size / lessons.length) * 100), 100) : 0;
 
   // Check if challenges should be unlocked
   useEffect(() => {

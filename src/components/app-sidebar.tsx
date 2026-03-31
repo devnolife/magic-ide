@@ -4,8 +4,6 @@ import * as React from "react"
 import {
   LayoutDashboard,
   Trophy,
-  HelpCircle,
-  Search,
   Shield,
   School,
   GraduationCap,
@@ -15,7 +13,7 @@ import {
 
 import { NavMain } from "@/components/nav-main"
 import { NavChapters } from "@/components/nav-chapters"
-import { NavSecondary } from "@/components/nav-secondary"
+
 import {
   Sidebar,
   SidebarContent,
@@ -35,10 +33,6 @@ const chapters = [
   { title: "Ch 5: Project & Challenge", url: "/chapter/5" },
 ]
 
-const navSecondary = [
-  { title: "Bantuan", url: "#", icon: HelpCircle },
-  { title: "Cari Materi", url: "#", icon: Search },
-]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user, isAuthenticated } = useAuth()
@@ -87,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={navMainItems} />
         <NavChapters items={chapters} />
-        <NavSecondary items={navSecondary} className="mt-auto" />
+
       </SidebarContent>
     </Sidebar>
   )

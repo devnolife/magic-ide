@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -119,6 +120,7 @@ export default function TeacherExamsPage() {
       }
     } catch (err) {
       console.error("Failed to fetch sessions:", err);
+      toast.error("Gagal memuat sesi ujian. Silakan coba lagi.");
     }
   }, [headers]);
 
@@ -131,6 +133,7 @@ export default function TeacherExamsPage() {
       }
     } catch (err) {
       console.error("Failed to fetch classrooms:", err);
+      toast.error("Gagal memuat daftar kelas. Silakan coba lagi.");
     }
   }, [headers]);
 
@@ -143,6 +146,7 @@ export default function TeacherExamsPage() {
       }
     } catch (err) {
       console.error("Failed to fetch quizzes:", err);
+      toast.error("Gagal memuat daftar kuis. Silakan coba lagi.");
     }
   }, [headers]);
 
@@ -164,6 +168,7 @@ export default function TeacherExamsPage() {
       }
     } catch (err) {
       console.error("Seed failed:", err);
+      toast.error("Gagal menyiapkan soal ujian. Silakan coba lagi.");
     } finally {
       setSeeding(false);
     }
@@ -188,6 +193,7 @@ export default function TeacherExamsPage() {
       }
     } catch (err) {
       console.error("Create session failed:", err);
+      toast.error("Gagal membuat sesi ujian. Silakan coba lagi.");
     } finally {
       setCreating(false);
     }
@@ -203,6 +209,7 @@ export default function TeacherExamsPage() {
       if (res.ok) await fetchSessions();
     } catch (err) {
       console.error("Update status failed:", err);
+      toast.error("Gagal mengubah status ujian. Silakan coba lagi.");
     }
   };
 
@@ -215,6 +222,7 @@ export default function TeacherExamsPage() {
       if (res.ok) await fetchSessions();
     } catch (err) {
       console.error("Delete failed:", err);
+      toast.error("Gagal menghapus sesi ujian. Silakan coba lagi.");
     }
   };
 

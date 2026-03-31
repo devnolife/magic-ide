@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { LottieAnimation } from "@/components/animations/LottieAnimation";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -55,6 +56,7 @@ export default function ClassroomListPage() {
       }
     } catch (err) {
       console.error("Failed to fetch classrooms:", err);
+      toast.error("Gagal memuat daftar kelas. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }

@@ -6,6 +6,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   School,
@@ -235,7 +236,15 @@ export default function TeacherDashboard() {
                   totalProgress += completion;
                   progressCount++;
 
+                  // Group by quizId, keep latest attempt only
+                  const latestAttempts = new Map<string, StudentQuiz>();
                   s.quizzes.forEach((q) => {
+                    const existing = latestAttempts.get(q.quizId);
+                    if (!existing || new Date(q.attemptedAt) > new Date(existing.attemptedAt)) {
+                      latestAttempts.set(q.quizId, q);
+                    }
+                  });
+                  latestAttempts.forEach((q) => {
                     totalQuizScore += q.percentage;
                     quizCount++;
                     if (q.status === "COMPLETED") passedQuizzes++;
@@ -293,6 +302,7 @@ export default function TeacherDashboard() {
       });
     } catch (err) {
       console.error("Failed to load dashboard:", err);
+      toast.error("Gagal memuat dashboard. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }

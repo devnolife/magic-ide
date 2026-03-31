@@ -127,7 +127,7 @@ export function AdvancedListContainer() {
     }
   };
 
-  const overallProgress = (completedLessons.size / lessons.length) * 100;
+  const overallProgress = lessons.length > 0 ? Math.min(Math.round((completedLessons.size / lessons.length) * 100), 100) : 0;
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {

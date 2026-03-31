@@ -78,7 +78,7 @@ export default function Chapter1({ onChapterComplete }: Chapter1Props) {
   };
 
   const calculateProgress = () => {
-    return (completedLessons.size / lessons.length) * 100;
+    return lessons.length > 0 ? Math.min(Math.round((completedLessons.size / lessons.length) * 100), 100) : 0;
   };
 
   const getCurrentLessonComponent = () => {

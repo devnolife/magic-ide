@@ -161,7 +161,7 @@ export function ListContainer() {
 
   const currentLesson = lessons.find(lesson => lesson.id === activeLesson);
   const completedLessons = Object.values(lessonProgress).filter(Boolean).length;
-  const totalProgress = (completedLessons / lessons.length) * 100;
+  const totalProgress = lessons.length > 0 ? Math.min(Math.round((completedLessons / lessons.length) * 100), 100) : 0;
 
   const handleLessonComplete = (lessonId: string) => {
     setLessonProgress(prev => ({

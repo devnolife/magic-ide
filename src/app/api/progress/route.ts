@@ -2,6 +2,79 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { validateSession } from '@/lib/auth';
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'No token provided' },
+        { status: 401 }
+      );
+    }
+
+    const session = await validateSession(token);
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    const { chapterId } = await request.json();
+
+    if (!chapterId) {
+      return NextResponse.json(
+        { error: 'chapterId is required' },
+        { status: 400 }
+      );
+    }
+
+    const userId = session.user.id;
+
+    const userProgress = await prisma.userProgress.findUnique({
+      where: {
+        userId_chapterId: { userId, chapterId },
+      },
+    });
+
+    if (!userProgress) {
+      return NextResponse.json(
+        { error: 'No progress found for this chapter' },
+        { status: 404 }
+      );
+    }
+
+    // Delete lesson progress linked to this user progress, then the user progress itself
+    await prisma.$transaction([
+      prisma.lessonProgress.deleteMany({
+        where: { userProgressId: userProgress.id },
+      }),
+      prisma.userProgress.delete({
+        where: { id: userProgress.id },
+      }),
+    ]);
+
+    // Find chapter number for the response message
+    const chapter = await prisma.chapter.findUnique({
+      where: { id: chapterId },
+      select: { number: true },
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: `Progress chapter ${chapter?.number ?? chapterId} direset`,
+    });
+  } catch (error) {
+    console.error('Progress reset error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
@@ -56,7 +129,7 @@ export async function GET(request: NextRequest) {
     const progress = chapters.map((ch) => {
       const up = progressMap.get(ch.id);
       const totalLessons = ch._count.lessons;
-      const completedLessons = up?.completedLessons ?? 0;
+      const completedLessons = Math.min(up?.completedLessons ?? 0, totalLessons);
 
       let status: 'not-started' | 'in-progress' | 'completed' = 'not-started';
       if (completedLessons > 0 && completedLessons >= totalLessons && totalLessons > 0) {
@@ -75,7 +148,7 @@ export async function GET(request: NextRequest) {
         totalPoints: up?.totalPoints ?? 0,
         timeSpent: up?.timeSpent ?? 0,
         status,
-        progressPercent: totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0,
+        progressPercent: totalLessons > 0 ? Math.min(Math.round((completedLessons / totalLessons) * 100), 100) : 0,
         lessonProgress: up?.lessonProgress ?? [],
       };
     });

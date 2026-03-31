@@ -149,6 +149,7 @@ export default function ExamResultsPage() {
       }
     } catch (err) {
       console.error("Failed to fetch exam results:", err);
+      toast.error("Gagal memuat hasil ujian. Silakan coba lagi.");
     }
   }, [sessionId]);
 

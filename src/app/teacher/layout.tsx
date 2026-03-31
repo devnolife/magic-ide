@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 import { useAuth } from "@/components/auth/AuthProvider";
 import {
   Sidebar,
@@ -169,6 +170,7 @@ export default function TeacherLayout({
                     window.location.href = "/login";
                   } catch (error) {
                     console.error("Logout failed:", error);
+                    toast.error("Gagal keluar. Silakan coba lagi.");
                   }
                 }}
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-destructive transition-colors"

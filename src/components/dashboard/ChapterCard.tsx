@@ -77,9 +77,9 @@ export function ChapterCard({ chapter, index, isLocked }: ChapterCardProps) {
               <span className="text-sm text-muted-foreground">
                 {isLocked ? 'Terkunci' : `${chapter.completedLessons}/${chapter.totalLessons} Lesson`}
               </span>
-              <span className="text-sm font-medium">{chapter.progress}%</span>
+              <span className="text-sm font-medium">{Math.min(chapter.progress, 100)}%</span>
             </div>
-            <Progress value={isLocked ? 0 : chapter.progress} className="h-2" />
+            <Progress value={isLocked ? 0 : Math.min(chapter.progress, 100)} className="h-2" />
           </div>
 
           <div className="flex items-center justify-between">

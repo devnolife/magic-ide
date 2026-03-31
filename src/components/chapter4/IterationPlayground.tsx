@@ -338,7 +338,7 @@ export function IterationPlayground({ onComplete, isCompleted }: PlaygroundProps
     }
   }, [completed, onComplete]);
 
-  const mastery = Math.round((completed.size / challenges.length) * 100);
+  const mastery = challenges.length > 0 ? Math.min(Math.round((completed.size / challenges.length) * 100), 100) : 0;
   const current = challenges.find(c => c.id === activeChallenge)!;
 
   return (
