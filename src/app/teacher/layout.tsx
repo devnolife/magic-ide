@@ -43,6 +43,7 @@ const sidebarLinks = [
 function getPageTitle(pathname: string): string {
   if (pathname === "/teacher") return "Dashboard";
   if (pathname === "/teacher/materials") return "Materi Pembelajaran";
+  if (pathname.endsWith("/present")) return "Mode Presentasi";
   if (pathname.startsWith("/teacher/materials/")) return "Detail Materi";
   if (pathname === "/teacher/classrooms/new") return "Buat Kelas Baru";
   if (pathname.startsWith("/teacher/classrooms/")) return "Detail Kelas";

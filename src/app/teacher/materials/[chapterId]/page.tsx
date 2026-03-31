@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, GraduationCap, Lightbulb } from 'lucide-react';
+import { ArrowLeft, BookOpen, GraduationCap, Lightbulb, Monitor } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -153,10 +153,18 @@ export default function TeacherMaterialsChapterPage() {
           <h1 className="text-2xl font-bold">{chapter.title}</h1>
           <p className="text-muted-foreground">{chapter.description}</p>
         </div>
-        <Badge variant="secondary" className="ml-auto">
-          <BookOpen className="mr-1 h-3 w-3" />
-          {lessons.length} Materi
-        </Badge>
+        <div className="ml-auto flex items-center gap-2">
+          <Link href={`/teacher/materials/${chapterId}/present`}>
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+              <Monitor className="mr-2 h-4 w-4" />
+              Mode Presentasi
+            </Button>
+          </Link>
+          <Badge variant="secondary">
+            <BookOpen className="mr-1 h-3 w-3" />
+            {lessons.length} Materi
+          </Badge>
+        </div>
       </div>
 
       <Separator />
