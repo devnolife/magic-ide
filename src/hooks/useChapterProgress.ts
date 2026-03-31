@@ -15,7 +15,7 @@ interface UseChapterProgressReturn {
   chapterMeta: ChapterMeta | null;
   loading: boolean;
   savingLesson: number | null;
-  saveLesson: (lessonNumber: number, lessonTitle?: string) => Promise<void>;
+  saveLesson: (lessonNumber: number, lessonTitle?: string, timeSpent?: number) => Promise<void>;
   isLessonCompleted: (lessonNumber: number) => boolean;
   allLessonsCompleted: boolean;
 }
@@ -68,7 +68,7 @@ export function useChapterProgress(chapterNumber: number): UseChapterProgressRet
     loadData();
   }, [chapterNumber]);
 
-  const saveLesson = useCallback(async (lessonNumber: number, lessonTitle?: string) => {
+  const saveLesson = useCallback(async (lessonNumber: number, lessonTitle?: string, timeSpent?: number) => {
     if (completedLessonNumbers.has(lessonNumber)) return;
 
     setCompletedLessonNumbers(prev => new Set([...prev, lessonNumber]));
@@ -98,7 +98,7 @@ export function useChapterProgress(chapterNumber: number): UseChapterProgressRet
           chapterId: chapterMeta.chapterId,
           lessonId: dbLesson.id,
           status: 'COMPLETED',
-          timeSpent: 0,
+          timeSpent: timeSpent ?? 0,
         }),
       });
 

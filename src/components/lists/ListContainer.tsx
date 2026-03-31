@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useChapterProgress } from '@/hooks/useChapterProgress';
+import { useChallengeProgress } from '@/hooks/useChallengeProgress';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -127,6 +128,7 @@ export function ListContainer() {
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('lessons');
   const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(1);
+  const { saveChallengeResult, attempts: challengeAttempts, isChallengeCompleted, getBestScore } = useChallengeProgress(1);
 
   // Sync DB progress to local lessonProgress state
   useEffect(() => {
@@ -180,9 +182,11 @@ export function ListContainer() {
   };
 
   const handleChallengeComplete = (result: ChallengeResult) => {
-    console.log('Challenge completed:', result);
+    if (result.completed) {
+      saveChallengeResult(1, result.score, result.timeSpent);
+    }
     setSelectedChallenge(null);
-    setActiveTab('lessons'); // Return to lessons after challenge
+    setActiveTab('lessons');
   };
 
   const handleHint = (hintLevel: number) => {
