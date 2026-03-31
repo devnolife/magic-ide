@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import { ChapterGrid } from "@/components/dashboard/ChapterGrid"
+import { ActiveExamsSection } from "@/components/dashboard/ActiveExamsSection"
 import type { ChapterProgress } from "@/components/dashboard/ChapterGrid"
 import { useAuth } from "@/components/auth/AuthProvider"
 import {
@@ -41,6 +42,7 @@ export default function Page() {
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards progressData={progressData} streakData={streakData} />
+              <ActiveExamsSection />
               <div className="px-4 lg:px-6">
                 <ChapterGrid onProgressLoaded={handleProgressLoaded} />
               </div>

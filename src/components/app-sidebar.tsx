@@ -10,6 +10,7 @@ import {
   School,
   GraduationCap,
   Award,
+  ClipboardList,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -48,6 +49,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       { title: "Leaderboard", url: "/leaderboard", icon: Trophy },
       { title: "Sertifikat", url: "/certificates", icon: Award },
     ]
+
+    if (isAuthenticated && user?.role === "USER") {
+      items.push({ title: "Ujian", url: "/dashboard#ujian", icon: ClipboardList })
+    }
 
     if (isAuthenticated && user?.role === "TEACHER") {
       items.push({ title: "Panel Guru", url: "/teacher", icon: School })
