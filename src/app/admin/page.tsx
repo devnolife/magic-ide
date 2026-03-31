@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,11 @@ import {
   Pencil,
   Eye,
   X,
+  BarChart3,
+  ChevronDown,
 } from 'lucide-react';
+
+const AnalyticsSection = lazy(() => import('@/components/admin/AnalyticsSection'));
 
 interface AdminStats {
   overview: {
@@ -240,6 +244,9 @@ export default function AdminDashboard() {
   const [userDetail, setUserDetail] = useState<UserDetailData | null>(null);
   const [userDetailLoading, setUserDetailLoading] = useState(false);
   const [userDetailError, setUserDetailError] = useState('');
+
+  // Analytics section state
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   useEffect(() => {
     if (user?.role !== 'ADMIN') {
@@ -1058,6 +1065,37 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Analitik Section (collapsible, lazy-loaded) */}
+      <div className="space-y-4">
+        <button
+          type="button"
+          className="flex items-center justify-between w-full text-left"
+          onClick={() => setShowAnalytics(!showAnalytics)}
+        >
+          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-indigo-600" />
+            📊 Analitik
+          </h2>
+          <ChevronDown
+            className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
+              showAnalytics ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+        {showAnalytics && (
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <span className="ml-2 text-muted-foreground">Memuat analitik...</span>
+              </div>
+            }
+          >
+            <AnalyticsSection />
+          </Suspense>
+        )}
       </div>
 
       {/* Create Activation Code Dialog */}
