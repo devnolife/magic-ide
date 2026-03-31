@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 import { MobileNavigation } from './MobileNavigation';
@@ -109,9 +110,11 @@ export function NavigationBar() {
             <Button variant="ghost" className="font-medium" onClick={() => window.location.href = '/dashboard'}>
               Dashboard
             </Button>
-            <Button variant="ghost" className="font-medium">
-              <Trophy className="w-4 h-4 mr-2" />
-              Leaderboard
+            <Button variant="ghost" className="font-medium" asChild>
+              <Link href="/leaderboard">
+                <Trophy className="w-4 h-4 mr-2" />
+                Leaderboard
+              </Link>
             </Button>
             {isAuthenticated && user?.role === 'ADMIN' && (
               <Button variant="ghost" className="font-medium" onClick={() => window.location.href = '/admin'}>
@@ -119,9 +122,11 @@ export function NavigationBar() {
                 Admin
               </Button>
             )}
-            <Button variant="ghost" className="font-medium">
-              <HelpCircle className="w-4 h-4 mr-2" />
-              Help
+            <Button variant="ghost" className="font-medium" asChild>
+              <Link href="/help">
+                <HelpCircle className="w-4 h-4 mr-2" />
+                Bantuan
+              </Link>
             </Button>
           </div>
 

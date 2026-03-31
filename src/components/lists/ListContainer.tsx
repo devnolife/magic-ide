@@ -189,8 +189,7 @@ export function ListContainer() {
     setActiveTab('lessons');
   };
 
-  const handleHint = (hintLevel: number) => {
-    console.log('Hint requested:', hintLevel);
+  const handleHint = (_hintLevel: number) => {
   };
 
   const getDifficultyColor = (difficulty: string) => {

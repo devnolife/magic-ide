@@ -305,14 +305,7 @@ export async function seedDatabase() {
       },
     });
 
-    console.log('Database seeded successfully!');
-    console.log('');
-    console.log('=== Akun Login ===');
-    console.log('Admin    : admin / admin123');
-    console.log('Guru     : guru1 / guru123');
-    console.log('Murid    : student / user123');
-    console.log('');
-    console.log('Kelas: Python Kelas 10A (guru1)');
+
 
     // Create sample exam session for demo
     const seededQuiz = await prisma.quiz.findFirst({
@@ -332,7 +325,6 @@ export async function seedDatabase() {
         },
       });
 
-      console.log('Sesi ujian demo: seed-exam-session-1 (SCHEDULED)');
     }
     
   } catch (error) {

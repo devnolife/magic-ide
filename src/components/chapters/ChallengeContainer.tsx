@@ -23,12 +23,9 @@ export function ChallengeContainer({ chapter, challenge }: ChallengeContainerPro
 
   const handleRunCode = () => {
     // Here you would implement code execution and testing
-    console.log('Running code:', code);
   };
 
   const handleSubmit = () => {
-    // Here you would implement solution validation
-    console.log('Submitting solution:', code);
     setIsCompleted(true);
   };
 

@@ -144,9 +144,7 @@ export function Lesson3NestedDict({ onComplete }: Lesson3NestedDictProps) {
       }
     });
 
-    console.log('All Academy Records:', allRecords);
-
-    if (!completedTasks.includes('iterate_nested')) {
+    if(!completedTasks.includes('iterate_nested')) {
       setCompletedTasks(prev => [...prev, 'iterate_nested']);
     }
   };

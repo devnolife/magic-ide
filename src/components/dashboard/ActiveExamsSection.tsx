@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ClipboardList, Clock, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
+import { ClipboardList, Clock, CheckCircle2, ArrowRight, AlertCircle, AlertTriangle, Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ActiveExam {
   id: string;
@@ -23,13 +24,41 @@ interface ActiveExam {
   alreadySubmitted: boolean;
 }
 
+function ExamsSkeleton() {
+  return (
+    <div className="px-4 lg:px-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Skeleton className="size-5 rounded-full" />
+        <Skeleton className="h-5 w-32" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
+        {[1, 2].map((i) => (
+          <Card key={i} className="@container/card">
+            <CardHeader>
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-5 w-44" />
+              <Skeleton className="h-6 w-24 rounded-full" />
+            </CardHeader>
+            <CardFooter>
+              <Skeleton className="h-8 w-28 rounded-md" />
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function ActiveExamsSection() {
   const [exams, setExams] = useState<ActiveExam[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchExams = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const token = localStorage.getItem('auth-token');
         if (!token) return;
 
@@ -37,12 +66,11 @@ export function ActiveExamsSection() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          setExams(data.sessions ?? []);
-        }
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setExams(data.sessions ?? []);
       } catch {
-        // silently fail
+        setError('Gagal memuat data ujian');
       } finally {
         setLoading(false);
       }
@@ -51,7 +79,29 @@ export function ActiveExamsSection() {
     fetchExams();
   }, []);
 
-  if (loading || exams.length === 0) return null;
+  if (loading) return <ExamsSkeleton />;
+
+  if (error) {
+    return (
+      <div className="px-4 lg:px-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <AlertTriangle className="size-4 text-yellow-500" />
+          <span>{error}</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (exams.length === 0) {
+    return (
+      <div className="px-4 lg:px-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Info className="size-4" />
+          <span>Tidak ada ujian aktif</span>
+        </div>
+      </div>
+    );
+  }
 
   const pending = exams.filter((e) => !e.alreadySubmitted);
   const submitted = exams.filter((e) => e.alreadySubmitted);

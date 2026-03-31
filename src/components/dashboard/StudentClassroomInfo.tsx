@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { School, Users } from 'lucide-react';
+import { School, Users, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ClassroomInfo {
   id: string;
@@ -19,13 +20,40 @@ interface ClassroomInfo {
   studentCount: number;
 }
 
+function ClassroomSkeleton() {
+  return (
+    <div className="px-4 lg:px-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Skeleton className="size-5 rounded-full" />
+        <Skeleton className="h-5 w-28" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
+        {[1, 2].map((i) => (
+          <Card key={i} className="@container/card">
+            <CardHeader>
+              <Skeleton className="h-4 w-36" />
+              <Skeleton className="h-5 w-48" />
+            </CardHeader>
+            <CardFooter>
+              <Skeleton className="h-6 w-24 rounded-full" />
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function StudentClassroomInfo() {
   const [classrooms, setClassrooms] = useState<ClassroomInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchClassrooms = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const token = localStorage.getItem('auth-token');
         if (!token) return;
 
@@ -33,12 +61,11 @@ export function StudentClassroomInfo() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          setClassrooms(data.classrooms ?? []);
-        }
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setClassrooms(data.classrooms ?? []);
       } catch {
-        // silently fail
+        setError('Gagal memuat data kelas');
       } finally {
         setLoading(false);
       }
@@ -47,7 +74,20 @@ export function StudentClassroomInfo() {
     fetchClassrooms();
   }, []);
 
-  if (loading || classrooms.length === 0) return null;
+  if (loading) return <ClassroomSkeleton />;
+
+  if (error) {
+    return (
+      <div className="px-4 lg:px-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <AlertTriangle className="size-4 text-yellow-500" />
+          <span>{error}</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (classrooms.length === 0) return null;
 
   return (
     <div className="px-4 lg:px-6">
