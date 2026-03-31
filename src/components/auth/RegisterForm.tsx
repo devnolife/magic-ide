@@ -130,12 +130,14 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 <Input
                   id="username" name="username" type="text"
                   value={formData.username} onChange={handleChange}
+                  aria-invalid={!!errors.username}
+                  aria-describedby={errors.username ? 'reg-username-error' : undefined}
                   className={inputClass('username')}
                   placeholder="Username"
                   disabled={isLoading}
                 />
               </div>
-              {errors.username && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.username}</p>}
+              {errors.username && <p id="reg-username-error" role="alert" className="mt-0.5 text-xs text-red-500">⚠️ {errors.username}</p>}
             </div>
           </div>
 
@@ -149,12 +151,14 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
               <Input
                 id="email" name="email" type="email"
                 value={formData.email} onChange={handleChange}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'reg-email-error' : undefined}
                 className={inputClass('email')}
                 placeholder="email@contoh.com"
                 disabled={isLoading}
               />
             </div>
-            {errors.email && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.email}</p>}
+            {errors.email && <p id="reg-email-error" role="alert" className="mt-0.5 text-xs text-red-500">⚠️ {errors.email}</p>}
           </div>
 
           {/* Row 2: Password + Confirm side by side */}
@@ -169,6 +173,8 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                   id="password" name="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password} onChange={handleChange}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={errors.password ? 'reg-password-error' : undefined}
                   className={`pr-9 ${inputClass('password')}`}
                   placeholder="Min 6 karakter"
                   disabled={isLoading}
@@ -178,11 +184,12 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
                   disabled={isLoading}
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.password && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.password}</p>}
+              {errors.password && <p id="reg-password-error" role="alert" className="mt-0.5 text-xs text-red-500">⚠️ {errors.password}</p>}
             </div>
 
             <div>
@@ -195,6 +202,8 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                   id="confirmPassword" name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={formData.confirmPassword} onChange={handleChange}
+                  aria-invalid={!!errors.confirmPassword}
+                  aria-describedby={errors.confirmPassword ? 'reg-confirm-error' : undefined}
                   className={`pr-9 ${inputClass('confirmPassword')}`}
                   placeholder="Ulangi"
                   disabled={isLoading}
@@ -204,11 +213,12 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
                   disabled={isLoading}
+                  aria-label={showConfirmPassword ? 'Sembunyikan konfirmasi password' : 'Tampilkan konfirmasi password'}
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.confirmPassword && <p className="mt-0.5 text-xs text-red-500">⚠️ {errors.confirmPassword}</p>}
+              {errors.confirmPassword && <p id="reg-confirm-error" role="alert" className="mt-0.5 text-xs text-red-500">⚠️ {errors.confirmPassword}</p>}
             </div>
           </div>
 

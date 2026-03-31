@@ -185,6 +185,8 @@ export default function PresentationPage() {
             className={`text-white hover:bg-gray-700 ${showTips ? 'bg-emerald-700 hover:bg-emerald-600' : ''}`}
             onClick={() => setShowTips((v) => !v)}
             title="Teaching Tips"
+            aria-label={showTips ? 'Sembunyikan tips mengajar' : 'Tampilkan tips mengajar'}
+            aria-expanded={showTips}
           >
             <Lightbulb className="w-4 h-4" />
           </Button>
@@ -194,6 +196,7 @@ export default function PresentationPage() {
             className="text-white hover:bg-gray-700"
             onClick={exitPresentation}
             title="Keluar Presentasi (Esc)"
+            aria-label="Keluar dari mode presentasi"
           >
             <X className="w-4 h-4" />
           </Button>
@@ -321,6 +324,7 @@ export default function PresentationPage() {
           size="sm"
           onClick={goToPrev}
           disabled={currentIndex === 0}
+          aria-label="Materi sebelumnya"
           className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50 disabled:opacity-40"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -337,6 +341,7 @@ export default function PresentationPage() {
           size="sm"
           onClick={goToNext}
           disabled={currentIndex === lessons.length - 1}
+          aria-label="Materi selanjutnya"
           className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50 disabled:opacity-40"
         >
           Selanjutnya

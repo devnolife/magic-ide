@@ -89,13 +89,15 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
                 type="text"
                 value={formData.username}
                 onChange={handleChange}
+                aria-invalid={!!errors.username}
+                aria-describedby={errors.username ? 'login-username-error' : undefined}
                 className={`pl-11 h-12 rounded-xl border-2 bg-emerald-50/50 focus:bg-white transition-colors ${errors.username ? 'border-red-300 bg-red-50/50' : 'border-emerald-100 focus:border-emerald-400'}`}
                 placeholder="Masukkan username"
                 disabled={isLoading}
               />
             </div>
             {errors.username && (
-              <p className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+              <p id="login-username-error" role="alert" className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
                 <span>⚠️</span> {errors.username}
               </p>
             )}
@@ -114,6 +116,8 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={handleChange}
+                aria-invalid={!!errors.password}
+                aria-describedby={errors.password ? 'login-password-error' : undefined}
                 className={`pl-11 pr-11 h-12 rounded-xl border-2 bg-emerald-50/50 focus:bg-white transition-colors ${errors.password ? 'border-red-300 bg-red-50/50' : 'border-emerald-100 focus:border-emerald-400'}`}
                 placeholder="Masukkan password"
                 disabled={isLoading}
@@ -123,12 +127,13 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-emerald-500 transition-colors"
                 disabled={isLoading}
+                aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+              <p id="login-password-error" role="alert" className="mt-1.5 text-sm text-red-500 flex items-center gap-1">
                 <span>⚠️</span> {errors.password}
               </p>
             )}

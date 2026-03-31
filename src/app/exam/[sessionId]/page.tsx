@@ -152,12 +152,14 @@ function MCQuestion({
   onAnswer: (val: string) => void;
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" role="radiogroup" aria-label="Pilihan jawaban">
       {options.map((opt) => {
         const selected = answer === opt.label;
         return (
           <button
             key={opt.label}
+            role="radio"
+            aria-checked={selected}
             onClick={() => onAnswer(opt.label)}
             className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-start gap-3 ${
               selected
@@ -195,6 +197,8 @@ function EssayQuestion({
       onChange={(e) => onAnswer(e.target.value)}
       placeholder="Tulis jawaban kamu di sini..."
       rows={6}
+      aria-required="true"
+      aria-label="Jawaban esai"
       className="w-full p-4 rounded-xl border-2 border-gray-200 bg-white text-sm resize-none focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
     />
   );
@@ -968,6 +972,9 @@ export default function ExamPage() {
         {timeLeft !== null && (
           <Badge
             variant="outline"
+            role="timer"
+            aria-live="polite"
+            aria-label={`Sisa waktu: ${formatTimer(timeLeft)}`}
             className={`text-base px-3 py-1 font-mono ${
               timeLeft <= 60
                 ? 'border-red-400 text-red-600 animate-pulse'
@@ -983,7 +990,7 @@ export default function ExamPage() {
       </div>
 
       {/* Question navigation dots */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="navigation" aria-label="Navigasi soal">
         {sortedQuestions.map((q, i) => {
           const isAnswered = !!answers[q.id]?.trim();
           const isCurrent = i === currentIndex;
@@ -991,6 +998,8 @@ export default function ExamPage() {
             <button
               key={q.id}
               onClick={() => setCurrentIndex(i)}
+              aria-label={`Soal ${i + 1}, ${isAnswered ? 'sudah dijawab' : 'belum dijawab'}${isCurrent ? ', sedang aktif' : ''}`}
+              aria-current={isCurrent ? 'step' : undefined}
               className={`w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isCurrent
                   ? 'bg-gradient-to-br from-blue-500 to-emerald-600 text-white shadow-md scale-110'
@@ -1037,6 +1046,7 @@ export default function ExamPage() {
           variant="outline"
           onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
           disabled={currentIndex === 0}
+          aria-label="Soal sebelumnya"
         >
           <ChevronLeft className="h-4 w-4 mr-1" />
           Sebelumnya
@@ -1053,6 +1063,7 @@ export default function ExamPage() {
                 Math.min(sortedQuestions.length - 1, i + 1)
               )
             }
+            aria-label="Soal selanjutnya"
             className="bg-gradient-to-r from-blue-500 to-emerald-600 hover:from-blue-600 hover:to-emerald-700 text-white"
           >
             Selanjutnya
