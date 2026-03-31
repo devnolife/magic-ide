@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
 import { generateToken, verifyToken, createUserSession, type JWTPayload } from '@/lib/auth';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-dev-only';
-
 const ONE_DAY_SECONDS = 24 * 60 * 60;
 
 export async function POST(request: NextRequest) {

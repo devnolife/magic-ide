@@ -225,8 +225,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setCookie(data.token);
         }
         setUser(data.user);
-
-        // Check for redirect query param first, then fallback to role-based redirect
+        startRefreshTimers();
         const params = new URLSearchParams(window.location.search);
         const redirectParam = params.get('redirect');
         const role = data.user.role;
@@ -247,6 +246,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       setIsLoading(true);
+      stopRefreshTimers();
       let token = null;
       
       if (typeof window !== 'undefined') {
@@ -292,6 +292,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setCookie(data.token);
         }
         setUser(data.user);
+        startRefreshTimers();
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Registration failed');
@@ -311,6 +312,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     login,
     logout,
     register,
+    refreshToken,
   };
 
   return (

@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import {
   Select,
@@ -26,17 +27,27 @@ import {
   Clock,
   BookOpen,
   Eye,
+  BarChart3,
+  CheckCircle2,
+  CalendarClock,
 } from "lucide-react";
 import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { examQuestions } from "@/data/examQuestions";
 
+type TabFilter = "ALL" | "ACTIVE" | "CLOSED" | "SCHEDULED";
+
 interface ExamSessionItem {
   id: string;
   status: string;
+  startedAt?: string | null;
+  closedAt?: string | null;
+  createdAt?: string;
   classroom?: { id: string; name: string };
   quiz?: { id: string; title: string };
   _count?: { attempts: number };
   attemptCount?: number;
+  totalStudents?: number;
+  averageScore?: number | null;
 }
 
 interface ClassroomItem {
@@ -100,6 +111,7 @@ export default function TeacherExamsPage() {
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabFilter>("ACTIVE");
 
   const headers = useCallback(
     () => ({
@@ -155,6 +167,27 @@ export default function TeacherExamsPage() {
       () => setLoading(false)
     );
   }, [fetchSessions, fetchClassrooms, fetchQuizzes]);
+
+  const filteredSessions = useMemo(() => {
+    if (activeTab === "ALL") return sessions;
+    return sessions.filter((s) => s.status === activeTab);
+  }, [sessions, activeTab]);
+
+  const stats = useMemo(() => {
+    const total = sessions.length;
+    const active = sessions.filter((s) => s.status === "ACTIVE").length;
+    const closed = sessions.filter((s) => s.status === "CLOSED").length;
+    const scheduled = sessions.filter((s) => s.status === "SCHEDULED").length;
+    const withScores = sessions.filter(
+      (s) => s.averageScore != null && s.averageScore > 0
+    );
+    const avgScore =
+      withScores.length > 0
+        ? withScores.reduce((sum, s) => sum + (s.averageScore ?? 0), 0) /
+          withScores.length
+        : null;
+    return { total, active, closed, scheduled, avgScore };
+  }, [sessions]);
 
   const handleSeed = async () => {
     setSeeding(true);
@@ -274,6 +307,58 @@ export default function TeacherExamsPage() {
         </p>
       </motion.div>
 
+      {/* Summary Stats */}
+      <motion.div variants={itemVariants}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <Card className="border shadow-sm">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                <ClipboardList className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
+                <p className="text-xs text-muted-foreground">Total Ujian</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border shadow-sm">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                <Play className="h-5 w-5 text-emerald-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">{stats.active}</p>
+                <p className="text-xs text-muted-foreground">Sedang Aktif</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border shadow-sm">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                <CheckCircle2 className="h-5 w-5 text-gray-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">{stats.closed}</p>
+                <p className="text-xs text-muted-foreground">Selesai</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border shadow-sm">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                <BarChart3 className="h-5 w-5 text-amber-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">
+                  {stats.avgScore != null ? `${stats.avgScore.toFixed(0)}%` : "—"}
+                </p>
+                <p className="text-xs text-muted-foreground">Rata-rata Nilai</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </motion.div>
+
       {/* Seed Button */}
       <motion.div variants={itemVariants}>
         <Button
@@ -289,116 +374,231 @@ export default function TeacherExamsPage() {
         </Button>
       </motion.div>
 
-      {/* Active Sessions */}
+      {/* Exam Sessions with Tabs */}
       <motion.div variants={itemVariants} className="space-y-4">
         <Separator />
-        <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-          <Play className="h-5 w-5 text-emerald-600" />
-          Sesi Ujian Aktif
-        </h2>
+        <Tabs
+          value={activeTab}
+          onValueChange={(v) => setActiveTab(v as TabFilter)}
+          className="w-full"
+        >
+          <TabsList className="w-full sm:w-auto">
+            <TabsTrigger value="ALL" className="gap-1.5">
+              <ClipboardList className="h-3.5 w-3.5" />
+              Semua
+              <Badge variant="secondary" className="ml-1 text-[10px] px-1.5 py-0">
+                {stats.total}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="ACTIVE" className="gap-1.5">
+              <Play className="h-3.5 w-3.5" />
+              Aktif
+              <Badge variant="secondary" className="ml-1 text-[10px] px-1.5 py-0">
+                {stats.active}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="CLOSED" className="gap-1.5">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              Selesai
+              <Badge variant="secondary" className="ml-1 text-[10px] px-1.5 py-0">
+                {stats.closed}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="SCHEDULED" className="gap-1.5">
+              <CalendarClock className="h-3.5 w-3.5" />
+              Terjadwal
+              <Badge variant="secondary" className="ml-1 text-[10px] px-1.5 py-0">
+                {stats.scheduled}
+              </Badge>
+            </TabsTrigger>
+          </TabsList>
 
-        {sessions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {sessions.map((session) => (
-              <motion.div key={session.id} variants={itemVariants}>
-                <Card className="border shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-medium text-muted-foreground">
-                          {session.classroom?.name ?? "Kelas"}
-                        </p>
-                        <CardTitle className="text-base leading-tight truncate">
-                          {session.quiz?.title ?? "Ujian"}
-                        </CardTitle>
-                      </div>
-                      {statusBadge(session.status)}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-1 flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">
-                        <Users className="h-3 w-3 mr-1" />
-                        {session._count?.attempts ?? session.attemptCount ?? 0}{" "}
-                        siswa sudah mengerjakan
-                      </Badge>
-                    </div>
+          {/* Shared content for all tabs */}
+          {(["ALL", "ACTIVE", "CLOSED", "SCHEDULED"] as TabFilter[]).map(
+            (tab) => (
+              <TabsContent key={tab} value={tab} className="mt-4">
+                {filteredSessions.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {filteredSessions.map((session) => (
+                      <motion.div key={session.id} variants={itemVariants}>
+                        <Card className="border shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+                          <CardHeader className="pb-3">
+                            <div className="flex items-center justify-between">
+                              <div className="min-w-0 flex-1">
+                                <p className="text-xs font-medium text-muted-foreground">
+                                  {session.classroom?.name ?? "Kelas"}
+                                </p>
+                                <CardTitle className="text-base leading-tight truncate">
+                                  {session.quiz?.title ?? "Ujian"}
+                                </CardTitle>
+                              </div>
+                              {statusBadge(session.status)}
+                            </div>
+                          </CardHeader>
+                          <CardContent className="flex-1 flex flex-col gap-3">
+                            {/* Attempt & student count */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <Badge variant="secondary" className="text-xs">
+                                <Users className="h-3 w-3 mr-1" />
+                                {session.attemptCount ?? 0}
+                                {session.totalStudents
+                                  ? ` / ${session.totalStudents}`
+                                  : ""}{" "}
+                                siswa
+                              </Badge>
+                            </div>
 
-                    <div className="mt-auto pt-2 flex flex-wrap gap-2">
-                      {session.status === "SCHEDULED" && (
-                        <>
-                          <Button
-                            size="sm"
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                            onClick={() =>
-                              handleUpdateStatus(session.id, "ACTIVE")
-                            }
-                          >
-                            <Play className="h-3.5 w-3.5 mr-1" />
-                            Aktifkan
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                            onClick={() => handleDelete(session.id)}
-                          >
-                            <Trash2 className="h-3.5 w-3.5 mr-1" />
-                            Hapus
-                          </Button>
-                        </>
-                      )}
-                      {session.status === "ACTIVE" && (
-                        <>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                            onClick={() =>
-                              handleUpdateStatus(session.id, "CLOSED")
-                            }
-                          >
-                            <Square className="h-3.5 w-3.5 mr-1" />
-                            Tutup Sesi
-                          </Button>
-                          <Link href={`/teacher/exams/${session.id}`}>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                            >
-                              <Eye className="h-3.5 w-3.5 mr-1" />
-                              Lihat Hasil
-                            </Button>
-                          </Link>
-                        </>
-                      )}
-                      {session.status === "CLOSED" && (
-                        <Link href={`/teacher/exams/${session.id}`}>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                          >
-                            <Eye className="h-3.5 w-3.5 mr-1" />
-                            Lihat Hasil
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <Card className="border-dashed">
-            <CardContent className="py-8 text-center text-muted-foreground">
-              <ClipboardList className="h-10 w-10 mx-auto mb-3 opacity-40" />
-              <p>Belum ada sesi ujian. Buat sesi ujian baru di bawah.</p>
-            </CardContent>
-          </Card>
-        )}
+                            {/* Status-specific info */}
+                            {session.status === "ACTIVE" && session.startedAt && (
+                              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Play className="h-3 w-3" />
+                                Dimulai:{" "}
+                                {new Date(session.startedAt).toLocaleString(
+                                  "id-ID",
+                                  {
+                                    day: "numeric",
+                                    month: "short",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )}
+                              </p>
+                            )}
+
+                            {session.status === "CLOSED" && (
+                              <div className="space-y-1">
+                                {session.closedAt && (
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <CheckCircle2 className="h-3 w-3" />
+                                    Selesai:{" "}
+                                    {new Date(session.closedAt).toLocaleString(
+                                      "id-ID",
+                                      {
+                                        day: "numeric",
+                                        month: "short",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      }
+                                    )}
+                                  </p>
+                                )}
+                                {session.averageScore != null && (
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <BarChart3 className="h-3 w-3" />
+                                    Rata-rata:{" "}
+                                    <span className="font-semibold text-foreground">
+                                      {session.averageScore.toFixed(1)}%
+                                    </span>
+                                  </p>
+                                )}
+                              </div>
+                            )}
+
+                            {session.status === "SCHEDULED" &&
+                              session.createdAt && (
+                                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                  <CalendarClock className="h-3 w-3" />
+                                  Dibuat:{" "}
+                                  {new Date(session.createdAt).toLocaleString(
+                                    "id-ID",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }
+                                  )}
+                                </p>
+                              )}
+
+                            {/* Action buttons */}
+                            <div className="mt-auto pt-2 flex flex-wrap gap-2">
+                              {session.status === "SCHEDULED" && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                                    onClick={() =>
+                                      handleUpdateStatus(session.id, "ACTIVE")
+                                    }
+                                  >
+                                    <Play className="h-3.5 w-3.5 mr-1" />
+                                    Mulai Ujian
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                                    onClick={() => handleDelete(session.id)}
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5 mr-1" />
+                                    Hapus
+                                  </Button>
+                                </>
+                              )}
+                              {session.status === "ACTIVE" && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                                    onClick={() =>
+                                      handleUpdateStatus(session.id, "CLOSED")
+                                    }
+                                  >
+                                    <Square className="h-3.5 w-3.5 mr-1" />
+                                    Akhiri Ujian
+                                  </Button>
+                                  <Link href={`/teacher/exams/${session.id}`}>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      className="border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                                    >
+                                      <Eye className="h-3.5 w-3.5 mr-1" />
+                                      Lihat Hasil
+                                    </Button>
+                                  </Link>
+                                </>
+                              )}
+                              {session.status === "CLOSED" && (
+                                <Link href={`/teacher/exams/${session.id}`}>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                                  >
+                                    <Eye className="h-3.5 w-3.5 mr-1" />
+                                    Lihat Hasil
+                                  </Button>
+                                </Link>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <Card className="border-dashed">
+                    <CardContent className="py-8 text-center text-muted-foreground">
+                      <ClipboardList className="h-10 w-10 mx-auto mb-3 opacity-40" />
+                      <p>
+                        {tab === "ALL"
+                          ? "Belum ada sesi ujian. Buat sesi ujian baru di bawah."
+                          : tab === "ACTIVE"
+                            ? "Tidak ada ujian yang sedang aktif."
+                            : tab === "CLOSED"
+                              ? "Belum ada ujian yang selesai."
+                              : "Tidak ada ujian yang terjadwal."}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+            )
+          )}
+        </Tabs>
       </motion.div>
 
       {/* Create New Session */}

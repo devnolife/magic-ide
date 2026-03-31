@@ -24,10 +24,18 @@ export async function GET(request: NextRequest) {
     if ('error' in auth) return auth.error;
     const { userId } = auth;
 
+    const { searchParams } = new URL(request.url);
+    const statusFilter = searchParams.get('status');
+
+    const whereClause: Record<string, unknown> = {
+      classroom: { teacherId: userId },
+    };
+    if (statusFilter && ['SCHEDULED', 'ACTIVE', 'CLOSED'].includes(statusFilter)) {
+      whereClause.status = statusFilter;
+    }
+
     const sessions = await prisma.examSession.findMany({
-      where: {
-        classroom: { teacherId: userId },
-      },
+      where: whereClause,
       include: {
         classroom: { select: { id: true, name: true } },
         quiz: {
@@ -50,13 +58,29 @@ export async function GET(request: NextRequest) {
           where: { classroomId: s.classroomId },
           select: { studentId: true },
         });
+        const ids = studentIds.map((st) => st.studentId);
         const attemptCount = await prisma.quizAttempt.count({
           where: {
             quizId: s.quizId,
-            userId: { in: studentIds.map((st) => st.studentId) },
+            userId: { in: ids },
           },
         });
-        return { ...s, attemptCount };
+
+        const totalStudents = ids.length;
+        let averageScore: number | null = null;
+
+        if (attemptCount > 0) {
+          const attempts = await prisma.quizAttempt.aggregate({
+            where: {
+              quizId: s.quizId,
+              userId: { in: ids },
+            },
+            _avg: { percentage: true },
+          });
+          averageScore = attempts._avg.percentage ?? null;
+        }
+
+        return { ...s, attemptCount, totalStudents, averageScore };
       })
     );
 
