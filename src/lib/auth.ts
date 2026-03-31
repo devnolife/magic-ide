@@ -2,7 +2,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from './prisma';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: JWT_SECRET not set. Using default secret for development only.');
+}
+const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-dev-only';
 
 export interface JWTPayload {
   userId: string;

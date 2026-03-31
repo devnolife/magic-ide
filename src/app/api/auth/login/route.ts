@@ -96,10 +96,11 @@ export async function POST(request: NextRequest) {
 
     // Set auth cookie so middleware can read it on page navigations
     response.cookies.set('auth-token', token, {
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      sameSite: 'lax',
       httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+      path: '/',
     });
 
     return response;

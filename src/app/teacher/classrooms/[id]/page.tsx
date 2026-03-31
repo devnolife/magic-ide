@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -31,6 +44,8 @@ import {
   School,
   X,
   Download,
+  Pencil,
+  Save,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -95,6 +110,7 @@ function formatDate(iso: string) {
 
 export default function ClassroomDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const classroomId = params.id as string;
 
   const [classroom, setClassroom] = useState<Classroom | null>(null);
@@ -117,6 +133,15 @@ export default function ClassroomDetailPage() {
 
   // Remove-student
   const [removingStudent, setRemovingStudent] = useState<string | null>(null);
+
+  // Edit classroom
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  // Delete classroom
+  const [deleting, setDeleting] = useState(false);
 
   /* ---------- data fetchers ---------- */
 
@@ -267,6 +292,71 @@ export default function ClassroomDetailPage() {
     }
   };
 
+  /* ---------- edit / delete classroom ---------- */
+
+  const startEditing = () => {
+    if (!classroom) return;
+    setEditName(classroom.name);
+    setEditDescription(classroom.description || "");
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editName.trim()) {
+      toast.error("Nama kelas tidak boleh kosong.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const res = await fetch(`/api/classrooms/${classroomId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: editName.trim(),
+          description: editDescription.trim() || null,
+        }),
+      });
+      if (res.ok) {
+        toast.success("Kelas berhasil diperbarui.");
+        setIsEditing(false);
+        await fetchClassroom();
+      } else {
+        const err = await res.json();
+        toast.error(err.error || "Gagal memperbarui kelas.");
+      }
+    } catch {
+      toast.error("Terjadi kesalahan jaringan.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteClassroom = async () => {
+    setDeleting(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const res = await fetch(`/api/classrooms/${classroomId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        toast.success("Kelas berhasil dihapus.");
+        router.push("/teacher/classrooms");
+      } else {
+        const err = await res.json();
+        toast.error(err.error || "Gagal menghapus kelas.");
+        setDeleting(false);
+      }
+    } catch {
+      toast.error("Terjadi kesalahan jaringan.");
+      setDeleting(false);
+    }
+  };
+
   /* ---------- render helpers ---------- */
 
   if (loading) {
@@ -326,7 +416,7 @@ export default function ClassroomDetailPage() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <Badge variant="secondary">
             <Users className="h-3 w-3 mr-1" />
             {classroom.students.length} murid
@@ -335,8 +425,109 @@ export default function ClassroomDetailPage() {
             <Calendar className="h-3 w-3 mr-1" />
             {formatDate(classroom.createdAt)}
           </Badge>
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+            onClick={startEditing}
+          >
+            <Pencil className="h-4 w-4 mr-1" />
+            Edit
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-red-600 border-red-300 hover:bg-red-50"
+                disabled={deleting}
+              >
+                {deleting ? (
+                  <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4 mr-1" />
+                )}
+                Hapus
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Hapus Kelas</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Apakah Anda yakin ingin menghapus kelas ini? Semua data siswa
+                  di kelas ini akan dihapus.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteClassroom}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Ya, Hapus Kelas
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
+
+      {/* Edit classroom inline form */}
+      {isEditing && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 border rounded-lg bg-emerald-50/50 border-emerald-200 space-y-4"
+        >
+          <h3 className="font-semibold text-foreground flex items-center gap-2">
+            <Pencil className="h-4 w-4 text-emerald-600" />
+            Edit Kelas
+          </h3>
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="edit-name">Nama Kelas</Label>
+              <Input
+                id="edit-name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                placeholder="Nama kelas"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="edit-desc">Deskripsi</Label>
+              <Input
+                id="edit-desc"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="Deskripsi kelas (opsional)"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              onClick={handleSaveEdit}
+              disabled={saving}
+              className="bg-emerald-600 hover:bg-emerald-700"
+            >
+              {saving ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4 mr-1" />
+              )}
+              Simpan
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsEditing(false)}
+              disabled={saving}
+            >
+              Batal
+            </Button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>

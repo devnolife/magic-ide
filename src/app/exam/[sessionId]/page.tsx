@@ -12,7 +12,12 @@ import {
   Trophy,
   XCircle,
   BookOpen,
+  CheckCircle2,
+  MinusCircle,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -56,6 +61,15 @@ interface ExamQuestion {
   options: QuizOption[] | MatchingOptions | null;
 }
 
+interface GradedAnswerData {
+  questionId: string;
+  isCorrect: boolean;
+  points: number;
+  maxPoints: number;
+  correctAnswer: string | null;
+  userAnswer: string;
+}
+
 interface ExamData {
   session: {
     id: string;
@@ -79,6 +93,7 @@ interface ExamData {
     maxScore: number;
     percentage: number;
     status: string;
+    answers?: GradedAnswerData[];
   } | null;
 }
 
@@ -87,6 +102,7 @@ interface SubmitResult {
   maxScore: number;
   percentage: number;
   status: string;
+  answers?: GradedAnswerData[];
 }
 
 type Phase = 'loading' | 'info' | 'exam' | 'result' | 'already-done' | 'error';
@@ -103,6 +119,17 @@ function formatTimer(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+interface ExamDraft {
+  answers: Record<string, string>;
+  timeLeft: number | null;
+  savedAt: string;
+  startTime: number;
+}
+
+function getDraftKey(sessionId: string): string {
+  return `exam-draft-${sessionId}`;
 }
 
 function isMatchingOptions(
@@ -265,6 +292,151 @@ function QuestionRenderer({
 }
 
 /* ------------------------------------------------------------------ */
+/*  Review Section                                                     */
+/* ------------------------------------------------------------------ */
+
+function ReviewSection({
+  gradedAnswers,
+  questions,
+  userAnswers,
+}: {
+  gradedAnswers: GradedAnswerData[];
+  questions: ExamQuestion[];
+  userAnswers: Record<string, string>;
+}) {
+  const questionMap = new Map(questions.map((q) => [q.id, q]));
+
+  function getStatusStyle(ga: GradedAnswerData, questionType: string) {
+    if (questionType === 'ESSAY' && ga.points > 0 && ga.points < ga.maxPoints) {
+      return {
+        border: 'border-amber-300',
+        bg: 'bg-amber-50',
+        icon: <MinusCircle className="h-5 w-5 text-amber-500" />,
+        label: 'Sebagian Benar',
+        labelClass: 'text-amber-700 bg-amber-100',
+      };
+    }
+    if (ga.isCorrect || ga.points === ga.maxPoints) {
+      return {
+        border: 'border-emerald-300',
+        bg: 'bg-emerald-50',
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />,
+        label: 'Benar',
+        labelClass: 'text-emerald-700 bg-emerald-100',
+      };
+    }
+    return {
+      border: 'border-red-300',
+      bg: 'bg-red-50',
+      icon: <XCircle className="h-5 w-5 text-red-500" />,
+      label: 'Salah',
+      labelClass: 'text-red-700 bg-red-100',
+    };
+  }
+
+  function formatUserAnswer(answer: string, question: ExamQuestion): string {
+    if (!answer?.trim()) return '(Tidak dijawab)';
+
+    if (question.questionType === 'MULTIPLE_CHOICE' || question.questionType === 'TRUE_FALSE') {
+      if (Array.isArray(question.options)) {
+        const opt = question.options.find((o) => o.label === answer);
+        return opt ? `${opt.label}. ${opt.text}` : answer;
+      }
+    }
+
+    if (question.questionType === 'MATCHING') {
+      try {
+        const parsed = JSON.parse(answer) as Record<string, string>;
+        return Object.entries(parsed)
+          .map(([left, right]) => `${left} → ${right}`)
+          .join(', ');
+      } catch {
+        return answer;
+      }
+    }
+
+    return answer;
+  }
+
+  function formatCorrectAnswer(correctAnswer: string | null, question: ExamQuestion): string | null {
+    if (question.questionType === 'ESSAY') return null;
+    if (!correctAnswer) return null;
+
+    if (question.questionType === 'MULTIPLE_CHOICE' || question.questionType === 'TRUE_FALSE') {
+      if (Array.isArray(question.options)) {
+        const opt = question.options.find((o) => o.label === correctAnswer);
+        return opt ? `${opt.label}. ${opt.text}` : correctAnswer;
+      }
+    }
+
+    return correctAnswer;
+  }
+
+  return (
+    <div className="space-y-4 mt-6">
+      {gradedAnswers.map((ga, idx) => {
+        const question = questionMap.get(ga.questionId);
+        if (!question) return null;
+
+        const displayAnswer = ga.userAnswer || userAnswers[ga.questionId] || '';
+        const style = getStatusStyle(ga, question.questionType);
+        const formattedUser = formatUserAnswer(displayAnswer, question);
+        const formattedCorrect = formatCorrectAnswer(ga.correctAnswer, question);
+
+        return (
+          <Card key={ga.questionId} className={`${style.border} border-2`}>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {style.icon}
+                  <Badge variant="outline" className="text-xs">
+                    Soal {idx + 1}
+                  </Badge>
+                  <Badge className={`text-xs ${style.labelClass}`}>
+                    {style.label}
+                  </Badge>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  {ga.points}/{ga.maxPoints} poin
+                </Badge>
+              </div>
+              <p className="text-sm font-medium mt-2 leading-relaxed">
+                {question.questionText}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className={`rounded-lg p-3 ${style.bg}`}>
+                <p className="text-xs font-medium text-muted-foreground mb-1">
+                  Jawaban Kamu:
+                </p>
+                <p className="text-sm whitespace-pre-wrap">{formattedUser}</p>
+              </div>
+
+              {formattedCorrect !== null && (
+                <div className="rounded-lg p-3 bg-emerald-50 border border-emerald-200">
+                  <p className="text-xs font-medium text-emerald-700 mb-1">
+                    Jawaban Benar:
+                  </p>
+                  <p className="text-sm text-emerald-800">{formattedCorrect}</p>
+                </div>
+              )}
+
+              {question.questionType === 'ESSAY' && (
+                <div className="rounded-lg p-3 bg-blue-50 border border-blue-200">
+                  <p className="text-xs font-medium text-blue-700">
+                    Poin diperoleh: {ga.points} dari {ga.maxPoints} (penilaian otomatis)
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main Page Component                                                */
 /* ------------------------------------------------------------------ */
 
@@ -282,6 +454,7 @@ export default function ExamPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showReview, setShowReview] = useState(false);
 
   const startTimeRef = useRef<number>(Date.now());
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -349,14 +522,65 @@ export default function ExamPage() {
   /* ---- Start exam ---- */
   const handleStart = () => {
     if (!examData) return;
-    startTimeRef.current = Date.now();
     hasAutoSubmitted.current = false;
 
-    if (examData.session.duration) {
-      setTimeLeft(examData.session.duration * 60); // minutes → seconds
+    const draftKey = getDraftKey(sessionId);
+    let restored = false;
+
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (raw) {
+        const draft: ExamDraft = JSON.parse(raw);
+
+        if (draft.answers && Object.keys(draft.answers).length > 0) {
+          setAnswers(draft.answers);
+          restored = true;
+        }
+
+        if (draft.startTime) {
+          startTimeRef.current = draft.startTime;
+        }
+
+        if (examData.session.duration && draft.timeLeft !== null && draft.savedAt) {
+          const elapsedSinceSave = Math.floor(
+            (Date.now() - new Date(draft.savedAt).getTime()) / 1000
+          );
+          const adjustedTime = Math.max(0, draft.timeLeft - elapsedSinceSave);
+          setTimeLeft(adjustedTime);
+
+          if (adjustedTime <= 0) {
+            setPhase('exam');
+            // defer auto-submit so state is settled
+            setTimeout(() => {
+              if (!hasAutoSubmitted.current) {
+                hasAutoSubmitted.current = true;
+                handleSubmit();
+              }
+            }, 0);
+            return;
+          }
+        } else if (examData.session.duration) {
+          startTimeRef.current = Date.now();
+          setTimeLeft(examData.session.duration * 60);
+        }
+      } else {
+        startTimeRef.current = Date.now();
+        if (examData.session.duration) {
+          setTimeLeft(examData.session.duration * 60);
+        }
+      }
+    } catch {
+      startTimeRef.current = Date.now();
+      if (examData.session.duration) {
+        setTimeLeft(examData.session.duration * 60);
+      }
     }
 
     setPhase('exam');
+
+    if (restored) {
+      toast.success('Jawaban sebelumnya berhasil dipulihkan');
+    }
   };
 
   /* ---- Submit handler ---- */
@@ -399,6 +623,7 @@ export default function ExamPage() {
       }
 
       const data: SubmitResult = await res.json();
+      localStorage.removeItem(getDraftKey(sessionId));
       setResult(data);
       setPhase('result');
     } catch (err) {
@@ -452,6 +677,22 @@ export default function ExamPage() {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
+  /* ---- Auto-save draft to localStorage ---- */
+  useEffect(() => {
+    if (phase !== 'exam') return;
+
+    const draft: ExamDraft = {
+      answers,
+      timeLeft,
+      savedAt: new Date().toISOString(),
+      startTime: startTimeRef.current,
+    };
+
+    try {
+      localStorage.setItem(getDraftKey(sessionId), JSON.stringify(draft));
+    } catch { /* storage full – silently ignore */ }
+  }, [answers, timeLeft, phase, sessionId]);
+
   const answeredCount = sortedQuestions.filter(
     (q) => answers[q.id]?.trim()
   ).length;
@@ -494,46 +735,73 @@ export default function ExamPage() {
   /* ---- Already submitted ---- */
   if (phase === 'already-done' && result) {
     const passed = result.status === 'COMPLETED';
+    const gradedAnswers = result.answers ?? [];
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <CardTitle>Ujian Sudah Dikerjakan</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            {passed ? (
-              <Trophy className="h-16 w-16 text-emerald-500 mx-auto" />
-            ) : (
-              <XCircle className="h-16 w-16 text-red-500 mx-auto" />
-            )}
-            <div>
-              <p className="text-4xl font-bold">
-                {result.totalScore}{' '}
-                <span className="text-lg text-muted-foreground font-normal">
-                  / {result.maxScore}
-                </span>
-              </p>
-              <p className="text-lg text-muted-foreground mt-1">
-                {result.percentage}%
-              </p>
-            </div>
-            <Badge
-              className={`text-sm px-4 py-1 ${
-                passed
-                  ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-red-100 text-red-700'
-              }`}
-            >
-              {passed ? 'Lulus' : 'Tidak Lulus'}
-            </Badge>
-            <Button
-              className="w-full"
-              onClick={() => router.push('/dashboard')}
-            >
-              Kembali ke Dashboard
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="max-w-3xl mx-auto p-4 space-y-4">
+        <div className="flex items-center justify-center">
+          <Card className="max-w-md w-full">
+            <CardHeader className="text-center">
+              <CardTitle>Ujian Sudah Dikerjakan</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-6">
+              {passed ? (
+                <Trophy className="h-16 w-16 text-emerald-500 mx-auto" />
+              ) : (
+                <XCircle className="h-16 w-16 text-red-500 mx-auto" />
+              )}
+              <div>
+                <p className="text-4xl font-bold">
+                  {result.totalScore}{' '}
+                  <span className="text-lg text-muted-foreground font-normal">
+                    / {result.maxScore}
+                  </span>
+                </p>
+                <p className="text-lg text-muted-foreground mt-1">
+                  {result.percentage}%
+                </p>
+              </div>
+              <Badge
+                className={`text-sm px-4 py-1 ${
+                  passed
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {passed ? 'Lulus' : 'Tidak Lulus'}
+              </Badge>
+
+              {gradedAnswers.length > 0 && (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowReview((v) => !v)}
+                >
+                  {showReview ? (
+                    <EyeOff className="h-4 w-4 mr-2" />
+                  ) : (
+                    <Eye className="h-4 w-4 mr-2" />
+                  )}
+                  {showReview ? 'Sembunyikan Detail' : 'Lihat Detail Jawaban'}
+                </Button>
+              )}
+
+              <Button
+                className="w-full"
+                onClick={() => router.push('/dashboard')}
+              >
+                Kembali ke Dashboard
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {showReview && gradedAnswers.length > 0 && examData && (
+          <ReviewSection
+            gradedAnswers={gradedAnswers}
+            questions={examData.questions}
+            userAnswers={{}}
+          />
+        )}
       </div>
     );
   }
@@ -612,46 +880,73 @@ export default function ExamPage() {
   /* ---- Result after submit ---- */
   if (phase === 'result' && result) {
     const passed = result.status === 'COMPLETED';
+    const gradedAnswers = result.answers ?? [];
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <CardTitle>Hasil Ujian</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            {passed ? (
-              <Trophy className="h-16 w-16 text-emerald-500 mx-auto" />
-            ) : (
-              <XCircle className="h-16 w-16 text-red-500 mx-auto" />
-            )}
-            <div>
-              <p className="text-4xl font-bold">
-                {result.totalScore}{' '}
-                <span className="text-lg text-muted-foreground font-normal">
-                  / {result.maxScore}
-                </span>
-              </p>
-              <p className="text-lg text-muted-foreground mt-1">
-                {result.percentage}%
-              </p>
-            </div>
-            <Badge
-              className={`text-sm px-4 py-1 ${
-                passed
-                  ? 'bg-emerald-100 text-emerald-700'
-                  : 'bg-red-100 text-red-700'
-              }`}
-            >
-              {passed ? 'Lulus' : 'Tidak Lulus'}
-            </Badge>
-            <Button
-              className="w-full"
-              onClick={() => router.push('/dashboard')}
-            >
-              Kembali ke Dashboard
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="max-w-3xl mx-auto p-4 space-y-4">
+        <div className="flex items-center justify-center">
+          <Card className="max-w-md w-full">
+            <CardHeader className="text-center">
+              <CardTitle>Hasil Ujian</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-6">
+              {passed ? (
+                <Trophy className="h-16 w-16 text-emerald-500 mx-auto" />
+              ) : (
+                <XCircle className="h-16 w-16 text-red-500 mx-auto" />
+              )}
+              <div>
+                <p className="text-4xl font-bold">
+                  {result.totalScore}{' '}
+                  <span className="text-lg text-muted-foreground font-normal">
+                    / {result.maxScore}
+                  </span>
+                </p>
+                <p className="text-lg text-muted-foreground mt-1">
+                  {result.percentage}%
+                </p>
+              </div>
+              <Badge
+                className={`text-sm px-4 py-1 ${
+                  passed
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {passed ? 'Lulus' : 'Tidak Lulus'}
+              </Badge>
+
+              {gradedAnswers.length > 0 && (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowReview((v) => !v)}
+                >
+                  {showReview ? (
+                    <EyeOff className="h-4 w-4 mr-2" />
+                  ) : (
+                    <Eye className="h-4 w-4 mr-2" />
+                  )}
+                  {showReview ? 'Sembunyikan Detail' : 'Lihat Detail Jawaban'}
+                </Button>
+              )}
+
+              <Button
+                className="w-full"
+                onClick={() => router.push('/dashboard')}
+              >
+                Kembali ke Dashboard
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {showReview && gradedAnswers.length > 0 && examData && (
+          <ReviewSection
+            gradedAnswers={gradedAnswers}
+            questions={examData.questions}
+            userAnswers={answers}
+          />
+        )}
       </div>
     );
   }

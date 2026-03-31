@@ -28,6 +28,7 @@ import {
   Loader2,
   TrendingUp,
 } from "lucide-react";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -164,12 +165,23 @@ export default function ExamResultsPage() {
   ) => {
     setGrading(true);
     try {
-      await fetch(`/api/teacher/exam-sessions/${sessionId}/grade`, {
-        method: "PATCH",
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ attemptId, questionId, newScore }),
-      });
+      const res = await fetch(
+        `/api/teacher/exam-sessions/${sessionId}/grade`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ attemptId, questionId, newScore }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Gagal menyimpan skor");
+        return;
+      }
+      toast.success("Skor berhasil diperbarui");
       fetchResults();
+    } catch {
+      toast.error("Terjadi kesalahan jaringan");
     } finally {
       setGrading(false);
     }

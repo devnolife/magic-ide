@@ -135,6 +135,13 @@ export async function GET(
             maxScore: existingAttempt.maxScore,
             percentage: existingAttempt.percentage,
             status: existingAttempt.status,
+            answers: (() => {
+              try {
+                return JSON.parse(existingAttempt.answers as string);
+              } catch {
+                return [];
+              }
+            })(),
           }
         : null,
     });

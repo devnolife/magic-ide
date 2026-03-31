@@ -164,6 +164,7 @@ model ChallengeAttempt {
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   challenge   Challenge       @relation(fields: [challengeId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("challenge_attempts")
 }
 
@@ -274,6 +275,7 @@ model QuizAttempt {
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   quiz        Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("quiz_attempts")
 }
 
@@ -307,5 +309,6 @@ model ExamSession {
   quiz        Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   @@unique([classroomId, quizId])
+  @@index([classroomId, status])
   @@map("exam_sessions")
 }

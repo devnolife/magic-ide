@@ -11,7 +11,9 @@ interface GradedAnswer {
   questionId: string;
   isCorrect: boolean;
   points: number;
+  maxPoints: number;
   correctAnswer: string | null;
+  userAnswer: string;
 }
 
 function checkAnswer(
@@ -234,7 +236,9 @@ export async function POST(
         questionId: ans.questionId,
         isCorrect: result.isCorrect,
         points: result.earnedPoints,
+        maxPoints: result.maxPoints,
         correctAnswer: question.correctAnswer,
+        userAnswer: ans.answer,
       });
     }
 

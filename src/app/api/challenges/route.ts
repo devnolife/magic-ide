@@ -69,21 +69,21 @@ export async function POST(request: NextRequest) {
           },
         });
 
-        // Count completed challenges for this chapter
-        const completedChallenges = await prisma.challengeAttempt.count({
-          where: {
-            userId,
-            challenge: {
-              chapterId: challenge.chapterId,
-            },
-            status: 'COMPLETED',
-          },
-        });
+        // Count distinct completed challenges and total challenges for this chapter
+        const chapterId = challenge.chapterId;
+        const [completedCount, totalCount] = await Promise.all([
+          prisma.challengeAttempt.groupBy({
+            by: ['challengeId'],
+            where: { userId, challenge: { chapterId }, status: 'COMPLETED' },
+          }).then(r => r.length),
+          prisma.challenge.count({ where: { chapterId } }),
+        ]);
 
         await prisma.userProgress.update({
           where: { id: userProgress.id },
           data: {
-            completedChallenges,
+            completedChallenges: completedCount,
+            totalChallenges: totalCount,
           },
         });
       }
