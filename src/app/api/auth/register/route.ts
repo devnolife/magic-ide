@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hashPassword, generateToken, createUserSession } from '@/lib/auth';
+import { checkRateLimit, recordFailedAttempt, getClientIp } from '@/lib/rateLimit';
+
+const REGISTER_RATE_LIMIT = { maxAttempts: 3, windowMs: 5 * 60 * 1000 };
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(ip, REGISTER_RATE_LIMIT);
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Terlalu banyak percobaan registrasi. Coba lagi nanti.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.resetIn) },
+        }
+      );
+    }
+
     const { username, email, password, name, activationCode } = await request.json();
 
     if (!username || !email || !password) {
@@ -92,6 +108,8 @@ export async function POST(request: NextRequest) {
         }),
       ]);
     }
+
+    recordFailedAttempt(ip, REGISTER_RATE_LIMIT);
 
     const token = generateToken({
       userId: user.id,

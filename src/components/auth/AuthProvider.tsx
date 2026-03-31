@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -20,6 +21,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (username: string, email: string, password: string, name?: string, activationCode?: string) => Promise<void>;
+  refreshToken: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,13 +46,110 @@ interface AuthProviderProps {
     document.cookie = 'auth-token=; path=/; max-age=0';
   };
 
+  function getTokenExpiry(token: string): number | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp ? payload.exp * 1000 : null;
+    } catch {
+      return null;
+    }
+  }
+
+const REFRESH_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6 hours
+const EXPIRY_WARNING_MS = 60 * 60 * 1000; // 1 hour before expiry
+const EXPIRY_CHECK_INTERVAL_MS = 5 * 60 * 1000; // check every 5 minutes
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const refreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const expiryCheckRef = useRef<NodeJS.Timeout | null>(null);
+  const warningShownRef = useRef(false);
+
+  const refreshToken = useCallback(async (): Promise<boolean> => {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
+      if (!token) return false;
+
+      const response = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth-token', data.token);
+          setCookie(data.token);
+        }
+        warningShownRef.current = false;
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      return false;
+    }
+  }, []);
+
+  const checkTokenExpiry = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const token = localStorage.getItem('auth-token');
+    if (!token) return;
+
+    const expiry = getTokenExpiry(token);
+    if (!expiry) return;
+
+    const timeUntilExpiry = expiry - Date.now();
+
+    if (timeUntilExpiry > 0 && timeUntilExpiry <= EXPIRY_WARNING_MS && !warningShownRef.current) {
+      warningShownRef.current = true;
+      toast('Sesi Anda akan berakhir. Klik untuk memperpanjang.', {
+        duration: 30000,
+        action: {
+          label: 'Perpanjang',
+          onClick: () => {
+            refreshToken();
+          },
+        },
+      });
+    }
+  }, [refreshToken]);
 
   useEffect(() => {
     checkAuthStatus();
+    return () => {
+      if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
+      if (expiryCheckRef.current) clearInterval(expiryCheckRef.current);
+    };
+  }, []);
+
+  const startRefreshTimers = useCallback(() => {
+    if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
+    if (expiryCheckRef.current) clearInterval(expiryCheckRef.current);
+
+    refreshIntervalRef.current = setInterval(() => {
+      refreshToken();
+    }, REFRESH_INTERVAL_MS);
+
+    expiryCheckRef.current = setInterval(() => {
+      checkTokenExpiry();
+    }, EXPIRY_CHECK_INTERVAL_MS);
+  }, [refreshToken, checkTokenExpiry]);
+
+  const stopRefreshTimers = useCallback(() => {
+    if (refreshIntervalRef.current) {
+      clearInterval(refreshIntervalRef.current);
+      refreshIntervalRef.current = null;
+    }
+    if (expiryCheckRef.current) {
+      clearInterval(expiryCheckRef.current);
+      expiryCheckRef.current = null;
+    }
+    warningShownRef.current = false;
   }, []);
 
   const checkAuthStatus = async () => {
@@ -70,6 +169,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if (response.ok) {
             const data = await response.json();
             setUser(data.user);
+            startRefreshTimers();
+          } else if (response.status === 401) {
+            // Try refreshing the token before giving up
+            const refreshed = await refreshToken();
+            if (refreshed) {
+              const retryToken = localStorage.getItem('auth-token');
+              if (retryToken) {
+                const retryResponse = await fetch('/api/auth/me', {
+                  headers: { 'Authorization': `Bearer ${retryToken}` },
+                });
+                if (retryResponse.ok) {
+                  const data = await retryResponse.json();
+                  setUser(data.user);
+                  startRefreshTimers();
+                  return;
+                }
+              }
+            }
+            localStorage.removeItem('auth-token');
+            clearCookie();
           } else {
             localStorage.removeItem('auth-token');
             clearCookie();

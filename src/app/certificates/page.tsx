@@ -17,6 +17,7 @@ import {
   CheckCircle,
   Loader2,
   Star,
+  Printer,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -161,6 +162,32 @@ function CertificateCanvas({
     link.click();
   };
 
+  const handlePrint = () => {
+    if (!canvasRef.current) return;
+    const dataUrl = canvasRef.current.toDataURL("image/png");
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Sertifikat - Chapter ${cert.chapterNumber}</title>
+          <style>
+            body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f5f5f5; }
+            img { max-width: 100%; height: auto; }
+            @media print { body { background: white; } }
+          </style>
+        </head>
+        <body>
+          <img src="${dataUrl}" alt="Sertifikat" />
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.onload = () => {
+      printWindow.print();
+    };
+  };
+
   if (!cert.isCompleted) return null;
 
   return (
@@ -171,10 +198,16 @@ function CertificateCanvas({
         height={420}
         className="w-full rounded-lg shadow-lg"
       />
-      <Button onClick={handleDownload} size="sm" className="w-full">
-        <Download className="w-4 h-4 mr-2" />
-        Download Sertifikat
-      </Button>
+      <div className="flex gap-2">
+        <Button onClick={handleDownload} size="sm" className="flex-1">
+          <Download className="w-4 h-4 mr-2" />
+          Download Sertifikat
+        </Button>
+        <Button onClick={handlePrint} size="sm" variant="outline" className="flex-1">
+          <Printer className="w-4 h-4 mr-2" />
+          Cetak Sertifikat
+        </Button>
+      </div>
     </div>
   );
 }

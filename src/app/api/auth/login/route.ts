@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { comparePasswords, generateToken, createUserSession } from '@/lib/auth';
+import { checkRateLimit, recordFailedAttempt, getClientIp } from '@/lib/rateLimit';
+
+const LOGIN_RATE_LIMIT = { maxAttempts: 5, windowMs: 60 * 1000 };
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request);
+    const rateLimit = checkRateLimit(ip, LOGIN_RATE_LIMIT);
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: `Terlalu banyak percobaan login. Coba lagi dalam ${rateLimit.resetIn} detik.` },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.resetIn) },
+        }
+      );
+    }
+
     const { username, password } = await request.json();
 
     // Validate input
@@ -26,6 +42,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
+      recordFailedAttempt(ip, LOGIN_RATE_LIMIT);
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
@@ -35,6 +52,7 @@ export async function POST(request: NextRequest) {
     // Verify password
     const isValidPassword = await comparePasswords(password, user.password);
     if (!isValidPassword) {
+      recordFailedAttempt(ip, LOGIN_RATE_LIMIT);
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
