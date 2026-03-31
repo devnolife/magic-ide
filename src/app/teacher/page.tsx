@@ -28,6 +28,7 @@ import {
   UserCheck,
   AlertTriangle,
 } from "lucide-react";
+import { chaptersData } from '@/data/dashboardData';
 
 interface ClassroomSummary {
   id: string;
@@ -446,6 +447,51 @@ export default function TeacherDashboard() {
             Lihat Materi
           </Button>
         </Link>
+      </motion.div>
+
+      {/* Materi Tersedia */}
+      <motion.div variants={itemVariants}>
+        <Card className="border shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <BookOpen className="h-5 w-5 text-emerald-600" />
+              📖 Materi Tersedia
+            </CardTitle>
+            <Link href="/teacher/materials">
+              <Button variant="ghost" size="sm" className="text-primary">
+                Lihat Semua
+                <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {chaptersData.map((chapter) => (
+                <Link key={chapter.id} href={`/teacher/materials/${chapter.id}`}>
+                  <div className="p-4 rounded-xl border bg-card hover:bg-accent hover:shadow-md transition-all group cursor-pointer">
+                    <div className="flex items-start gap-3">
+                      <span className="text-3xl">{chapter.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm text-foreground group-hover:text-emerald-600 transition-colors">
+                          {chapter.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          {chapter.description}
+                        </p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Badge variant="secondary" className="text-xs">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {chapter.estimatedTime}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Statistik Ujian & Distribusi Progress */}

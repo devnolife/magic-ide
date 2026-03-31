@@ -33,6 +33,7 @@ model User {
   teacherClassrooms  Classroom[]          @relation("TeacherClassrooms")
   classroomStudents  ClassroomStudent[]
   quizAttempts       QuizAttempt[]
+  auditLogs          AuditLog[]
 
   @@map("users")
 }
@@ -311,4 +312,18 @@ model ExamSession {
   @@unique([classroomId, quizId])
   @@index([classroomId, status])
   @@map("exam_sessions")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  target    String?
+  details   String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("audit_logs")
 }

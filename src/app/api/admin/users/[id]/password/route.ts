@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateSession, hashPassword } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logAction } from '@/lib/auditLog';
 
 export async function PATCH(
   request: NextRequest,
@@ -57,6 +58,8 @@ export async function PATCH(
       where: { id },
       data: { password: hashedPassword },
     });
+
+    await logAction(session.user.id, 'PASSWORD_RESET', user.username);
 
     return NextResponse.json({
       success: true,

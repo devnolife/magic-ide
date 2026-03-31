@@ -140,6 +140,34 @@ export default function TeacherMaterialsChapterPage() {
 
   return (
     <div className="space-y-6">
+      {/* Mode Guru Banner */}
+      <div className="rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 p-4 text-white shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg">
+              <GraduationCap className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold flex items-center gap-2">
+                📚 Mode Guru — Materi Mengajar
+                <Badge className="bg-white/20 text-white border-white/30 text-xs">
+                  Versi Guru
+                </Badge>
+              </h2>
+              <p className="text-emerald-100 text-sm">
+                Tampilan khusus guru dengan tips mengajar. Siswa melihat versi berbeda.
+              </p>
+            </div>
+          </div>
+          <Link href={`/teacher/materials/${chapterId}/present`}>
+            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30" variant="outline">
+              <Monitor className="mr-2 h-4 w-4" />
+              Mode Presentasi
+            </Button>
+          </Link>
+        </div>
+      </div>
+
       {/* Back link */}
       <Link href="/teacher/materials" className="inline-flex items-center text-sm text-muted-foreground hover:text-emerald-600 transition-colors">
         <ArrowLeft className="mr-1 h-4 w-4" />
@@ -153,127 +181,54 @@ export default function TeacherMaterialsChapterPage() {
           <h1 className="text-2xl font-bold">{chapter.title}</h1>
           <p className="text-muted-foreground">{chapter.description}</p>
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          <Link href={`/teacher/materials/${chapterId}/present`}>
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-              <Monitor className="mr-2 h-4 w-4" />
-              Mode Presentasi
-            </Button>
-          </Link>
-          <Badge variant="secondary">
-            <BookOpen className="mr-1 h-3 w-3" />
-            {lessons.length} Materi
-          </Badge>
-        </div>
+        <Badge variant="secondary" className="ml-auto">
+          <BookOpen className="mr-1 h-3 w-3" />
+          {lessons.length} Materi
+        </Badge>
       </div>
 
       <Separator />
 
-      {/* Main content */}
+      {/* Main content - 3 column layout */}
       <div className="grid lg:grid-cols-4 gap-6">
-        {/* Sidebar */}
+        {/* Left Sidebar - Lesson list */}
         <div className="lg:col-span-1">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <GraduationCap className="h-4 w-4" />
-                Daftar Materi
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              {lessons.map((lesson) => (
-                <Button
-                  key={lesson.id}
-                  variant={activeLessonId === lesson.id ? 'default' : 'ghost'}
-                  className={`w-full justify-start text-left h-auto py-2 px-3 ${
-                    activeLessonId === lesson.id
-                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                      : 'hover:bg-emerald-50'
-                  }`}
-                  onClick={() => setActiveLessonId(lesson.id)}
-                >
-                  <span className="mr-2 text-base">{lesson.icon}</span>
-                  <span className="text-sm truncate">{lesson.title}</span>
-                </Button>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main area */}
-        <div className="lg:col-span-3 space-y-6">
-          {/* Teaching tips panel */}
-          {tips && (
-            <Card className="border-emerald-200 bg-emerald-50/50">
+          <div className="sticky top-4">
+            <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2 text-emerald-800">
-                  <Lightbulb className="h-4 w-4" />
-                  📋 Tips Mengajar
+                <CardTitle className="text-base flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  Daftar Materi
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2 text-emerald-700">🎯 Tujuan Pembelajaran</h4>
-                    <ul className="space-y-1 text-sm text-emerald-900">
-                      {tips.objectives.map((obj, i) => (
-                        <li key={i} className="flex items-start gap-1.5">
-                          <span className="text-emerald-500 mt-0.5">•</span>
-                          {obj}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2 text-emerald-700">📌 Poin Kunci</h4>
-                    <ul className="space-y-1 text-sm text-emerald-900">
-                      {tips.keyPoints.map((point, i) => (
-                        <li key={i} className="flex items-start gap-1.5">
-                          <span className="text-emerald-500 mt-0.5">•</span>
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2 text-amber-700">⚠️ Kesalahan Umum</h4>
-                    <ul className="space-y-1 text-sm text-amber-900">
-                      {tips.commonMistakes.map((mistake, i) => (
-                        <li key={i} className="flex items-start gap-1.5">
-                          <span className="text-amber-500 mt-0.5">•</span>
-                          {mistake}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm mb-2 text-blue-700">💬 Pertanyaan Diskusi</h4>
-                    <ul className="space-y-1 text-sm text-blue-900">
-                      {tips.discussionQuestions.map((q, i) => (
-                        <li key={i} className="flex items-start gap-1.5">
-                          <span className="text-blue-500 mt-0.5">•</span>
-                          {q}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                {tips.teachingNotes && (
-                  <>
-                    <Separator className="my-3" />
-                    <p className="text-sm italic text-emerald-700">{tips.teachingNotes}</p>
-                  </>
-                )}
+              <CardContent className="space-y-1">
+                {lessons.map((lesson) => (
+                  <Button
+                    key={lesson.id}
+                    variant={activeLessonId === lesson.id ? 'default' : 'ghost'}
+                    className={`w-full justify-start text-left h-auto py-2 px-3 ${
+                      activeLessonId === lesson.id
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                        : 'hover:bg-emerald-50'
+                    }`}
+                    onClick={() => setActiveLessonId(lesson.id)}
+                  >
+                    <span className="mr-2 text-base">{lesson.icon}</span>
+                    <span className="text-sm truncate">{lesson.title}</span>
+                  </Button>
+                ))}
               </CardContent>
             </Card>
-          )}
+          </div>
+        </div>
 
-          {/* Lesson content preview */}
+        {/* Center - Lesson content preview */}
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="text-emerald-700 border-emerald-300">
-                  Preview Materi Siswa
+                  👁️ Preview Materi Siswa
                 </Badge>
               </div>
               <CardTitle className="flex items-center gap-2">
@@ -287,6 +242,108 @@ export default function TeacherMaterialsChapterPage() {
               )}
             </CardContent>
           </Card>
+        </div>
+
+        {/* Right Sidebar - Teaching tips */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-4 space-y-4">
+            {tips ? (
+              <>
+                <Card className="border-emerald-200 bg-emerald-50/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm flex items-center gap-2 text-emerald-800">
+                      <Lightbulb className="h-4 w-4" />
+                      🎯 Tujuan Pembelajaran
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-1.5 text-sm text-emerald-900">
+                      {tips.objectives.map((obj, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="text-emerald-500 mt-0.5 shrink-0">•</span>
+                          <span>{obj}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-emerald-200 bg-emerald-50/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm flex items-center gap-2 text-emerald-800">
+                      📌 Poin Kunci
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-1.5 text-sm text-emerald-900">
+                      {tips.keyPoints.map((point, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="text-emerald-500 mt-0.5 shrink-0">•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-amber-200 bg-amber-50/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm flex items-center gap-2 text-amber-800">
+                      ⚠️ Kesalahan Umum
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-1.5 text-sm text-amber-900">
+                      {tips.commonMistakes.map((mistake, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="text-amber-500 mt-0.5 shrink-0">•</span>
+                          <span>{mistake}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-blue-200 bg-blue-50/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm flex items-center gap-2 text-blue-800">
+                      💬 Pertanyaan Diskusi
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-1.5 text-sm text-blue-900">
+                      {tips.discussionQuestions.map((q, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                          <span>{q}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {tips.teachingNotes && (
+                  <Card className="border-purple-200 bg-purple-50/50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm flex items-center gap-2 text-purple-800">
+                        📝 Catatan Mengajar
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm italic text-purple-700">{tips.teachingNotes}</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            ) : (
+              <Card className="border-muted">
+                <CardContent className="py-8 text-center text-muted-foreground">
+                  <Lightbulb className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Tips mengajar belum tersedia untuk materi ini.</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
     </div>

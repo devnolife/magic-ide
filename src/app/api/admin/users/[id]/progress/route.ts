@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { validateSession } from '@/lib/auth';
+import { logAction } from '@/lib/auditLog';
 
 export async function DELETE(
   request: NextRequest,
@@ -90,6 +91,12 @@ export async function DELETE(
         select: { number: true },
       });
 
+      await logAction(session.user.id, 'PROGRESS_RESET', targetUser.username, {
+        targetUserId,
+        chapterId,
+        chapterNumber: chapter?.number,
+      });
+
       return NextResponse.json({
         success: true,
         message: `Progress chapter ${chapter?.number ?? chapterId} untuk user ${targetUser.username} direset`,
@@ -108,6 +115,11 @@ export async function DELETE(
         where: { userId: targetUserId },
       }),
     ]);
+
+    await logAction(session.user.id, 'PROGRESS_RESET', targetUser.username, {
+      targetUserId,
+      scope: 'all',
+    });
 
     return NextResponse.json({
       success: true,

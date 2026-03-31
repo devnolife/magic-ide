@@ -71,6 +71,19 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
+    // Redirect TEACHER from student routes to teacher equivalents
+    if (userRole === 'TEACHER') {
+      if (pathname === '/dashboard') {
+        return NextResponse.redirect(new URL('/teacher', request.url));
+      }
+      if (pathname.startsWith('/chapter/')) {
+        const chapterMatch = pathname.match(/^\/chapter\/(\d+)/);
+        if (chapterMatch) {
+          return NextResponse.redirect(new URL(`/teacher/materials/${chapterMatch[1]}`, request.url));
+        }
+      }
+    }
+
     // Add user info to headers for downstream use
     const response = NextResponse.next();
     response.headers.set('x-user-id', payload.userId);

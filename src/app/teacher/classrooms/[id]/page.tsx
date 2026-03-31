@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -48,6 +49,7 @@ import {
   Download,
   Pencil,
   Save,
+  CheckSquare,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -170,6 +172,11 @@ export default function ClassroomDetailPage() {
   // Remove-student
   const [removingStudent, setRemovingStudent] = useState<string | null>(null);
 
+  // Bulk selection
+  const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set());
+  const [bulkRemoving, setBulkRemoving] = useState(false);
+  const [bulkRemoveProgress, setBulkRemoveProgress] = useState({ current: 0, total: 0 });
+
   // Edit classroom
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
@@ -243,12 +250,78 @@ export default function ClassroomDetailPage() {
         },
         body: JSON.stringify({ studentId }),
       });
-      if (res.ok) await fetchClassroom();
+      if (res.ok) {
+        setSelectedStudents((prev) => {
+          const next = new Set(prev);
+          next.delete(studentId);
+          return next;
+        });
+        await fetchClassroom();
+      }
     } catch (err) {
       console.error("Remove student failed:", err);
       toast.error("Gagal menghapus murid dari kelas. Silakan coba lagi.");
     } finally {
       setRemovingStudent(null);
+    }
+  };
+
+  /* ---------- bulk selection helpers ---------- */
+
+  const toggleStudentSelection = (studentId: string) => {
+    setSelectedStudents((prev) => {
+      const next = new Set(prev);
+      if (next.has(studentId)) next.delete(studentId);
+      else next.add(studentId);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (!classroom) return;
+    setSelectedStudents((prev) => {
+      if (prev.size === classroom.students.length) return new Set();
+      return new Set(classroom.students.map((s) => s.id));
+    });
+  };
+
+  const handleBulkRemove = async () => {
+    if (selectedStudents.size === 0) return;
+    const ids = Array.from(selectedStudents);
+    setBulkRemoving(true);
+    setBulkRemoveProgress({ current: 0, total: ids.length });
+
+    const token = localStorage.getItem("auth-token");
+    let successCount = 0;
+    let failCount = 0;
+
+    for (let i = 0; i < ids.length; i++) {
+      setBulkRemoveProgress({ current: i + 1, total: ids.length });
+      try {
+        const res = await fetch(`/api/classrooms/${classroomId}/students`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ studentId: ids[i] }),
+        });
+        if (res.ok) successCount++;
+        else failCount++;
+      } catch {
+        failCount++;
+      }
+    }
+
+    setSelectedStudents(new Set());
+    setBulkRemoving(false);
+    setBulkRemoveProgress({ current: 0, total: 0 });
+    await fetchClassroom();
+
+    if (failCount === 0) {
+      toast.success(`${successCount} siswa berhasil dihapus dari kelas.`);
+    } else {
+      toast.error(`${successCount} berhasil, ${failCount} gagal dihapus.`);
     }
   };
 
@@ -773,63 +846,104 @@ export default function ClassroomDetailPage() {
           </div>
 
           {classroom.students.length > 0 ? (
-            <div className="overflow-x-auto rounded-lg border">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/40 text-left text-muted-foreground">
-                    <th className="p-3 pr-4 font-medium">Nama</th>
-                    <th className="p-3 pr-4 font-medium">Username</th>
-                    <th className="p-3 pr-4 font-medium hidden sm:table-cell">
-                      Email
-                    </th>
-                    <th className="p-3 pr-4 font-medium hidden md:table-cell">
-                      Bergabung
-                    </th>
-                    <th className="p-3 pr-4 font-medium hidden md:table-cell">
-                      Terakhir Aktif
-                    </th>
-                    <th className="p-3 font-medium w-10"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {classroom.students.map((student) => (
-                    <tr
-                      key={student.id}
-                      className="border-b last:border-0 hover:bg-muted/30 transition-colors"
-                    >
-                      <td className="p-3 pr-4 font-medium text-foreground">
-                        {student.name || "-"}
-                      </td>
-                      <td className="p-3 pr-4 text-muted-foreground">
-                        @{student.username}
-                      </td>
-                      <td className="p-3 pr-4 text-muted-foreground hidden sm:table-cell">
-                        {student.email}
-                      </td>
-                      <td className="p-3 pr-4 text-muted-foreground hidden md:table-cell">
-                        {formatDate(student.joinedAt)}
-                      </td>
-                      <td className="p-3 pr-4 hidden md:table-cell">
-                        <Badge
-                          variant={getActivityBadgeVariant(lastActiveMap[student.id] ?? null)}
-                          className={
-                            getActivityColor(lastActiveMap[student.id] ?? null) === "text-green-600"
-                              ? "bg-green-100 text-green-800 hover:bg-green-100"
-                              : getActivityColor(lastActiveMap[student.id] ?? null) === "text-yellow-600"
-                                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                                : "bg-red-100 text-red-800 hover:bg-red-100"
-                          }
+            <div className="space-y-0">
+              {/* Bulk action bar */}
+              {selectedStudents.size > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-amber-50 border border-amber-300 rounded-t-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <CheckSquare className="h-4 w-4 text-amber-700" />
+                    <span className="text-sm font-medium text-amber-800">
+                      {selectedStudents.size} siswa dipilih
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          disabled={bulkRemoving}
                         >
-                          <Clock className="h-3 w-3 mr-1" />
-                          {formatLastActive(lastActiveMap[student.id] ?? null)}
-                        </Badge>
-                      </td>
-                      <td className="p-3">
+                          {bulkRemoving ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                              Menghapus {bulkRemoveProgress.current}/{bulkRemoveProgress.total} siswa...
+                            </>
+                          ) : (
+                            <>
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Hapus dari Kelas
+                            </>
+                          )}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Hapus {selectedStudents.size} siswa dari kelas ini?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Tindakan ini akan menghapus {selectedStudents.size} siswa yang dipilih dari kelas. Siswa masih dapat ditambahkan kembali nanti.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Batal</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={handleBulkRemove}
+                            className="bg-red-600 hover:bg-red-700"
+                          >
+                            Ya, Hapus {selectedStudents.size} Siswa
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setSelectedStudents(new Set())}
+                      disabled={bulkRemoving}
+                    >
+                      Batal
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Mobile card layout */}
+              <div className={`space-y-3 md:hidden ${selectedStudents.size > 0 ? "mt-3" : ""}`}>
+                {classroom.students.map((student) => {
+                  const lastActive = lastActiveMap[student.id] ?? null;
+                  const activityColor = getActivityColor(lastActive);
+                  const isSelected = selectedStudents.has(student.id);
+                  return (
+                    <div
+                      key={student.id}
+                      className={`rounded-lg border bg-card p-4 space-y-2 ${isSelected ? "border-amber-400 bg-amber-50/30" : ""}`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start gap-3 min-w-0 flex-1">
+                          <Checkbox
+                            checked={isSelected}
+                            onCheckedChange={() => toggleStudentSelection(student.id)}
+                            className="mt-1 shrink-0"
+                            disabled={bulkRemoving}
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-foreground truncate">
+                              👤 {student.name || "-"}
+                            </p>
+                            <p className="text-sm text-muted-foreground truncate">
+                              @{student.username} · {student.email}
+                            </p>
+                          </div>
+                        </div>
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                          disabled={removingStudent === student.id}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0 -mt-1 -mr-2"
+                          disabled={removingStudent === student.id || bulkRemoving}
                           onClick={() => handleRemoveStudent(student.id)}
                         >
                           {removingStudent === student.id ? (
@@ -838,13 +952,121 @@ export default function ClassroomDetailPage() {
                             <Trash2 className="h-4 w-4" />
                           )}
                         </Button>
-                      </td>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground ml-7">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {formatDate(student.joinedAt)}
+                        </span>
+                        <Badge
+                          variant={getActivityBadgeVariant(lastActive)}
+                          className={
+                            activityColor === "text-green-600"
+                              ? "bg-green-100 text-green-800 hover:bg-green-100"
+                              : activityColor === "text-yellow-600"
+                                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                                : "bg-red-100 text-red-800 hover:bg-red-100"
+                          }
+                        >
+                          <Clock className="h-3 w-3 mr-1" />
+                          {formatLastActive(lastActive)}
+                        </Badge>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop table layout */}
+              <div className={`hidden md:block overflow-x-auto border ${selectedStudents.size > 0 ? "rounded-b-lg border-t-0" : "rounded-lg"}`}>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b bg-muted/40 text-left text-muted-foreground">
+                      <th className="p-3 w-10">
+                        <Checkbox
+                          checked={
+                            classroom.students.length > 0 &&
+                            selectedStudents.size === classroom.students.length
+                          }
+                          onCheckedChange={toggleSelectAll}
+                          aria-label="Pilih semua siswa"
+                          disabled={bulkRemoving}
+                        />
+                      </th>
+                      <th className="p-3 pr-4 font-medium">Nama</th>
+                      <th className="p-3 pr-4 font-medium">Username</th>
+                      <th className="p-3 pr-4 font-medium">Email</th>
+                      <th className="p-3 pr-4 font-medium">Bergabung</th>
+                      <th className="p-3 pr-4 font-medium">Terakhir Aktif</th>
+                      <th className="p-3 font-medium w-10"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {classroom.students.map((student) => {
+                      const isSelected = selectedStudents.has(student.id);
+                      return (
+                        <tr
+                          key={student.id}
+                          className={`border-b last:border-0 hover:bg-muted/30 transition-colors ${isSelected ? "bg-amber-50/50" : ""}`}
+                        >
+                          <td className="p-3">
+                            <Checkbox
+                              checked={isSelected}
+                              onCheckedChange={() => toggleStudentSelection(student.id)}
+                              aria-label={`Pilih ${student.name || student.username}`}
+                              disabled={bulkRemoving}
+                            />
+                          </td>
+                          <td className="p-3 pr-4 font-medium text-foreground">
+                            {student.name || "-"}
+                          </td>
+                          <td className="p-3 pr-4 text-muted-foreground">
+                            @{student.username}
+                          </td>
+                          <td className="p-3 pr-4 text-muted-foreground">
+                            {student.email}
+                          </td>
+                          <td className="p-3 pr-4 text-muted-foreground">
+                            {formatDate(student.joinedAt)}
+                          </td>
+                          <td className="p-3 pr-4">
+                            <Badge
+                              variant={getActivityBadgeVariant(lastActiveMap[student.id] ?? null)}
+                              className={
+                                getActivityColor(lastActiveMap[student.id] ?? null) === "text-green-600"
+                                  ? "bg-green-100 text-green-800 hover:bg-green-100"
+                                  : getActivityColor(lastActiveMap[student.id] ?? null) === "text-yellow-600"
+                                    ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                                    : "bg-red-100 text-red-800 hover:bg-red-100"
+                              }
+                            >
+                              <Clock className="h-3 w-3 mr-1" />
+                              {formatLastActive(lastActiveMap[student.id] ?? null)}
+                            </Badge>
+                          </td>
+                          <td className="p-3">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                              disabled={removingStudent === student.id || bulkRemoving}
+                              onClick={() => handleRemoveStudent(student.id)}
+                            >
+                              {removingStudent === student.id ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          ) : (
+          ): (
             <div className="text-center py-12 border rounded-lg">
               <Users className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
               <p className="text-muted-foreground">Belum ada murid di kelas ini.</p>
@@ -865,96 +1087,181 @@ export default function ClassroomDetailPage() {
           </div>
 
           {progress.length > 0 ? (
-            <div className="overflow-x-auto rounded-lg border">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/40 text-left text-muted-foreground">
-                    <th className="p-3 pr-4 font-medium sticky left-0 bg-muted/40">
-                      Murid
-                    </th>
-                    {chapterKeys.map((ch) => (
-                      <th
-                        key={ch}
-                        className="p-3 font-medium text-center whitespace-nowrap"
-                      >
-                        {ch}
-                      </th>
-                    ))}
-                    <th className="p-3 font-medium text-center">Total</th>
-                    <th className="p-3 font-medium text-center">Poin</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {progress.map((row) => (
-                    <tr
+            <>
+              {/* Mobile card layout */}
+              <div className="space-y-3 md:hidden">
+                {progress.map((row) => {
+                  const pct = row.completionPercentage;
+                  return (
+                    <div
                       key={row.userId}
-                      className="border-b last:border-0 hover:bg-muted/30 transition-colors"
+                      className="rounded-lg border bg-card p-4 space-y-3"
                     >
-                      <td className="p-3 pr-4 sticky left-0 bg-background">
+                      <div>
                         <p className="font-medium text-foreground">
-                          {row.name || row.username}
+                          👤 {row.name || row.username}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-sm text-muted-foreground">
                           @{row.username}
                         </p>
-                      </td>
-                      {chapterKeys.map((ch) => {
-                        const chData = row.chapters?.[ch];
-                        const pct = chData?.completionPercentage ?? 0;
-                        return (
-                          <td key={ch} className="p-3 text-center">
-                            <div className="flex flex-col items-center gap-1">
-                              <span
-                                className={`text-xs font-semibold ${
-                                  pct >= 100
-                                    ? "text-green-600"
-                                    : pct > 0
-                                      ? "text-blue-600"
-                                      : "text-muted-foreground"
-                                }`}
+                      </div>
+
+                      {/* Overall progress bar */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="font-semibold">
+                            {pct}%
+                          </span>
+                        </div>
+                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${
+                              pct >= 100
+                                ? "bg-green-500"
+                                : pct > 0
+                                  ? "bg-blue-500"
+                                  : "bg-muted"
+                            }`}
+                            style={{ width: `${Math.min(pct, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Chapter breakdown */}
+                      {chapterKeys.length > 0 && (
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          {chapterKeys.map((ch) => {
+                            const chData = row.chapters?.[ch];
+                            const chPct = chData?.completionPercentage ?? 0;
+                            return (
+                              <div
+                                key={ch}
+                                className="flex items-center justify-between rounded bg-muted/40 px-2 py-1"
                               >
-                                {pct}%
-                              </span>
-                              <div className="w-12 h-1.5 bg-muted rounded-full overflow-hidden">
-                                <div
-                                  className={`h-full rounded-full transition-all ${
-                                    pct >= 100
-                                      ? "bg-green-500"
-                                      : pct > 0
-                                        ? "bg-blue-500"
-                                        : "bg-muted"
+                                <span className="text-muted-foreground truncate mr-1">
+                                  {ch}
+                                </span>
+                                <span
+                                  className={`font-semibold ${
+                                    chPct >= 100
+                                      ? "text-green-600"
+                                      : chPct > 0
+                                        ? "text-blue-600"
+                                        : "text-muted-foreground"
                                   }`}
-                                  style={{ width: `${Math.min(pct, 100)}%` }}
-                                />
+                                >
+                                  {chPct}%
+                                </span>
                               </div>
-                            </div>
-                          </td>
-                        );
-                      })}
-                      <td className="p-3 text-center">
-                        <Badge
-                          variant={
-                            row.completionPercentage >= 100
-                              ? "default"
-                              : "secondary"
-                          }
-                          className={
-                            row.completionPercentage >= 100
-                              ? "bg-green-100 text-green-800"
-                              : ""
-                          }
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between pt-1 border-t text-xs">
+                        <span className="text-muted-foreground">Poin</span>
+                        <span className="font-semibold text-emerald-700">
+                          {row.totalPoints}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop table layout */}
+              <div className="hidden md:block overflow-x-auto rounded-lg border">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b bg-muted/40 text-left text-muted-foreground">
+                      <th className="p-3 pr-4 font-medium sticky left-0 bg-muted/40">
+                        Murid
+                      </th>
+                      {chapterKeys.map((ch) => (
+                        <th
+                          key={ch}
+                          className="p-3 font-medium text-center whitespace-nowrap"
                         >
-                          {row.completionPercentage}%
-                        </Badge>
-                      </td>
-                      <td className="p-3 text-center font-semibold text-emerald-700">
-                        {row.totalPoints}
-                      </td>
+                          {ch}
+                        </th>
+                      ))}
+                      <th className="p-3 font-medium text-center">Total</th>
+                      <th className="p-3 font-medium text-center">Poin</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {progress.map((row) => (
+                      <tr
+                        key={row.userId}
+                        className="border-b last:border-0 hover:bg-muted/30 transition-colors"
+                      >
+                        <td className="p-3 pr-4 sticky left-0 bg-background">
+                          <p className="font-medium text-foreground">
+                            {row.name || row.username}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            @{row.username}
+                          </p>
+                        </td>
+                        {chapterKeys.map((ch) => {
+                          const chData = row.chapters?.[ch];
+                          const pct = chData?.completionPercentage ?? 0;
+                          return (
+                            <td key={ch} className="p-3 text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                <span
+                                  className={`text-xs font-semibold ${
+                                    pct >= 100
+                                      ? "text-green-600"
+                                      : pct > 0
+                                        ? "text-blue-600"
+                                        : "text-muted-foreground"
+                                  }`}
+                                >
+                                  {pct}%
+                                </span>
+                                <div className="w-12 h-1.5 bg-muted rounded-full overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full transition-all ${
+                                      pct >= 100
+                                        ? "bg-green-500"
+                                        : pct > 0
+                                          ? "bg-blue-500"
+                                          : "bg-muted"
+                                    }`}
+                                    style={{ width: `${Math.min(pct, 100)}%` }}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                          );
+                        })}
+                        <td className="p-3 text-center">
+                          <Badge
+                            variant={
+                              row.completionPercentage >= 100
+                                ? "default"
+                                : "secondary"
+                            }
+                            className={
+                              row.completionPercentage >= 100
+                                ? "bg-green-100 text-green-800"
+                                : ""
+                            }
+                          >
+                            {row.completionPercentage}%
+                          </Badge>
+                        </td>
+                        <td className="p-3 text-center font-semibold text-emerald-700">
+                          {row.totalPoints}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           ) : (
             <div className="text-center py-12 border rounded-lg">
               <TrendingUp className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
