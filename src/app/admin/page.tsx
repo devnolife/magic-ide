@@ -36,6 +36,10 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  UserPlus,
+  Pencil,
+  Eye,
+  X,
 } from 'lucide-react';
 
 interface AdminStats {
@@ -74,6 +78,38 @@ interface User {
   _count: {
     progress: number;
     challenges: number;
+  };
+}
+
+interface UserDetailData {
+  id: string;
+  username: string;
+  email: string;
+  name: string | null;
+  role: string;
+  isActive: boolean;
+  createdAt: string;
+  lastLogin: string | null;
+  currentStreak: number;
+  longestStreak: number;
+  progress: Array<{
+    chapterId: number;
+    completedLessons: number;
+    totalLessons: number;
+    totalPoints: number;
+    totalTimeSpent: number;
+  }>;
+  recentChallenges: Array<{
+    id: string;
+    title: string;
+    score: number;
+    status: string;
+    completedAt: string;
+  }>;
+  stats: {
+    totalTimeSpent: number;
+    totalPoints: number;
+    completionRate: number;
   };
 }
 
@@ -187,6 +223,23 @@ export default function AdminDashboard() {
   const [newCode, setNewCode] = useState({ code: '', description: '', maxUses: 50, expiresAt: '' });
   const [codeUsageDetail, setCodeUsageDetail] = useState<{ code: ActivationCodeData; usages: CodeUsageDetail[] } | null>(null);
   const [showCodeUsage, setShowCodeUsage] = useState(false);
+
+  // Create user (Tambah Guru) state
+  const [showCreateUser, setShowCreateUser] = useState(false);
+  const [newUser, setNewUser] = useState({ username: '', email: '', password: '', name: '', role: 'TEACHER' });
+  const [creatingUser, setCreatingUser] = useState(false);
+
+  // Edit activation code state
+  const [editCodeDialog, setEditCodeDialog] = useState(false);
+  const [editingCode, setEditingCode] = useState<ActivationCodeData | null>(null);
+  const [editCodeForm, setEditCodeForm] = useState({ description: '', maxUses: 1, expiresAt: '', isActive: true });
+  const [updatingCode, setUpdatingCode] = useState(false);
+
+  // User detail modal state
+  const [userDetailOpen, setUserDetailOpen] = useState(false);
+  const [userDetail, setUserDetail] = useState<UserDetailData | null>(null);
+  const [userDetailLoading, setUserDetailLoading] = useState(false);
+  const [userDetailError, setUserDetailError] = useState('');
 
   useEffect(() => {
     if (user?.role !== 'ADMIN') {
@@ -364,6 +417,141 @@ export default function AdminDashboard() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success('Kode disalin ke clipboard');
+  };
+
+  const handleCreateUser = async () => {
+    if (!newUser.username.trim() || !newUser.email.trim() || !newUser.password.trim()) {
+      toast.error('Username, email, dan password wajib diisi');
+      return;
+    }
+    if (newUser.password.length < 6) {
+      toast.error('Password minimal 6 karakter');
+      return;
+    }
+    setCreatingUser(true);
+    try {
+      const token = localStorage.getItem('auth-token');
+      const response = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          username: newUser.username.trim(),
+          email: newUser.email.trim(),
+          password: newUser.password,
+          name: newUser.name.trim() || null,
+          role: newUser.role,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(`Pengguna ${data.user.username} berhasil dibuat`);
+        setShowCreateUser(false);
+        setNewUser({ username: '', email: '', password: '', name: '', role: 'TEACHER' });
+        fetchUsers(currentPage, searchQuery, roleFilter);
+      } else {
+        toast.error(data.error || 'Gagal membuat pengguna');
+      }
+    } catch {
+      toast.error('Terjadi kesalahan saat membuat pengguna');
+    } finally {
+      setCreatingUser(false);
+    }
+  };
+
+  const handleRoleChange = async (userId: string, newRole: string) => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      const response = await fetch('/api/admin/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId, role: newRole }),
+      });
+      if (response.ok) {
+        setUsers(prev => prev.map(u =>
+          u.id === userId ? { ...u, role: newRole } : u
+        ));
+        toast.success(`Role berhasil diubah ke ${ROLE_LABELS[newRole] || newRole}`);
+      } else {
+        const data = await response.json();
+        toast.error(data.error || 'Gagal mengubah role');
+      }
+    } catch {
+      toast.error('Terjadi kesalahan saat mengubah role');
+    }
+  };
+
+  const openEditCodeDialog = (code: ActivationCodeData) => {
+    setEditingCode(code);
+    setEditCodeForm({
+      description: code.description || '',
+      maxUses: code.maxUses,
+      expiresAt: code.expiresAt ? new Date(code.expiresAt).toISOString().split('T')[0] : '',
+      isActive: code.isActive,
+    });
+    setEditCodeDialog(true);
+  };
+
+  const handleUpdateCode = async () => {
+    if (!editingCode) return;
+    setUpdatingCode(true);
+    try {
+      const token = localStorage.getItem('auth-token');
+      const response = await fetch(`/api/admin/activation-codes/${editingCode.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          description: editCodeForm.description || null,
+          maxUses: editCodeForm.maxUses,
+          expiresAt: editCodeForm.expiresAt || null,
+          isActive: editCodeForm.isActive,
+        }),
+      });
+      if (response.ok) {
+        toast.success('Kode aktivasi berhasil diperbarui');
+        setEditCodeDialog(false);
+        setEditingCode(null);
+        fetchActivationCodes();
+      } else {
+        const data = await response.json();
+        toast.error(data.error || 'Gagal memperbarui kode');
+      }
+    } catch {
+      toast.error('Terjadi kesalahan saat memperbarui kode');
+    } finally {
+      setUpdatingCode(false);
+    }
+  };
+
+  const handleViewUserDetail = async (userId: string) => {
+    setUserDetailOpen(true);
+    setUserDetailLoading(true);
+    setUserDetailError('');
+    setUserDetail(null);
+    try {
+      const token = localStorage.getItem('auth-token');
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserDetail(data.user || data);
+      } else {
+        setUserDetailError('Gagal memuat detail pengguna');
+      }
+    } catch {
+      setUserDetailError('Terjadi kesalahan saat memuat detail pengguna');
+    } finally {
+      setUserDetailLoading(false);
+    }
   };
 
   // Debounced search and role filter
@@ -598,6 +786,10 @@ export default function AdminDashboard() {
               </SelectItem>
             </SelectContent>
           </Select>
+          <Button onClick={() => setShowCreateUser(true)} size="sm" className="gap-1.5">
+            <UserPlus className="h-4 w-4" />
+            Tambah Guru
+          </Button>
         </div>
 
         {/* User List */}
@@ -615,7 +807,7 @@ export default function AdminDashboard() {
           ) : (
             users.map((u) => (
               <div key={u.id} className="flex items-center justify-between p-3 gap-2">
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 cursor-pointer" onClick={() => handleViewUserDetail(u.id)}>
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-sm text-foreground truncate">
                       {u.name || u.username}
@@ -632,9 +824,24 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <Badge variant={getRoleBadgeVariant(u.role)}>
-                    {ROLE_LABELS[u.role] || u.role}
-                  </Badge>
+                  <Select value={u.role} onValueChange={(newRole) => handleRoleChange(u.id, newRole)}>
+                    <SelectTrigger className="w-[110px] h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USER">Siswa</SelectItem>
+                      <SelectItem value="TEACHER">Guru</SelectItem>
+                      <SelectItem value="ADMIN">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleViewUserDetail(u.id)}
+                    title="Lihat Detail"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                  </Button>
                   <Button
                     size="sm"
                     variant="outline"
@@ -754,6 +961,10 @@ export default function AdminDashboard() {
                 <div className="flex items-center gap-2">
                   <Button variant="ghost" size="sm" onClick={() => handleViewUsage(ac.id)}>
                     Detail
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => openEditCodeDialog(ac)}>
+                    <Pencil className="h-3.5 w-3.5 mr-1" />
+                    Edit
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => handleToggleCode(ac.id, ac.isActive)}>
                     {ac.isActive ? 'Nonaktifkan' : 'Aktifkan'}
@@ -975,6 +1186,296 @@ export default function AdminDashboard() {
               Reset Password
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create User (Tambah Guru) Dialog */}
+      <Dialog open={showCreateUser} onOpenChange={setShowCreateUser}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tambah Pengguna Baru</DialogTitle>
+            <DialogDescription>Buat akun guru atau siswa baru.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Username <span className="text-red-500">*</span></label>
+              <Input
+                value={newUser.username}
+                onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                placeholder="contoh: guru_budi"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Email <span className="text-red-500">*</span></label>
+              <Input
+                type="email"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                placeholder="guru@sekolah.id"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Password <span className="text-red-500">*</span></label>
+              <Input
+                type="password"
+                value={newUser.password}
+                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                placeholder="Minimal 6 karakter"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Nama Lengkap</label>
+              <Input
+                value={newUser.name}
+                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                placeholder="Nama lengkap (opsional)"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Role</label>
+              <Select value={newUser.role} onValueChange={(value) => setNewUser({ ...newUser, role: value })}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="TEACHER">Guru (TEACHER)</SelectItem>
+                  <SelectItem value="USER">Siswa (USER)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateUser(false)} disabled={creatingUser}>
+              Batal
+            </Button>
+            <Button
+              onClick={handleCreateUser}
+              disabled={creatingUser || !newUser.username.trim() || !newUser.email.trim() || newUser.password.length < 6}
+            >
+              {creatingUser ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Buat Pengguna
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Activation Code Dialog */}
+      <Dialog open={editCodeDialog} onOpenChange={setEditCodeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Kode Aktivasi</DialogTitle>
+            <DialogDescription>
+              Ubah pengaturan kode <strong>{editingCode?.code}</strong>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Deskripsi</label>
+              <Input
+                value={editCodeForm.description}
+                onChange={(e) => setEditCodeForm({ ...editCodeForm, description: e.target.value })}
+                placeholder="Deskripsi kode aktivasi"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Maks Penggunaan</label>
+              <Input
+                type="number"
+                value={editCodeForm.maxUses}
+                onChange={(e) => setEditCodeForm({ ...editCodeForm, maxUses: parseInt(e.target.value) || 1 })}
+                min={1}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Tanggal Kadaluarsa (opsional)</label>
+              <Input
+                type="date"
+                value={editCodeForm.expiresAt}
+                onChange={(e) => setEditCodeForm({ ...editCodeForm, expiresAt: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-medium">Status Aktif</label>
+              <Button
+                type="button"
+                size="sm"
+                variant={editCodeForm.isActive ? 'default' : 'outline'}
+                className={editCodeForm.isActive ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                onClick={() => setEditCodeForm({ ...editCodeForm, isActive: !editCodeForm.isActive })}
+              >
+                {editCodeForm.isActive ? 'Aktif' : 'Nonaktif'}
+              </Button>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditCodeDialog(false)} disabled={updatingCode}>
+              Batal
+            </Button>
+            <Button onClick={handleUpdateCode} disabled={updatingCode}>
+              {updatingCode ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Simpan Perubahan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* User Detail Modal */}
+      <Dialog open={userDetailOpen} onOpenChange={setUserDetailOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              Detail Pengguna
+            </DialogTitle>
+            <DialogDescription>
+              Informasi lengkap dan progres belajar pengguna.
+            </DialogDescription>
+          </DialogHeader>
+
+          {userDetailLoading && (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          )}
+
+          {userDetailError && (
+            <div className="text-center py-8">
+              <X className="h-10 w-10 text-red-400 mx-auto mb-2" />
+              <p className="text-muted-foreground">{userDetailError}</p>
+            </div>
+          )}
+
+          {userDetail && !userDetailLoading && (
+            <div className="space-y-6">
+              {/* Profile Section */}
+              <div className="rounded-lg border p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Profil</h3>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Nama</p>
+                    <p className="font-medium">{userDetail.name || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Username</p>
+                    <p className="font-medium">@{userDetail.username}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Email</p>
+                    <p className="font-medium">{userDetail.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Role</p>
+                    <Badge variant={getRoleBadgeVariant(userDetail.role)}>
+                      {ROLE_LABELS[userDetail.role] || userDetail.role}
+                    </Badge>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Terdaftar</p>
+                    <p className="font-medium">{new Date(userDetail.createdAt).toLocaleDateString('id-ID')}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Login Terakhir</p>
+                    <p className="font-medium">
+                      {userDetail.lastLogin ? new Date(userDetail.lastLogin).toLocaleDateString('id-ID') : '-'}
+                    </p>
+                  </div>
+                  {(userDetail.currentStreak !== undefined || userDetail.longestStreak !== undefined) && (
+                    <>
+                      <div>
+                        <p className="text-muted-foreground">Streak Saat Ini</p>
+                        <p className="font-medium">{userDetail.currentStreak ?? 0} hari</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Streak Terpanjang</p>
+                        <p className="font-medium">{userDetail.longestStreak ?? 0} hari</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Stats Summary */}
+              {userDetail.stats && (
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="rounded-lg border p-3 text-center">
+                    <p className="text-2xl font-bold text-blue-600">{formatTime(userDetail.stats.totalTimeSpent || 0)}</p>
+                    <p className="text-xs text-muted-foreground">Total Waktu Belajar</p>
+                  </div>
+                  <div className="rounded-lg border p-3 text-center">
+                    <p className="text-2xl font-bold text-emerald-600">{userDetail.stats.totalPoints || 0}</p>
+                    <p className="text-xs text-muted-foreground">Total Poin</p>
+                  </div>
+                  <div className="rounded-lg border p-3 text-center">
+                    <p className="text-2xl font-bold text-violet-600">{userDetail.stats.completionRate || 0}%</p>
+                    <p className="text-xs text-muted-foreground">Penyelesaian</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Progress Section */}
+              {userDetail.progress && userDetail.progress.length > 0 && (
+                <div className="rounded-lg border p-4 space-y-3">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Progres Per Chapter</h3>
+                  <div className="space-y-3">
+                    {userDetail.progress.map((p: UserDetailData['progress'][0]) => {
+                      const pct = p.totalLessons > 0 ? Math.round((p.completedLessons / p.totalLessons) * 100) : 0;
+                      return (
+                        <div key={p.chapterId} className="space-y-1">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="font-medium">Chapter {p.chapterId}</span>
+                            <span className="text-muted-foreground">{p.completedLessons}/{p.totalLessons} ({pct}%)</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-emerald-500 transition-all"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Recent Challenges */}
+              {userDetail.recentChallenges && userDetail.recentChallenges.length > 0 && (
+                <div className="rounded-lg border p-4 space-y-3">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Tantangan Terbaru</h3>
+                  <div className="divide-y rounded-lg border overflow-hidden">
+                    <div className="grid grid-cols-[1fr_60px_80px_100px] gap-2 p-2 bg-muted/50 text-xs font-medium text-muted-foreground">
+                      <span>Judul</span>
+                      <span>Skor</span>
+                      <span>Status</span>
+                      <span>Tanggal</span>
+                    </div>
+                    {userDetail.recentChallenges.slice(0, 10).map((ch: UserDetailData['recentChallenges'][0]) => (
+                      <div key={ch.id} className="grid grid-cols-[1fr_60px_80px_100px] gap-2 p-2 text-sm items-center">
+                        <span className="truncate">{ch.title}</span>
+                        <span className="font-medium">{ch.score}</span>
+                        <Badge
+                          variant={ch.status === 'COMPLETED' ? 'default' : 'secondary'}
+                          className={ch.status === 'COMPLETED' ? 'bg-emerald-600 text-[10px]' : 'text-[10px]'}
+                        >
+                          {ch.status === 'COMPLETED' ? 'Selesai' : ch.status}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(ch.completedAt).toLocaleDateString('id-ID')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

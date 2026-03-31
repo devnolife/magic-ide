@@ -47,11 +47,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Anda sudah pernah menggunakan kode ini' }, { status: 400 });
     }
 
-    // Activate user and record usage
+    // Activate user, set role to TEACHER, and record usage
     await prisma.$transaction([
       prisma.user.update({
         where: { id: user.id },
-        data: { isActivated: true },
+        data: { isActivated: true, role: 'TEACHER' },
       }),
       prisma.activationCodeUsage.create({
         data: { codeId: code.id, userId: user.id },
@@ -62,11 +62,11 @@ export async function POST(request: NextRequest) {
       }),
     ]);
 
-    // Generate new token with isActivated=true
+    // Generate new token with isActivated=true and TEACHER role
     const newToken = generateToken({
       userId: user.id,
       username: user.username,
-      role: user.role,
+      role: 'TEACHER',
       isActivated: true,
     });
 

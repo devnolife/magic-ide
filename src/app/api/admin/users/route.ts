@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { validateSession } from '@/lib/auth';
+import { validateSession, hashPassword } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
@@ -94,6 +94,94 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Admin users fetch error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'No token provided' },
+        { status: 401 }
+      );
+    }
+
+    const session = await validateSession(token);
+    if (!session || session.user.role !== 'ADMIN') {
+      return NextResponse.json(
+        { error: 'Admin access required' },
+        { status: 403 }
+      );
+    }
+
+    const { username, email, password, name, role } = await request.json();
+
+    if (!username || !email || !password) {
+      return NextResponse.json(
+        { error: 'Username, email, dan password wajib diisi' },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: 'Password minimal 6 karakter' },
+        { status: 400 }
+      );
+    }
+
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { username: username },
+          { email: email },
+        ],
+      },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'Username atau email sudah terdaftar' },
+        { status: 409 }
+      );
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const newUser = await prisma.user.create({
+      data: {
+        username,
+        email,
+        password: hashedPassword,
+        name: name || null,
+        role: role || 'TEACHER',
+        isActive: true,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        name: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+      },
+    });
+
+    return NextResponse.json({
+      message: 'User created successfully',
+      user: newUser,
+    }, { status: 201 });
+
+  } catch (error) {
+    console.error('Admin user create error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -177,7 +177,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 disabled={isLoading}
               />
             </div>
-            <p className="mt-0.5 text-xs text-gray-400">Masukkan kode dari admin untuk akses penuh</p>
+            <p className="mt-0.5 text-xs text-gray-400">Masukkan kode dari admin — akun otomatis menjadi <strong className="text-emerald-600">akun Guru</strong></p>
           </div>
 
           {/* Row 2: Password + Confirm side by side */}
