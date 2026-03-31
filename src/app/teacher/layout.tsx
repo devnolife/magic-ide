@@ -29,17 +29,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   LayoutDashboard,
   School,
+  BookOpen,
   User,
   LogOut,
 } from "lucide-react";
 
 const sidebarLinks = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/teacher/materials", label: "Materi", icon: BookOpen },
   { href: "/teacher/classrooms", label: "Kelas", icon: School },
 ];
 
 function getPageTitle(pathname: string): string {
   if (pathname === "/teacher") return "Dashboard";
+  if (pathname === "/teacher/materials") return "Materi Pembelajaran";
+  if (pathname.startsWith("/teacher/materials/")) return "Detail Materi";
   if (pathname === "/teacher/classrooms/new") return "Buat Kelas Baru";
   if (pathname.startsWith("/teacher/classrooms/")) return "Detail Kelas";
   if (pathname === "/teacher/classrooms") return "Kelas";
