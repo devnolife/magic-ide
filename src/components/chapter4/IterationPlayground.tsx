@@ -1,506 +1,455 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { motion } from 'framer-motion';
-import { CodeEditor } from '@/components/CodeEditor';
-import { Play, BookOpen, Zap, Target } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Star, Grid3X3, Search, Gamepad2, Trophy, CheckCircle2, Play, RotateCcw } from 'lucide-react';
 
-interface IterationPlaygroundProps {
-  onComplete: () => void;
+interface PlaygroundProps {
+  onComplete?: () => void;
+  isCompleted?: boolean;
 }
 
-export function IterationPlayground({ onComplete }: IterationPlaygroundProps) {
-  const [activeTab, setActiveTab] = useState('challenges');
-  const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
-  const [currentCode, setCurrentCode] = useState('');
+type ChallengeId = 'pola-bintang' | 'tabel-perkalian' | 'pencarian-data' | 'fizzbuzz';
 
-  const challenges = [
-    {
-      id: 'fibonacci',
-      title: 'Fibonacci Sequence Generator',
-      description: 'Create a generator that yields Fibonacci numbers',
-      difficulty: 'Medium',
-      template: `def fibonacci_generator(n):
-    # Your code here
-    pass
+interface Challenge {
+  id: ChallengeId;
+  title: string;
+  icon: React.ReactNode;
+  difficulty: string;
+  difficultyColor: string;
+  description: string;
+  code: string;
+}
 
-# Test your generator
-fib_gen = fibonacci_generator(10)
-for num in fib_gen:
-    print(num)`,
-      solution: `def fibonacci_generator(n):
-    a, b = 0, 1
-    for _ in range(n):
-        yield a
-        a, b = b, a + b
+const challenges: Challenge[] = [
+  {
+    id: 'pola-bintang',
+    title: 'Pola Bintang ⭐',
+    icon: <Star className="w-5 h-5" />,
+    difficulty: 'Mudah',
+    difficultyColor: 'bg-green-100 text-green-800 border-green-300',
+    description: 'Buat pola segitiga bintang dengan nested loop',
+    code: `# Pola Bintang\nn = 5  # jumlah baris\nfor i in range(1, n + 1):\n    print('⭐' * i)`,
+  },
+  {
+    id: 'tabel-perkalian',
+    title: 'Tabel Perkalian 🔢',
+    icon: <Grid3X3 className="w-5 h-5" />,
+    difficulty: 'Mudah',
+    difficultyColor: 'bg-green-100 text-green-800 border-green-300',
+    description: 'Buat tabel perkalian dengan nested loop',
+    code: `# Tabel Perkalian\nn = 5  # ukuran tabel\nfor i in range(1, n + 1):\n    for j in range(1, n + 1):\n        print(f"{i}x{j}={i*j}", end="\\t")\n    print()`,
+  },
+  {
+    id: 'pencarian-data',
+    title: 'Pencarian Data 🔍',
+    icon: <Search className="w-5 h-5" />,
+    difficulty: 'Sedang',
+    difficultyColor: 'bg-amber-100 text-amber-800 border-amber-300',
+    description: 'Cari data siswa yang memenuhi kriteria tertentu',
+    code: `# Pencarian Data Nilai Siswa\nsiswa = [\n  {"nama": "Andi",  "nilai": 85},\n  {"nama": "Budi",  "nilai": 72},\n  {"nama": "Citra", "nilai": 91},\n  {"nama": "Dewi",  "nilai": 68},\n  {"nama": "Eko",   "nilai": 95},\n  {"nama": "Fani",  "nilai": 78},\n]\nbatas = 80\nfor s in siswa:\n    if s["nilai"] > batas:\n        print(f'{s["nama"]}: {s["nilai"]} ✓')`,
+  },
+  {
+    id: 'fizzbuzz',
+    title: 'FizzBuzz 🎮',
+    icon: <Gamepad2 className="w-5 h-5" />,
+    difficulty: 'Sedang',
+    difficultyColor: 'bg-amber-100 text-amber-800 border-amber-300',
+    description: 'Tantangan klasik FizzBuzz dengan loop & kondisi',
+    code: `# FizzBuzz\nn = 20\nfor i in range(1, n + 1):\n    if i % 15 == 0:\n        print("FizzBuzz")\n    elif i % 3 == 0:\n        print("Fizz")\n    elif i % 5 == 0:\n        print("Buzz")\n    else:\n        print(i)`,
+  },
+];
 
-# Test your generator
-fib_gen = fibonacci_generator(10)
-for num in fib_gen:
-    print(num)`
-    },
-    {
-      id: 'matrix_transform',
-      title: 'Matrix Transformation',
-      description: 'Transform a 2D matrix using nested loops and comprehensions',
-      difficulty: 'Hard',
-      template: `# Transform this matrix by doubling even numbers and squaring odd numbers
-matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+const siswaData = [
+  { nama: 'Andi', nilai: 85 },
+  { nama: 'Budi', nilai: 72 },
+  { nama: 'Citra', nilai: 91 },
+  { nama: 'Dewi', nilai: 68 },
+  { nama: 'Eko', nilai: 95 },
+  { nama: 'Fani', nilai: 78 },
+];
 
-# Method 1: Using nested loops
-def transform_loops(matrix):
-    # Your code here
-    pass
+// ── Sub-components ────────────────────────────────────────
 
-# Method 2: Using list comprehension
-def transform_comprehension(matrix):
-    # Your code here
-    pass
+function PolaBintangPanel({ onInteract }: { onInteract: () => void }) {
+  const [rows, setRows] = useState(5);
+  const [visibleRows, setVisibleRows] = useState(0);
+  const [animating, setAnimating] = useState(false);
 
-print("Original:", matrix)
-print("Loops result:", transform_loops(matrix))
-print("Comprehension result:", transform_comprehension(matrix))`,
-      solution: `# Transform this matrix by doubling even numbers and squaring odd numbers
-matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  const runAnimation = useCallback(() => {
+    setVisibleRows(0);
+    setAnimating(true);
+    onInteract();
+  }, [onInteract]);
 
-# Method 1: Using nested loops
-def transform_loops(matrix):
-    result = []
-    for row in matrix:
-        new_row = []
-        for num in row:
-            if num % 2 == 0:
-                new_row.append(num * 2)
-            else:
-                new_row.append(num * num)
-        result.append(new_row)
-    return result
+  useEffect(() => {
+    if (!animating) return;
+    if (visibleRows >= rows) { setAnimating(false); return; }
+    const t = setTimeout(() => setVisibleRows(v => v + 1), 300);
+    return () => clearTimeout(t);
+  }, [animating, visibleRows, rows]);
 
-# Method 2: Using list comprehension
-def transform_comprehension(matrix):
-    return [[num * 2 if num % 2 == 0 else num * num for num in row] for row in matrix]
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium text-purple-700 whitespace-nowrap">Jumlah baris: {rows}</span>
+        <Slider min={1} max={10} step={1} value={[rows]} onValueChange={v => { setRows(v[0]); setVisibleRows(0); setAnimating(false); }} className="flex-1" />
+        <Button size="sm" onClick={runAnimation} className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-600 hover:to-fuchsia-600">
+          <Play className="w-4 h-4 mr-1" /> Jalankan
+        </Button>
+      </div>
+      <div className="bg-gray-900 rounded-lg p-4 min-h-[160px] font-mono text-lg">
+        <AnimatePresence mode="popLayout">
+          {Array.from({ length: visibleRows }, (_, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} className="text-yellow-300">
+              {'⭐'.repeat(i + 1)}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+        {visibleRows === 0 && <span className="text-gray-500 text-sm">Tekan &quot;Jalankan&quot; untuk melihat pola...</span>}
+      </div>
+    </div>
+  );
+}
 
-print("Original:", matrix)
-print("Loops result:", transform_loops(matrix))
-print("Comprehension result:", transform_comprehension(matrix))`
-    },
-    {
-      id: 'data_processing',
-      title: 'Advanced Data Processing',
-      description: 'Process and filter student data using various iteration techniques',
-      difficulty: 'Expert',
-      template: `students = [
-    {"name": "Alice", "grades": [85, 92, 78, 96], "age": 20},
-    {"name": "Bob", "grades": [76, 81, 87, 73], "age": 22},
-    {"name": "Charlie", "grades": [94, 89, 92, 97], "age": 19},
-    {"name": "Diana", "grades": [88, 85, 91, 89], "age": 21}
-]
+function TabelPerkalianPanel({ onInteract }: { onInteract: () => void }) {
+  const [size, setSize] = useState(5);
+  const [hoverCell, setHoverCell] = useState<string | null>(null);
+  const [shown, setShown] = useState(false);
 
-# Challenge 1: Find students with average grade > 85
-def high_achievers(students):
-    # Your code here
-    pass
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium text-purple-700 whitespace-nowrap">Ukuran tabel: {size}</span>
+        <Slider min={1} max={12} step={1} value={[size]} onValueChange={v => { setSize(v[0]); setShown(false); }} className="flex-1" />
+        <Button size="sm" onClick={() => { setShown(true); onInteract(); }} className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-600 hover:to-fuchsia-600">
+          <Play className="w-4 h-4 mr-1" /> Tampilkan
+        </Button>
+      </div>
+      {shown ? (
+        <div className="overflow-x-auto rounded-lg border border-purple-200">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-purple-100">
+                <th className="p-2 text-purple-700 font-bold">×</th>
+                {Array.from({ length: size }, (_, j) => (
+                  <th key={j} className="p-2 text-purple-700 font-bold">{j + 1}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: size }, (_, i) => (
+                <tr key={i} className={i % 2 === 0 ? 'bg-purple-50/50' : 'bg-white'}>
+                  <td className="p-2 font-bold text-purple-700 bg-purple-100">{i + 1}</td>
+                  {Array.from({ length: size }, (_, j) => {
+                    const key = `${i}-${j}`;
+                    const isHovered = hoverCell === key;
+                    return (
+                      <td key={j} onMouseEnter={() => setHoverCell(key)} onMouseLeave={() => setHoverCell(null)}
+                        className={`p-2 text-center transition-colors cursor-default ${isHovered ? 'bg-fuchsia-200 font-bold text-fuchsia-800 scale-105' : 'text-gray-700'}`}>
+                        {isHovered ? `${i + 1}×${j + 1}=` : ''}{(i + 1) * (j + 1)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="bg-gray-100 rounded-lg p-8 text-center text-gray-500 text-sm">Tekan &quot;Tampilkan&quot; untuk melihat tabel perkalian</div>
+      )}
+    </div>
+  );
+}
 
-# Challenge 2: Create a dictionary mapping names to their highest grade
-def name_to_highest_grade(students):
-    # Your code here
-    pass
+function PencarianDataPanel({ onInteract }: { onInteract: () => void }) {
+  const [threshold, setThreshold] = useState(80);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [searching, setSearching] = useState(false);
+  const [results, setResults] = useState<boolean[]>([]);
 
-# Challenge 3: Generate pairs of students for study groups
-def study_pairs(students):
-    # Your code here
-    pass
+  const runSearch = useCallback(() => {
+    setResults([]);
+    setActiveIndex(-1);
+    setSearching(true);
+    onInteract();
+  }, [onInteract]);
 
-print("High achievers:", high_achievers(students))
-print("Highest grades:", name_to_highest_grade(students))
-print("Study pairs:", list(study_pairs(students)))`,
-      solution: `students = [
-    {"name": "Alice", "grades": [85, 92, 78, 96], "age": 20},
-    {"name": "Bob", "grades": [76, 81, 87, 73], "age": 22},
-    {"name": "Charlie", "grades": [94, 89, 92, 97], "age": 19},
-    {"name": "Diana", "grades": [88, 85, 91, 89], "age": 21}
-]
+  useEffect(() => {
+    if (!searching) return;
+    const next = activeIndex + 1;
+    if (next >= siswaData.length) { setSearching(false); return; }
+    const t = setTimeout(() => {
+      setActiveIndex(next);
+      setResults(prev => [...prev, siswaData[next].nilai > threshold]);
+    }, 600);
+    return () => clearTimeout(t);
+  }, [searching, activeIndex, threshold]);
 
-# Challenge 1: Find students with average grade > 85
-def high_achievers(students):
-    return [student["name"] for student in students 
-            if sum(student["grades"]) / len(student["grades"]) > 85]
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4 flex-wrap">
+        <span className="text-sm font-medium text-purple-700 whitespace-nowrap">Cari nilai &gt;</span>
+        <Input type="number" value={threshold} onChange={e => { setThreshold(Number(e.target.value)); setResults([]); setActiveIndex(-1); setSearching(false); }}
+          className="w-20" min={0} max={100} />
+        <Button size="sm" onClick={runSearch} className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-600 hover:to-fuchsia-600">
+          <Search className="w-4 h-4 mr-1" /> Cari
+        </Button>
+      </div>
+      <div className="space-y-2">
+        {siswaData.map((s, idx) => {
+          const isActive = idx === activeIndex && searching;
+          const checked = idx < results.length;
+          const match = results[idx];
+          return (
+            <motion.div key={s.nama} animate={isActive ? { scale: 1.03 } : { scale: 1 }}
+              className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${isActive ? 'border-fuchsia-400 bg-fuchsia-50 ring-2 ring-fuchsia-300' : checked ? (match ? 'border-green-300 bg-green-50' : 'border-gray-200 bg-gray-50') : 'border-gray-200'}`}>
+              <div className="flex items-center gap-3">
+                {checked && (
+                  <span className={`text-sm font-bold ${match ? 'text-green-600' : 'text-gray-400'}`}>{match ? '✓' : '✗'}</span>
+                )}
+                {isActive && <span className="text-fuchsia-500 animate-pulse">▶</span>}
+                <span className="font-medium text-gray-800">{s.nama}</span>
+              </div>
+              <Badge variant="outline" className={checked && match ? 'border-green-400 text-green-700' : ''}>{s.nilai}</Badge>
+            </motion.div>
+          );
+        })}
+      </div>
+      {!searching && results.length > 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-purple-700 font-medium">
+          Ditemukan {results.filter(Boolean).length} siswa dengan nilai &gt; {threshold}
+        </motion.div>
+      )}
+    </div>
+  );
+}
 
-# Challenge 2: Create a dictionary mapping names to their highest grade
-def name_to_highest_grade(students):
-    return {student["name"]: max(student["grades"]) for student in students}
+function FizzBuzzPanel({ onInteract }: { onInteract: () => void }) {
+  const [range, setRange] = useState(20);
+  const [visibleCount, setVisibleCount] = useState(0);
+  const [animating, setAnimating] = useState(false);
 
-# Challenge 3: Generate pairs of students for study groups
-def study_pairs(students):
-    names = [student["name"] for student in students]
-    for i in range(len(names)):
-        for j in range(i + 1, len(names)):
-            yield (names[i], names[j])
+  const runAnimation = useCallback(() => {
+    setVisibleCount(0);
+    setAnimating(true);
+    onInteract();
+  }, [onInteract]);
 
-print("High achievers:", high_achievers(students))
-print("Highest grades:", name_to_highest_grade(students))
-print("Study pairs:", list(study_pairs(students)))`
-    }
-  ];
+  useEffect(() => {
+    if (!animating) return;
+    if (visibleCount >= range) { setAnimating(false); return; }
+    const t = setTimeout(() => setVisibleCount(v => v + 1), 120);
+    return () => clearTimeout(t);
+  }, [animating, visibleCount, range]);
 
-  const examples = [
-    {
-      id: 'spiral_matrix',
-      title: 'Spiral Matrix Generator',
-      code: `def spiral_matrix(n):
-    """Generate a spiral matrix of size n x n"""
-    matrix = [[0] * n for _ in range(n)]
-    
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # right, down, left, up
-    direction_idx = 0
-    row, col = 0, 0
-    
-    for num in range(1, n * n + 1):
-        matrix[row][col] = num
-        
-        # Calculate next position
-        next_row = row + directions[direction_idx][0]
-        next_col = col + directions[direction_idx][1]
-        
-        # Check if we need to turn
-        if (next_row < 0 or next_row >= n or 
-            next_col < 0 or next_col >= n or 
-            matrix[next_row][next_col] != 0):
-            direction_idx = (direction_idx + 1) % 4
-            next_row = row + directions[direction_idx][0]
-            next_col = col + directions[direction_idx][1]
-        
-        row, col = next_row, next_col
-    
-    return matrix
+  const getLabel = (n: number) => {
+    if (n % 15 === 0) return { text: 'FizzBuzz', cls: 'bg-purple-200 text-purple-800 border-purple-300' };
+    if (n % 3 === 0) return { text: 'Fizz', cls: 'bg-green-200 text-green-800 border-green-300' };
+    if (n % 5 === 0) return { text: 'Buzz', cls: 'bg-blue-200 text-blue-800 border-blue-300' };
+    return { text: String(n), cls: 'bg-gray-100 text-gray-600 border-gray-200' };
+  };
 
-# Generate and display a 5x5 spiral
-spiral = spiral_matrix(5)
-for row in spiral:
-    print(' '.join(f'{num:2}' for num in row))`
-    },
-    {
-      id: 'prime_sieve',
-      title: 'Sieve of Eratosthenes',
-      code: `def sieve_of_eratosthenes(limit):
-    """Find all prime numbers up to limit using the Sieve of Eratosthenes"""
-    # Initialize boolean array
-    is_prime = [True] * (limit + 1)
-    is_prime[0] = is_prime[1] = False
-    
-    # Sieve algorithm
-    for i in range(2, int(limit**0.5) + 1):
-        if is_prime[i]:
-            # Mark multiples as non-prime
-            for j in range(i*i, limit + 1, i):
-                is_prime[j] = False
-    
-    # Collect prime numbers
-    primes = [i for i in range(2, limit + 1) if is_prime[i]]
-    return primes
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium text-purple-700 whitespace-nowrap">Range: 1 – {range}</span>
+        <Slider min={5} max={50} step={5} value={[range]} onValueChange={v => { setRange(v[0]); setVisibleCount(0); setAnimating(false); }} className="flex-1" />
+        <Button size="sm" onClick={runAnimation} className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-600 hover:to-fuchsia-600">
+          <Play className="w-4 h-4 mr-1" /> Jalankan
+        </Button>
+      </div>
+      <div className="flex flex-wrap gap-2 min-h-[80px]">
+        <AnimatePresence mode="popLayout">
+          {Array.from({ length: visibleCount }, (_, i) => {
+            const n = i + 1;
+            const { text, cls } = getLabel(n);
+            return (
+              <motion.span key={n} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }}
+                className={`inline-flex items-center justify-center px-2.5 py-1 rounded-md border text-sm font-mono font-medium ${cls}`}>
+                {text}
+              </motion.span>
+            );
+          })}
+        </AnimatePresence>
+        {visibleCount === 0 && <span className="text-gray-400 text-sm self-center">Tekan &quot;Jalankan&quot; untuk melihat hasil...</span>}
+      </div>
+      {!animating && visibleCount > 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-4 text-xs flex-wrap">
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-200 border border-green-300" /> Fizz (kelipatan 3)</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-200 border border-blue-300" /> Buzz (kelipatan 5)</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-purple-200 border border-purple-300" /> FizzBuzz (kelipatan 15)</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-gray-100 border border-gray-200" /> Angka biasa</span>
+        </motion.div>
+      )}
+    </div>
+  );
+}
 
-# Generate comprehension version
-def primes_comprehension(limit):
-    """Alternative using list comprehension and generator"""
-    return [n for n in range(2, limit + 1) 
-            if all(n % i != 0 for i in range(2, int(n**0.5) + 1))]
+// ── Code display ──────────────────────────────────────────
 
-# Compare both methods
-limit = 100
-sieve_primes = sieve_of_eratosthenes(limit)
-comp_primes = primes_comprehension(limit)
+function CodeBlock({ code }: { code: string }) {
+  return (
+    <pre className="bg-gray-900 text-sm rounded-lg p-4 overflow-x-auto font-mono leading-relaxed">
+      {code.split('\n').map((line, i) => {
+        let cls = 'text-gray-300';
+        const trimmed = line.trimStart();
+        if (trimmed.startsWith('#')) cls = 'text-gray-500 italic';
+        else if (/^(for |if |elif |else:|while |def |return |import |from )/.test(trimmed)) cls = 'text-purple-400 font-semibold';
+        else if (/\bprint\b/.test(trimmed)) cls = 'text-cyan-400';
+        else if (/\brange\b/.test(trimmed)) cls = 'text-yellow-400';
+        else if (/"[^"]*"|'[^']*'/.test(trimmed)) cls = 'text-green-400';
+        return (
+          <div key={i} className="flex">
+            <span className="text-gray-600 select-none w-6 text-right mr-3">{i + 1}</span>
+            <span className={cls}>{line}</span>
+          </div>
+        );
+      })}
+    </pre>
+  );
+}
 
-print(f"Primes up to {limit}: {len(sieve_primes)} found")
-print("First 10:", sieve_primes[:10])
-print("Methods match:", sieve_primes == comp_primes)`
-    },
-    {
-      id: 'lazy_evaluation',
-      title: 'Lazy Evaluation Demo',
-      code: `import itertools
-from typing import Iterator
+// ── Main component ────────────────────────────────────────
 
-def infinite_fibonacci() -> Iterator[int]:
-    """Generate Fibonacci numbers infinitely"""
-    a, b = 0, 1
-    while True:
-        yield a
-        a, b = b, a + b
+export function IterationPlayground({ onComplete, isCompleted }: PlaygroundProps) {
+  const [activeChallenge, setActiveChallenge] = useState<ChallengeId>('pola-bintang');
+  const [completed, setCompleted] = useState<Set<ChallengeId>>(new Set());
 
-def prime_filter(numbers: Iterator[int]) -> Iterator[int]:
-    """Filter prime numbers from an iterator"""
-    def is_prime(n):
-        if n < 2:
-            return False
-        return all(n % i != 0 for i in range(2, int(n**0.5) + 1))
-    
-    return filter(is_prime, numbers)
+  const markDone = useCallback((id: ChallengeId) => {
+    setCompleted(prev => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  }, []);
 
-def squared_transform(numbers: Iterator[int]) -> Iterator[int]:
-    """Square each number in the iterator"""
-    return (x * x for x in numbers)
-
-# Chain operations lazily
-fibonacci_stream = infinite_fibonacci()
-fibonacci_primes = prime_filter(fibonacci_stream)
-squared_fibonacci_primes = squared_transform(fibonacci_primes)
-
-# Only compute when needed
-print("First 10 squared Fibonacci primes:")
-for i, prime_square in enumerate(squared_fibonacci_primes):
-    if i >= 10:
-        break
-    print(f"{i+1}: {prime_square}")
-
-# Demonstrate takewhile and dropwhile
-numbers = range(1, 101)
-small_numbers = itertools.takewhile(lambda x: x < 50, numbers)
-large_numbers = itertools.dropwhile(lambda x: x < 50, numbers)
-
-print("\\nFirst 5 small numbers:", list(itertools.islice(small_numbers, 5)))
-print("First 5 large numbers:", list(itertools.islice(large_numbers, 5)))`
-    }
-  ];
-
-  const handleChallengeComplete = (challengeId: string) => {
-    if (!completedChallenges.includes(challengeId)) {
-      setCompletedChallenges(prev => [...prev, challengeId]);
-    }
-
-    if (completedChallenges.length + 1 >= 2) {
+  useEffect(() => {
+    if (completed.size >= challenges.length && onComplete) {
       onComplete();
     }
-  };
+  }, [completed, onComplete]);
 
-  const loadChallenge = (challenge: { template: string }) => {
-    setCurrentCode(challenge.template);
-  };
-
-  const loadExample = (example: { code: string }) => {
-    setCurrentCode(example.code);
-  };
+  const mastery = Math.round((completed.size / challenges.length) * 100);
+  const current = challenges.find(c => c.id === activeChallenge)!;
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200">
+      <Card className="bg-gradient-to-r from-purple-50 via-fuchsia-50 to-pink-50 border-2 border-purple-200 shadow-lg">
         <CardHeader>
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
-              <Target className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-fuchsia-500 rounded-lg flex items-center justify-center shadow">
+              <Gamepad2 className="w-6 h-6 text-white" />
             </div>
-            <div>
-              <CardTitle className="text-2xl text-amber-800">Master Circula&apos;s Iteration Mastery Arena</CardTitle>
-              <CardDescription className="text-amber-600">
-                Apply all your loop and iteration knowledge in practical challenges
+            <div className="flex-1">
+              <CardTitle className="text-2xl bg-gradient-to-r from-purple-700 to-fuchsia-700 bg-clip-text text-transparent">
+                Arena Latihan Perulangan
+              </CardTitle>
+              <CardDescription className="text-purple-600">
+                Praktikkan kemampuan loop Python-mu dengan tantangan interaktif!
               </CardDescription>
             </div>
+            {isCompleted && (
+              <Badge className="bg-green-100 text-green-800 border border-green-300">
+                <CheckCircle2 className="w-3 h-3 mr-1" /> Selesai
+              </Badge>
+            )}
           </div>
         </CardHeader>
       </Card>
 
-      {/* Progress Overview */}
-      <Card className="border-amber-200">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <BookOpen className="w-5 h-5 text-amber-500" />
-            <span>Arena Progress</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <div className="text-2xl font-bold text-blue-600">{completedChallenges.length}</div>
-              <div className="text-sm text-blue-700">Challenges Completed</div>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
-              <div className="text-2xl font-bold text-green-600">{examples.length}</div>
-              <div className="text-sm text-green-700">Examples Available</div>
-            </div>
-            <div className="text-center p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-              <div className="text-2xl font-bold text-emerald-600">
-                {Math.round((completedChallenges.length / challenges.length) * 100)}%
-              </div>
-              <div className="text-sm text-emerald-700">Mastery Level</div>
-            </div>
+      {/* Mastery progress */}
+      <Card className="border-purple-200">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-purple-700">Penguasaan: {mastery}%</span>
+            <span className="text-sm text-purple-500">{completed.size}/{challenges.length} tantangan selesai</span>
           </div>
+          <Progress value={mastery} className="h-3" />
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Challenge/Example Selector */}
-        <Card className="border-orange-200">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Zap className="w-5 h-5 text-orange-500" />
-              <span>Practice Arena</span>
+      {/* Challenge selector */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {challenges.map(c => {
+          const done = completed.has(c.id);
+          const active = activeChallenge === c.id;
+          return (
+            <button key={c.id} onClick={() => setActiveChallenge(c.id)}
+              className={`relative p-4 rounded-xl border-2 text-left transition-all ${active ? 'border-fuchsia-400 bg-fuchsia-50 shadow-md ring-2 ring-fuchsia-200' : done ? 'border-green-300 bg-green-50' : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'}`}>
+              <div className="flex items-center gap-2 mb-1">
+                {c.icon}
+                <Badge variant="outline" className={`text-xs ${c.difficultyColor}`}>{c.difficulty}</Badge>
+              </div>
+              <h4 className="font-semibold text-sm text-gray-800 mt-1">{c.title}</h4>
+              <p className="text-xs text-gray-500 mt-0.5">{c.description}</p>
+              {done && (
+                <div className="absolute top-2 right-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500" />
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Active challenge */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Code panel */}
+        <Card className="lg:col-span-2 border-purple-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2 text-purple-800">
+              📝 Kode Python
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="challenges">Challenges</TabsTrigger>
-                <TabsTrigger value="examples">Examples</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="challenges" className="mt-4 space-y-3">
-                {challenges.map((challenge) => (
-                  <div
-                    key={challenge.id}
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${completedChallenges.includes(challenge.id)
-                        ? 'border-green-400 bg-green-50'
-                        : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50'
-                      }`}
-                    onClick={() => loadChallenge(challenge)}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-sm">{challenge.title}</h4>
-                      <Badge
-                        className={
-                          challenge.difficulty === 'Easy' ? 'bg-green-500' :
-                            challenge.difficulty === 'Medium' ? 'bg-yellow-500' :
-                              challenge.difficulty === 'Hard' ? 'bg-orange-500' : 'bg-red-500'
-                        }
-                      >
-                        {challenge.difficulty}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-gray-600 mb-2">{challenge.description}</p>
-                    {completedChallenges.includes(challenge.id) && (
-                      <div className="flex items-center space-x-1 text-green-600 text-xs">
-                        <span>✅</span>
-                        <span>Completed</span>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </TabsContent>
-
-              <TabsContent value="examples" className="mt-4 space-y-3">
-                {examples.map((example) => (
-                  <div
-                    key={example.id}
-                    className="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-emerald-300 hover:bg-emerald-50 transition-all"
-                    onClick={() => loadExample(example)}
-                  >
-                    <h4 className="font-semibold text-sm mb-2">{example.title}</h4>
-                    <div className="flex items-center space-x-1 text-emerald-600 text-xs">
-                      <Play className="w-3 h-3" />
-                      <span>Load Example</span>
-                    </div>
-                  </div>
-                ))}
-              </TabsContent>
-            </Tabs>
-
-            {/* Quick Actions */}
-            <div className="mt-4 space-y-2">
-              <Button
-                onClick={() => setCurrentCode('')}
-                variant="outline"
-                className="w-full"
-              >
-                Clear Editor
-              </Button>
-              {challenges.map((challenge) => (
-                <Button
-                  key={`solution-${challenge.id}`}
-                  onClick={() => setCurrentCode(challenge.solution)}
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-xs"
-                >
-                  Show {challenge.title} Solution
-                </Button>
-              ))}
-            </div>
+            <CodeBlock code={current.code} />
           </CardContent>
         </Card>
 
-        {/* Code Editor */}
-        <Card className="lg:col-span-2 border-emerald-200">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <span className="text-2xl">🪄</span>
-              <span>Spell Crafting Workshop</span>
-            </CardTitle>
-            <CardDescription>
-              Write and test your iteration mastery code
-            </CardDescription>
+        {/* Interactive panel */}
+        <Card className="lg:col-span-3 border-purple-200">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base flex items-center gap-2 text-purple-800">
+                🎮 Hasil Interaktif
+              </CardTitle>
+              {completed.has(activeChallenge) ? (
+                <Badge className="bg-green-100 text-green-700 border border-green-300 text-xs">✅ Selesai</Badge>
+              ) : (
+                <Button variant="ghost" size="sm" onClick={() => markDone(activeChallenge)} className="text-xs text-purple-600 hover:text-purple-800">
+                  <RotateCcw className="w-3 h-3 mr-1" /> Tandai selesai
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <CodeEditor
-                code={currentCode}
-                onCodeChange={setCurrentCode}
-                onRun={() => {
-                  // Simulate code execution
-                  console.log('Executing code:', currentCode);
-                }}
-                onReset={() => setCurrentCode('')}
-              />
-
-              <div className="flex space-x-2">
-                <Button
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-                  onClick={() => {
-                    // Simulate code execution
-                    console.log('Executing code:', currentCode);
-                  }}
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  Execute Spell
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    // Mark as completed for demo
-                    const activeChallenge = challenges.find(c => currentCode.includes(c.template.split('\\n')[0]));
-                    if (activeChallenge) {
-                      handleChallengeComplete(activeChallenge.id);
-                    }
-                  }}
-                >
-                  Mark Complete
-                </Button>
-              </div>
-
-              {/* Output Area */}
-              <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm min-h-24">
-                <div className="text-gray-500"># Spell execution output will appear here...</div>
-                {currentCode && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-2 text-blue-300"
-                  >
-                    # Code loaded successfully! Press &quot;Execute Spell&quot; to run.
-                  </motion.div>
-                )}
-              </div>
-            </div>
+            {activeChallenge === 'pola-bintang' && <PolaBintangPanel onInteract={() => markDone('pola-bintang')} />}
+            {activeChallenge === 'tabel-perkalian' && <TabelPerkalianPanel onInteract={() => markDone('tabel-perkalian')} />}
+            {activeChallenge === 'pencarian-data' && <PencarianDataPanel onInteract={() => markDone('pencarian-data')} />}
+            {activeChallenge === 'fizzbuzz' && <FizzBuzzPanel onInteract={() => markDone('fizzbuzz')} />}
           </CardContent>
         </Card>
       </div>
 
-      {/* Master Progress */}
-      {completedChallenges.length >= 2 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center"
-        >
-          <Card className="border-gold bg-gradient-to-r from-yellow-50 to-amber-50">
-            <CardHeader>
-              <CardTitle className="text-2xl text-amber-800">
-                🏆 Iteration Mastery Achieved!
-              </CardTitle>
+      {/* Completion banner */}
+      {completed.size >= challenges.length && (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Card className="bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 border-2 border-amber-300 shadow-lg">
+            <CardHeader className="text-center">
+              <Trophy className="w-10 h-10 text-amber-500 mx-auto mb-2" />
+              <CardTitle className="text-xl text-amber-800">🏆 Semua Tantangan Selesai!</CardTitle>
               <CardDescription className="text-amber-600">
-                Master Circula is proud of your progress. You have mastered the art of iteration!
+                Kamu telah menguasai semua tantangan perulangan. Hebat sekali! 🎉
               </CardDescription>
             </CardHeader>
           </Card>

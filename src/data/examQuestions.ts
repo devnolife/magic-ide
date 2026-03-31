@@ -571,16 +571,16 @@ export const examQuestions: ExamData[] = [
       },
       // ── MC 6 ──
       {
-        questionText: 'Apa output dari kode berikut: `kata = list("Python"); print(kata)`?',
+        questionText: 'Apa output dari kode berikut: `nama = ["Andi", "Budi"]; nilai = [90, 85]; print(list(zip(nama, nilai)))`?',
         questionType: 'MULTIPLE_CHOICE',
         points: 5,
         options: [
-          { label: 'A', text: '["Python"]', isCorrect: false },
-          { label: 'B', text: '["P", "y", "t", "h", "o", "n"]', isCorrect: true },
-          { label: 'C', text: 'Python', isCorrect: false },
+          { label: 'A', text: '[("Andi", 90), ("Budi", 85)]', isCorrect: true },
+          { label: 'B', text: '[["Andi", 90], ["Budi", 85]]', isCorrect: false },
+          { label: 'C', text: '{"Andi": 90, "Budi": 85}', isCorrect: false },
           { label: 'D', text: 'Error', isCorrect: false },
         ],
-        correctAnswer: 'B',
+        correctAnswer: 'A',
       },
       // ── MC 7 ──
       {
@@ -597,27 +597,27 @@ export const examQuestions: ExamData[] = [
       },
       // ── MC 8 ──
       {
-        questionText: 'Apa output dari: `data = [1, 2, 2, 3, 3, 3]; print(data.count(3))`?',
+        questionText: 'Apa output dari kode berikut: `data = list(enumerate(["x", "y", "z"])); print(data[1])`?',
         questionType: 'MULTIPLE_CHOICE',
         points: 5,
         options: [
-          { label: 'A', text: '1', isCorrect: false },
-          { label: 'B', text: '2', isCorrect: false },
-          { label: 'C', text: '3', isCorrect: true },
-          { label: 'D', text: '6', isCorrect: false },
+          { label: 'A', text: '"y"', isCorrect: false },
+          { label: 'B', text: '(1, "y")', isCorrect: true },
+          { label: 'C', text: '1', isCorrect: false },
+          { label: 'D', text: '["y", 1]', isCorrect: false },
         ],
-        correctAnswer: 'C',
+        correctAnswer: 'B',
       },
       // ── MC 9 ──
       {
-        questionText: 'Apa output dari kode berikut: `a = [1, 2, 3]; b = a[:]; b.append(4); print(len(a))`?',
+        questionText: 'Apa output dari kode berikut: `a, b, *rest = [10, 20, 30, 40, 50]; print(rest)`?',
         questionType: 'MULTIPLE_CHOICE',
         points: 5,
         options: [
-          { label: 'A', text: '3', isCorrect: true },
-          { label: 'B', text: '4', isCorrect: false },
-          { label: 'C', text: 'Error', isCorrect: false },
-          { label: 'D', text: '0', isCorrect: false },
+          { label: 'A', text: '[30, 40, 50]', isCorrect: true },
+          { label: 'B', text: '[10, 20]', isCorrect: false },
+          { label: 'C', text: '30', isCorrect: false },
+          { label: 'D', text: '(30, 40, 50)', isCorrect: false },
         ],
         correctAnswer: 'A',
       },
@@ -654,12 +654,12 @@ export const examQuestions: ExamData[] = [
       },
       // ── Essay 3 ──
       {
-        questionText: 'Jelaskan perbedaan antara shallow copy dan deep copy pada list Python! Mengapa hal ini penting?',
+        questionText: 'Jelaskan fungsi zip() dan enumerate() di Python beserta perbedaannya! Berikan contoh penggunaan masing-masing.',
         questionType: 'ESSAY',
         points: 20,
-        keywords: ['shallow', 'deep', 'referensi', 'salinan', 'independen'],
+        keywords: ['zip', 'menggabungkan', 'pasangan', 'enumerate', 'indeks', 'iterasi'],
         correctAnswer:
-          'Shallow copy membuat salinan list di level pertama saja — jika list berisi list lain, elemen dalamnya masih berbagi referensi. Deep copy membuat salinan penuh yang sepenuhnya independen. Ini penting karena mengubah nested list pada shallow copy bisa mempengaruhi list asli tanpa disadari.',
+          'zip() menggabungkan dua atau lebih iterable menjadi pasangan tuple, contoh: list(zip(["a","b"], [1,2])) menghasilkan [("a",1), ("b",2)]. enumerate() menghasilkan pasangan indeks dan elemen dari iterable, contoh: list(enumerate(["x","y"])) menghasilkan [(0,"x"), (1,"y")]. Perbedaannya: zip menggabungkan beberapa iterable, sedangkan enumerate menambahkan indeks ke satu iterable.',
       },
       // ── Essay 4 ──
       {
@@ -685,17 +685,17 @@ export const examQuestions: ExamData[] = [
       },
       // ── Matching 2 ──
       {
-        questionText: 'Jodohkan operasi list lanjutan berikut dengan deskripsinya!',
+        questionText: 'Jodohkan fungsi Python berikut dengan deskripsinya!',
         questionType: 'MATCHING',
         points: 15,
         matchingPairs: [
-          { left: 'list.count(x)', right: 'Menghitung kemunculan x dalam list' },
-          { left: 'list.index(x)', right: 'Mencari posisi pertama x dalam list' },
-          { left: 'list.reverse()', right: 'Membalik urutan list secara in-place' },
-          { left: 'list.copy()', right: 'Membuat salinan dangkal dari list' },
-          { left: 'list.clear()', right: 'Menghapus semua elemen dari list' },
+          { left: 'sorted(data, key=fn)', right: 'Mengurutkan data berdasarkan fungsi kunci tertentu' },
+          { left: 'filter(fn, data)', right: 'Menyaring elemen berdasarkan kondisi fungsi' },
+          { left: 'zip(a, b)', right: 'Menggabungkan dua iterable menjadi pasangan tuple' },
+          { left: 'enumerate(data)', right: 'Menghasilkan pasangan indeks dan elemen' },
+          { left: 'a, *rest = data', right: 'List unpacking dengan menangkap sisa elemen' },
         ],
-        correctAnswer: '{"list.count(x)":"Menghitung kemunculan x dalam list","list.index(x)":"Mencari posisi pertama x dalam list","list.reverse()":"Membalik urutan list secara in-place","list.copy()":"Membuat salinan dangkal dari list","list.clear()":"Menghapus semua elemen dari list"}',
+        correctAnswer: '{"sorted(data, key=fn)":"Mengurutkan data berdasarkan fungsi kunci tertentu","filter(fn, data)":"Menyaring elemen berdasarkan kondisi fungsi","zip(a, b)":"Menggabungkan dua iterable menjadi pasangan tuple","enumerate(data)":"Menghasilkan pasangan indeks dan elemen","a, *rest = data":"List unpacking dengan menangkap sisa elemen"}',
       },
       // ── Matching 3 ──
       {
@@ -712,16 +712,16 @@ export const examQuestions: ExamData[] = [
       },
       // ── Matching 4 ──
       {
-        questionText: 'Jodohkan kode berikut dengan outputnya! Diketahui `m = [[1,2,3],[4,5,6],[7,8,9]]`.',
+        questionText: 'Jodohkan kode berikut dengan outputnya! Diketahui `tabel = [{"nama": "Andi", "nilai": 90}, {"nama": "Budi", "nilai": 85}, {"nama": "Cici", "nilai": 95}]`.',
         questionType: 'MATCHING',
         points: 15,
         matchingPairs: [
-          { left: 'm[0]', right: '[1, 2, 3]' },
-          { left: 'm[2][2]', right: '9' },
-          { left: 'm[1][0]', right: '4' },
-          { left: 'len(m)', right: '3' },
+          { left: 'tabel[0]["nama"]', right: '"Andi"' },
+          { left: 'len(tabel)', right: '3' },
+          { left: 'sorted(tabel, key=lambda x: x["nilai"])[0]["nama"]', right: '"Budi"' },
+          { left: '[s["nama"] for s in tabel]', right: '["Andi", "Budi", "Cici"]' },
         ],
-        correctAnswer: '{"m[0]":"[1, 2, 3]","m[2][2]":"9","m[1][0]":"4","len(m)":"3"}',
+        correctAnswer: '{"tabel[0][\\"nama\\"]":"\\"Andi\\"","len(tabel)":"3","sorted(tabel, key=lambda x: x[\\"nilai\\"])[0][\\"nama\\"]":"\\"Budi\\"","[s[\\"nama\\"] for s in tabel]":"[\\"Andi\\", \\"Budi\\", \\"Cici\\"]"}',
       },
     ],
   },

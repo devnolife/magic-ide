@@ -31,26 +31,33 @@ export function Lesson1OOP({ onComplete }: Lesson1OOPProps) {
   const [animationPhase, setAnimationPhase] = useState<string | null>(null);
   const [conceptStep, setConceptStep] = useState(0);
 
+  const analogies = [
+    { icon: '🧁', term: 'Class = Cetakan Kue', desc: 'Class seperti cetakan kue. Dari satu cetakan, kita bisa membuat banyak kue yang bentuknya sama.' },
+    { icon: '🍰', term: 'Object = Kue', desc: 'Setiap kue yang dibuat dari cetakan adalah object. Setiap kue bisa punya topping berbeda!' },
+    { icon: '📋', term: '__init__ = Resep', desc: 'Ketika kue dibuat, resep (__init__) menentukan bahan-bahannya seperti nama, rasa, dan ukuran.' },
+    { icon: '🎬', term: 'Method = Aksi', desc: 'Kue bisa dimakan, dipotong, dihias — itu semua adalah method (fungsi dalam class).' },
+  ];
+
   const concepts = [
     {
-      title: 'Class — Blueprint',
-      code: `class Wizard:\n    """Blueprint untuk membuat wizard"""\n    pass`,
-      explanation: 'Class adalah blueprint atau cetakan untuk membuat objek. Seperti resep yang menjelaskan cara membuat sesuatu.',
+      title: 'Class — Cetakan Objek',
+      code: `class Wizard:\n    """Cetakan untuk membuat wizard"""\n    pass\n\n# Class = cetakan kue 🧁\n# Dari satu cetakan, bisa buat banyak wizard!`,
+      explanation: 'Class adalah cetakan atau blueprint untuk membuat objek. Bayangkan cetakan kue — dari satu cetakan, kita bisa membuat banyak kue yang bentuknya sama tapi isinya bisa berbeda.',
     },
     {
-      title: '__init__ — Constructor',
-      code: `class Wizard:\n    def __init__(self, name, level):\n        self.name = name\n        self.level = level`,
-      explanation: 'Method __init__ adalah constructor yang dipanggil otomatis saat objek dibuat. self merujuk pada objek itu sendiri.',
+      title: '__init__ — Constructor (Fungsi Pembangun)',
+      code: `class Wizard:\n    def __init__(self, name, level):\n        self.name = name    # simpan nama\n        self.level = level  # simpan level\n\n# __init__ = resep 📋\n# Otomatis dipanggil saat objek dibuat\n# self = "diri sendiri" (objek yang sedang dibuat)`,
+      explanation: 'Constructor (fungsi pembangun) __init__ dipanggil otomatis saat objek dibuat. Kata "self" artinya "diri sendiri" — merujuk pada objek yang sedang kita buat. Seperti resep kue yang menentukan bahan-bahannya.',
     },
     {
-      title: 'Method — Aksi Objek',
-      code: `class Wizard:\n    def __init__(self, name, level):\n        self.name = name\n        self.level = level\n\n    def cast_spell(self):\n        return f"{self.name} casts a spell!"\n\n    def level_up(self):\n        self.level += 1`,
-      explanation: 'Method adalah fungsi yang didefinisikan di dalam class. Method bisa mengakses dan mengubah data objek melalui self.',
+      title: 'Method — Fungsi dalam Class',
+      code: `class Wizard:\n    def __init__(self, name, level):\n        self.name = name\n        self.level = level\n\n    def spikal(self):  # method = aksi 🎬\n        return f"{self.name} merapal mantra!"\n\n    def level_up(self):\n        self.level += 1\n        print(f"{self.name} naik ke level {self.level}!")`,
+      explanation: 'Method (fungsi dalam class) adalah aksi yang bisa dilakukan objek. Wizard bisa merapal mantra dan naik level — itu semua method! Method bisa mengakses data objek lewat "self".',
     },
     {
-      title: 'Inheritance — Pewarisan',
-      code: `class FireWizard(Wizard):\n    def __init__(self, name, level):\n        super().__init__(name, level)\n        self.element = "Api"\n\n    def fireball(self):\n        return f"{self.name} melempar bola api!"`,
-      explanation: 'Inheritance memungkinkan class baru mewarisi atribut dan method dari class yang sudah ada (parent class).',
+      title: 'Inheritance — Pewarisan Sifat',
+      code: `class Hewan:  # Class induk (parent)\n    def __init__(self, nama, umur):\n        self.nama = nama\n        self.umur = umur\n\nclass Kucing(Hewan):  # Kucing mewarisi Hewan\n    def __init__(self, nama, umur, warna):\n        super().__init__(nama, umur)  # ambil sifat dari Hewan\n        self.warna = warna  # tambah sifat baru\n\n    def suara(self):\n        return f"{self.nama}: Meow! 🐱"\n\nclass Anjing(Hewan):  # Anjing juga mewarisi Hewan\n    def suara(self):\n        return f"{self.nama}: Guk guk! 🐶"\n\n# Contoh:\nkucing = Kucing("Milo", 2, "Oranye")\nprint(kucing.suara())  # Milo: Meow! 🐱`,
+      explanation: 'Inheritance (pewarisan sifat) memungkinkan class anak mewarisi sifat dari class induk. Kucing dan Anjing sama-sama Hewan (punya nama & umur), tapi suaranya berbeda! super() memanggil "orang tua" class untuk mengambil sifat dasarnya.',
     },
   ];
 
@@ -122,9 +129,9 @@ export function Lesson1OOP({ onComplete }: Lesson1OOPProps) {
               <Blocks className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-violet-800">Lesson 1: Object-Oriented Programming</CardTitle>
+              <CardTitle className="text-2xl text-violet-800">Pelajaran 1: OOP (Pemrograman Berorientasi Objek)</CardTitle>
               <CardDescription className="text-violet-600">
-                Kuasai seni pemrograman berorientasi objek — class, objek, method, dan inheritance
+                Belajar membuat &quot;cetakan&quot; dan &quot;objek&quot; di Python — pahami class, object, method (fungsi dalam class), dan inheritance (pewarisan sifat)
               </CardDescription>
             </div>
           </div>
@@ -161,6 +168,81 @@ export function Lesson1OOP({ onComplete }: Lesson1OOPProps) {
         </CardContent>
       </Card>
 
+      {/* Real-World Analogies */}
+      <Card className="border-violet-200 bg-gradient-to-r from-amber-50 to-orange-50">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <span className="text-2xl">🌍</span>
+            <span>Analogi Dunia Nyata — OOP itu Gampang!</span>
+          </CardTitle>
+          <CardDescription>Pahami konsep OOP dengan perumpamaan sehari-hari</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {analogies.map((a, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="p-4 bg-white rounded-lg border border-amber-200 shadow-sm"
+              >
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="text-2xl">{a.icon}</span>
+                  <span className="font-bold text-amber-800">{a.term}</span>
+                </div>
+                <p className="text-sm text-gray-700">{a.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-4 p-3 bg-white/70 rounded-lg border border-amber-200">
+            <p className="text-sm text-amber-900 font-medium text-center">
+              🐱 Contoh sederhana: <code className="bg-amber-100 px-1 rounded">class Kucing</code> adalah cetakan →{' '}
+              <code className="bg-amber-100 px-1 rounded">milo = Kucing(&quot;Milo&quot;, 2)</code> adalah kue (objek) yang dibuat dari cetakan itu!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Inheritance Visual */}
+      <Card className="border-violet-200">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <span className="text-2xl">🌳</span>
+            <span>Inheritance (Pewarisan Sifat) — Visualisasi</span>
+          </CardTitle>
+          <CardDescription>
+            Class anak mewarisi sifat dari class induk, seperti anak mewarisi sifat dari orang tua
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center space-y-3">
+            <div className="p-4 bg-violet-100 border-2 border-violet-300 rounded-xl text-center min-w-48">
+              <p className="font-bold text-violet-800">🐾 class Hewan</p>
+              <p className="text-xs text-violet-600 mt-1">nama, umur</p>
+            </div>
+            <div className="text-violet-400 text-2xl">↙️ ↘️</div>
+            <div className="flex gap-4 flex-wrap justify-center">
+              <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl text-center min-w-40">
+                <p className="font-bold text-blue-800">🐱 class Kucing</p>
+                <p className="text-xs text-blue-600 mt-1">+ warna</p>
+                <p className="text-xs text-blue-500">suara() → &quot;Meow!&quot;</p>
+              </div>
+              <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center min-w-40">
+                <p className="font-bold text-green-800">🐶 class Anjing</p>
+                <p className="text-xs text-green-600 mt-1">+ ras</p>
+                <p className="text-xs text-green-500">suara() → &quot;Guk guk!&quot;</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-2 text-center max-w-md">
+              ☝️ Kucing dan Anjing <strong>mewarisi</strong> nama &amp; umur dari Hewan.
+              Tapi masing-masing punya sifat dan aksi sendiri!{' '}
+              <code className="bg-violet-100 px-1 rounded text-violet-700">super()</code> memanggil &quot;orang tua&quot; class untuk mengambil sifat dasarnya.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Concept Explorer */}
       <Card className="border-violet-200">
         <CardHeader>
@@ -168,7 +250,7 @@ export function Lesson1OOP({ onComplete }: Lesson1OOPProps) {
             <span className="text-2xl">📖</span>
             <span>Konsep OOP — Langkah demi Langkah</span>
           </CardTitle>
-          <CardDescription>Navigasi melalui konsep dasar OOP di Python</CardDescription>
+          <CardDescription>Pelajari konsep OOP satu per satu dengan contoh kode Python</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between mb-2">
@@ -216,7 +298,7 @@ export function Lesson1OOP({ onComplete }: Lesson1OOPProps) {
               <span>Workshop Pembuat Wizard</span>
             </CardTitle>
             <CardDescription>
-              Buat instance Wizard dari class blueprint!
+              Buat instance (objek yang dibuat dari class) Wizard dari cetakan class!
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -286,7 +368,7 @@ w = Wizard("${wizardName}", ${wizardLevel}, "${wizardElement}")`}</code>
               <span>Objek yang Dibuat</span>
               <Badge variant="secondary">{instances.length} instance</Badge>
             </CardTitle>
-            <CardDescription>Setiap wizard adalah objek independen dari class yang sama</CardDescription>
+            <CardDescription>Setiap wizard adalah instance (objek) independen dari class yang sama — seperti kue-kue dari cetakan yang sama!</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -335,7 +417,7 @@ w = Wizard("${wizardName}", ${wizardLevel}, "${wizardElement}")`}</code>
       {/* Progress */}
       <Card className="border-green-200">
         <CardHeader>
-          <CardTitle className="text-green-700">Progress OOP</CardTitle>
+          <CardTitle className="text-green-700">Progres OOP</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">

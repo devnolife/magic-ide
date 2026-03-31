@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Play, Target, FolderOpen, PenLine, BookOpen } from 'lucide-react';
+import { FileText, Play, Target, FolderOpen, PenLine, BookOpen, Info, Monitor, Download } from 'lucide-react';
 
 interface Lesson3FileOperationsProps {
   onComplete: () => void;
@@ -50,7 +50,7 @@ export function Lesson3FileOperations({ onComplete }: Lesson3FileOperationsProps
       explanation: 'write() menulis teks ke file. Mode "w" menimpa isi lama, mode "a" menambahkan tanpa menghapus.',
     },
     {
-      title: 'with/as — Context Manager',
+      title: 'with/as — Context Manager (Pengelola Konteks)',
       code: `# Cara terbaik! File otomatis ditutup\nwith open("data.txt", "r") as file:\n    isi = file.read()\n    print(isi)\n# file sudah otomatis tertutup di sini\n\nwith open("output.txt", "w") as file:\n    file.write("Aman dan rapi!")`,
       explanation: 'Keyword "with" adalah cara terbaik membuka file. File otomatis ditutup setelah blok with selesai, bahkan jika terjadi error.',
     },
@@ -198,13 +198,27 @@ export function Lesson3FileOperations({ onComplete }: Lesson3FileOperationsProps
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-amber-800">Lesson 3: File Operations</CardTitle>
+              <CardTitle className="text-2xl text-amber-800">Pelajaran 3: Operasi File (File Operations)</CardTitle>
               <CardDescription className="text-amber-600">
                 Kuasai operasi file: membaca, menulis, dan mengelola file dengan Python
               </CardDescription>
             </div>
           </div>
         </CardHeader>
+      </Card>
+
+      {/* Web Simulation Notice */}
+      <Card className="border-2 border-blue-200 bg-blue-50/70">
+        <CardContent className="pt-4 pb-4">
+          <div className="flex items-start space-x-3">
+            <div className="mt-0.5 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <Info className="w-4 h-4 text-blue-600" />
+            </div>
+            <p className="text-sm text-blue-800 leading-relaxed">
+              💡 <strong>Catatan:</strong> Di platform web ini, kita mensimulasikan operasi file. Di Python yang terinstal di komputer, operasi ini akan benar-benar membaca dan menulis file di hard drive kamu.
+            </p>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Learning Objectives */}
@@ -394,10 +408,41 @@ export function Lesson3FileOperations({ onComplete }: Lesson3FileOperationsProps
         </Card>
       </div>
 
+      {/* Praktik Mandiri */}
+      <Card className="border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 text-indigo-800">
+            <Monitor className="w-5 h-5 text-indigo-500" />
+            <span>Praktik Mandiri</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-indigo-700 mb-3">🖥️ Untuk mempraktikkan operasi file secara nyata:</p>
+          <ol className="space-y-2 text-sm text-gray-700">
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">1</Badge>
+              <span>Install Python di komputer: <a href="https://python.org/downloads" target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline hover:text-indigo-800">python.org/downloads</a></span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">2</Badge>
+              <span>Buka terminal/command prompt</span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">3</Badge>
+              <span>Ketik: <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">python</code></span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">4</Badge>
+              <span>Coba kode yang sudah kamu pelajari di sini!</span>
+            </li>
+          </ol>
+        </CardContent>
+      </Card>
+
       {/* Progress */}
       <Card className="border-green-200">
         <CardHeader>
-          <CardTitle className="text-green-700">Progress File Operations</CardTitle>
+          <CardTitle className="text-green-700">Progres Operasi File</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -416,7 +461,7 @@ export function Lesson3FileOperations({ onComplete }: Lesson3FileOperationsProps
             {completedTasks.length >= 3 && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                 className="text-center text-green-600 font-medium">
-                🎉 File Operations dikuasai! Lanjut ke Modules!
+                🎉 Operasi File dikuasai! Lanjut ke Modul!
               </motion.div>
             )}
           </div>

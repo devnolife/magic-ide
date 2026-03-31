@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Package, Play, Target, Search, Boxes, Sparkles } from 'lucide-react';
+import { Package, Play, Target, Search, Boxes, Sparkles, Info, Monitor } from 'lucide-react';
 
 interface Lesson4ModulesProps {
   onComplete: () => void;
@@ -156,7 +156,7 @@ export function Lesson4Modules({ onComplete }: Lesson4ModulesProps) {
               <Package className="w-6 h-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-cyan-800">Lesson 4: Modules & Packages</CardTitle>
+              <CardTitle className="text-2xl text-cyan-800">Pelajaran 4: Module (Modul) & Package (Paket)</CardTitle>
               <CardDescription className="text-cyan-600">
                 Pelajari cara menggunakan dan membuat modul Python untuk kode yang terorganisir
               </CardDescription>
@@ -286,8 +286,19 @@ export function Lesson4Modules({ onComplete }: Lesson4ModulesProps) {
                 <div className="flex items-center space-x-2 mb-2">
                   <span className="text-2xl">{currentModule.icon}</span>
                   <h3 className="text-lg font-bold text-cyan-800">{currentModule.name}</h3>
+                  {currentModule.name === 'os' ? (
+                    <Badge className="bg-orange-100 text-orange-700 border border-orange-300 text-xs">🖥️ Hanya di komputer lokal</Badge>
+                  ) : (
+                    <Badge className="bg-green-100 text-green-700 border border-green-300 text-xs">✅ Bisa dipelajari di sini</Badge>
+                  )}
                 </div>
                 <p className="text-sm text-gray-600">{currentModule.description}</p>
+                {currentModule.name === 'os' && (
+                  <p className="mt-2 text-xs text-orange-600 bg-orange-50 p-2 rounded border border-orange-200">
+                    <Info className="w-3 h-3 inline mr-1" />
+                    Module os membutuhkan akses ke sistem operasi. Coba di Python yang terinstal di komputermu.
+                  </p>
+                )}
                 <pre className="mt-2 bg-gray-900 text-green-400 p-2 rounded text-xs font-mono">
                   <code>{`import ${currentModule.name}`}</code>
                 </pre>
@@ -412,10 +423,41 @@ print(fahrenheit_ke_celsius(100)) # 37.777...`}</code>
         </Card>
       </div>
 
+      {/* Praktik Mandiri */}
+      <Card className="border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 text-indigo-800">
+            <Monitor className="w-5 h-5 text-indigo-500" />
+            <span>Praktik Mandiri</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-indigo-700 mb-3">🖥️ Untuk menggunakan semua module Python:</p>
+          <ol className="space-y-2 text-sm text-gray-700">
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">1</Badge>
+              <span>Install Python di komputer: <a href="https://python.org/downloads" target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline hover:text-indigo-800">python.org/downloads</a></span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">2</Badge>
+              <span>Buka editor favorit (VS Code, Thonny, atau IDLE)</span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">3</Badge>
+              <span>Buat file <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">.py</code> dan import module yang ingin digunakan</span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Badge className="bg-indigo-100 text-indigo-700 mt-0.5 flex-shrink-0">4</Badge>
+              <span>Module <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">os</code>, <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">sys</code>, dan <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">subprocess</code> hanya bisa dijalankan di komputer lokal</span>
+            </li>
+          </ol>
+        </CardContent>
+      </Card>
+
       {/* Progress */}
       <Card className="border-green-200">
         <CardHeader>
-          <CardTitle className="text-green-700">Progress Modules & Packages</CardTitle>
+          <CardTitle className="text-green-700">Progres Modul & Paket</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">

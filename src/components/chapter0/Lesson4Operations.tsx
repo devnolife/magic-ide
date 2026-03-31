@@ -21,7 +21,9 @@ import {
   Divide,
   Copy,
   RotateCcw,
-  Play
+  Play,
+  Percent,
+  ArrowDownToLine
 } from 'lucide-react';
 
 interface LessonProps {
@@ -109,6 +111,37 @@ const operations: Operation[] = [
     examples: [
       { input: '12 / 3', result: '4.0', explanation: 'Membagi 12 dengan 3' },
       { input: '7 / 2', result: '3.5', explanation: 'Hasil selalu float' }
+    ]
+  },
+  {
+    id: 'modulo',
+    name: 'Sisa Bagi',
+    symbol: '%',
+    icon: Percent,
+    color: 'text-violet-600',
+    bgColor: 'bg-violet-50 border-violet-200',
+    description: 'Mencari sisa pembagian',
+    category: 'math',
+    examples: [
+      { input: '10 % 3', result: '1', explanation: 'Sisa bagi 10 oleh 3' },
+      { input: '10 % 2', result: '0', explanation: 'Genap! Tidak ada sisa' },
+      { input: '7 % 2', result: '1', explanation: 'Ganjil! Ada sisa 1' },
+      { input: '15 % 5', result: '0', explanation: 'Habis dibagi' }
+    ]
+  },
+  {
+    id: 'floorDiv',
+    name: 'Pembagian Bulat',
+    symbol: '//',
+    icon: ArrowDownToLine,
+    color: 'text-teal-600',
+    bgColor: 'bg-teal-50 border-teal-200',
+    description: 'Pembagian dibulatkan ke bawah',
+    category: 'math',
+    examples: [
+      { input: '10 // 3', result: '3', explanation: 'Bukan 3.33, dibulatkan ke bawah' },
+      { input: '7 // 2', result: '3', explanation: 'Bukan 3.5, dibulatkan ke bawah' },
+      { input: '15 // 4', result: '3', explanation: 'Bukan 3.75, dibulatkan ke bawah' }
     ]
   },
   {
@@ -215,6 +248,16 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
             result = (num1 / num2).toString();
             explanation = `${num1} dibagi ${num2} sama dengan ${result}`;
             break;
+          case 'modulo':
+            if (num2 === 0) throw new Error('Tidak bisa modulo dengan nol');
+            result = (((num1 % num2) + num2) % num2).toString();
+            explanation = `Sisa bagi ${num1} oleh ${num2} sama dengan ${result}`;
+            break;
+          case 'floorDiv':
+            if (num2 === 0) throw new Error('Tidak bisa membagi dengan nol');
+            result = Math.floor(num1 / num2).toString();
+            explanation = `${num1} dibagi bulat ${num2} sama dengan ${result}`;
+            break;
         }
       } else if (selectedOperation.category === 'string') {
         if (selectedOperation.id === 'concatenation') {
@@ -309,14 +352,14 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Factory className="w-5 h-5 text-cyan-600" />
-              <span>Operation Factory</span>
+              <span>Pabrik Operasi (Operation Factory)</span>
             </div>
             <Badge variant="secondary">{successfulOperations}/3 operasi berhasil</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
           {/* Operation Machines */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {operations.map((op) => {
               const IconComponent = op.icon;
               return (
@@ -350,7 +393,7 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
 
           {/* Input Controls */}
           <div className="bg-gray-50 rounded-lg p-6 space-y-4">
-            <h3 className="font-semibold text-center">🎛️ Control Panel</h3>
+            <h3 className="font-semibold text-center">🎛️ Panel Kontrol</h3>
 
             <div className="grid md:grid-cols-3 gap-4 items-end">
               <div>
@@ -517,13 +560,25 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
                     <span className="font-mono">/</span>
                     <span className="text-sm">Pembagian</span>
                   </div>
+                  <div className="flex items-center space-x-3">
+                    <Percent className="w-4 h-4 text-violet-600" />
+                    <span className="font-mono">%</span>
+                    <span className="text-sm">Sisa Bagi (Modulo)</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <ArrowDownToLine className="w-4 h-4 text-teal-600" />
+                    <span className="font-mono">//</span>
+                    <span className="text-sm">Pembagian Bulat</span>
+                  </div>
                 </div>
 
                 <div className="bg-gray-900 text-white p-3 rounded font-mono text-sm">
                   <div className="text-green-400">a = 10</div>
                   <div className="text-green-400">b = 3</div>
-                  <div className="text-blue-300">print(a + b)  # 13</div>
-                  <div className="text-blue-300">print(a * b)  # 30</div>
+                  <div className="text-blue-300">print(a + b)   # 13</div>
+                  <div className="text-blue-300">print(a * b)   # 30</div>
+                  <div className="text-blue-300">print(a % b)   # 1</div>
+                  <div className="text-blue-300">print(a // b)  # 3</div>
                 </div>
               </div>
             </CardContent>
@@ -643,7 +698,7 @@ export default function Lesson4Operations({ onComplete, isCompleted }: LessonPro
                 <ol className="list-decimal list-inside space-y-1 text-sm">
                   <li>Tanda kurung <span className="font-mono">( )</span></li>
                   <li>Pangkat <span className="font-mono">**</span></li>
-                  <li>Perkalian/Pembagian <span className="font-mono">* /</span></li>
+                  <li>Perkalian/Pembagian/Modulo <span className="font-mono">* / // %</span></li>
                   <li>Penjumlahan/Pengurangan <span className="font-mono">+ -</span></li>
                   <li>Perbandingan <span className="font-mono">&gt; &lt; == !=</span></li>
                   <li>Logika <span className="font-mono">and or not</span></li>
