@@ -26,20 +26,26 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
+    const role = searchParams.get('role') || '';
 
     const offset = (page - 1) * limit;
 
-    const where = search
-      ? {
-          OR: [
-            { username: { contains: search, mode: 'insensitive' as const } },
-            { email: { contains: search, mode: 'insensitive' as const } },
-            { name: { contains: search, mode: 'insensitive' as const } },
-          ],
-        }
-      : {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: any = {};
 
-    const [users, total] = await Promise.all([
+    if (search) {
+      where.OR = [
+        { username: { contains: search, mode: 'insensitive' as const } },
+        { email: { contains: search, mode: 'insensitive' as const } },
+        { name: { contains: search, mode: 'insensitive' as const } },
+      ];
+    }
+
+    if (role) {
+      where.role = role;
+    }
+
+    const [users, total, countUser, countTeacher, countAdmin] = await Promise.all([
       prisma.user.findMany({
         where,
         select: {
@@ -65,6 +71,9 @@ export async function GET(request: NextRequest) {
         take: limit,
       }),
       prisma.user.count({ where }),
+      prisma.user.count({ where: { role: 'USER' } }),
+      prisma.user.count({ where: { role: 'TEACHER' } }),
+      prisma.user.count({ where: { role: 'ADMIN' } }),
     ]);
 
     return NextResponse.json({
@@ -74,6 +83,12 @@ export async function GET(request: NextRequest) {
         limit,
         total,
         pages: Math.ceil(total / limit),
+      },
+      roleCounts: {
+        USER: countUser,
+        TEACHER: countTeacher,
+        ADMIN: countAdmin,
+        ALL: countUser + countTeacher + countAdmin,
       },
     });
 
