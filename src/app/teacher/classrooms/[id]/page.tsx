@@ -50,6 +50,7 @@ import {
   Pencil,
   Save,
   CheckSquare,
+  KeyRound,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -189,6 +190,11 @@ export default function ClassroomDetailPage() {
   // Delete classroom
   const [deleting, setDeleting] = useState(false);
 
+  // Password reset
+  const [resetPasswordStudent, setResetPasswordStudent] = useState<Student | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [resettingPassword, setResettingPassword] = useState(false);
+
   /* ---------- data fetchers ---------- */
 
   const fetchClassroom = useCallback(async () => {
@@ -263,6 +269,38 @@ export default function ClassroomDetailPage() {
       toast.error("Gagal menghapus murid dari kelas. Silakan coba lagi.");
     } finally {
       setRemovingStudent(null);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!resetPasswordStudent || !newPassword) return;
+    if (newPassword.length < 6) {
+      toast.error("Password minimal 6 karakter");
+      return;
+    }
+    setResettingPassword(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const res = await fetch(`/api/classrooms/${classroomId}/students/password`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ studentId: resetPasswordStudent.id, newPassword }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message || "Password berhasil direset");
+        setResetPasswordStudent(null);
+        setNewPassword("");
+      } else {
+        toast.error(data.error || "Gagal mereset password");
+      }
+    } catch {
+      toast.error("Gagal mereset password");
+    } finally {
+      setResettingPassword(false);
     }
   };
 
@@ -939,19 +977,30 @@ export default function ClassroomDetailPage() {
                             </p>
                           </div>
                         </div>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0 -mt-1 -mr-2"
-                          disabled={removingStudent === student.id || bulkRemoving}
-                          onClick={() => handleRemoveStudent(student.id)}
-                        >
-                          {removingStudent === student.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="h-4 w-4" />
-                          )}
-                        </Button>
+                        <div className="flex items-center gap-1 shrink-0 -mt-1 -mr-2">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-amber-500 hover:text-amber-700 hover:bg-amber-50"
+                            onClick={() => setResetPasswordStudent(student)}
+                            title="Reset Password"
+                          >
+                            <KeyRound className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                            disabled={removingStudent === student.id || bulkRemoving}
+                            onClick={() => handleRemoveStudent(student.id)}
+                          >
+                            {removingStudent === student.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground ml-7">
                         <span className="flex items-center gap-1">
@@ -1045,19 +1094,30 @@ export default function ClassroomDetailPage() {
                             </Badge>
                           </td>
                           <td className="p-3">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                              disabled={removingStudent === student.id || bulkRemoving}
-                              onClick={() => handleRemoveStudent(student.id)}
-                            >
-                              {removingStudent === student.id ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <Trash2 className="h-4 w-4" />
-                              )}
-                            </Button>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-amber-500 hover:text-amber-700 hover:bg-amber-50"
+                                onClick={() => setResetPasswordStudent(student)}
+                                title="Reset Password"
+                              >
+                                <KeyRound className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                                disabled={removingStudent === student.id || bulkRemoving}
+                                onClick={() => handleRemoveStudent(student.id)}
+                              >
+                                {removingStudent === student.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -1431,6 +1491,56 @@ export default function ClassroomDetailPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Reset Password Dialog */}
+      <Dialog open={!!resetPasswordStudent} onOpenChange={(open) => { if (!open) { setResetPasswordStudent(null); setNewPassword(""); } }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <KeyRound className="h-5 w-5 text-amber-500" />
+              Reset Password Siswa
+            </DialogTitle>
+          </DialogHeader>
+          {resetPasswordStudent && (
+            <div className="space-y-4">
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <p className="font-medium">{resetPasswordStudent.name || resetPasswordStudent.username}</p>
+                <p className="text-sm text-muted-foreground">@{resetPasswordStudent.username}</p>
+              </div>
+              <div>
+                <Label htmlFor="newPassword">Password Baru</Label>
+                <Input
+                  id="newPassword"
+                  type="text"
+                  placeholder="Minimal 6 karakter"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mt-1"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Password akan langsung berubah. Beritahu siswa password barunya.
+                </p>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => { setResetPasswordStudent(null); setNewPassword(""); }}>
+                  Batal
+                </Button>
+                <Button
+                  onClick={handleResetPassword}
+                  disabled={resettingPassword || newPassword.length < 6}
+                  className="bg-amber-500 hover:bg-amber-600 text-white"
+                >
+                  {resettingPassword ? (
+                    <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Mereset...</>
+                  ) : (
+                    <><KeyRound className="h-4 w-4 mr-2" /> Reset Password</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 }
