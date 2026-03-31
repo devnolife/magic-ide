@@ -267,6 +267,27 @@ export async function seedDatabase() {
     console.log('Murid    : student / user123');
     console.log('');
     console.log('Kelas: Python Kelas 10A (guru1)');
+
+    // Create sample exam session for demo
+    const seededQuiz = await prisma.quiz.findFirst({
+      where: { id: 'seed-quiz-ch0' },
+    });
+
+    if (seededQuiz) {
+      await prisma.examSession.upsert({
+        where: { id: 'seed-exam-session-1' },
+        update: {},
+        create: {
+          id: 'seed-exam-session-1',
+          classroomId: classroom.id,
+          quizId: seededQuiz.id,
+          status: 'SCHEDULED',
+          duration: 30,
+        },
+      });
+
+      console.log('Sesi ujian demo: seed-exam-session-1 (SCHEDULED)');
+    }
     
   } catch (error) {
     console.error('Error seeding database:', error);

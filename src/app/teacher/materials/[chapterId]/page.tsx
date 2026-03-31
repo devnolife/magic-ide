@@ -108,13 +108,13 @@ export default function TeacherMaterialsChapterPage() {
   const [activeLessonId, setActiveLessonId] = useState<string>('');
 
   const chapter = chaptersData.find(c => c.id === chapterId);
-  const lessons = chapterLessons[chapterId] || [];
+  const lessons = useMemo(() => chapterLessons[chapterId] || [], [chapterId]);
 
   useEffect(() => {
     if (lessons.length > 0) {
       setActiveLessonId(lessons[0].id);
     }
-  }, [chapterId, lessons.length]);
+  }, [lessons]);
 
   const currentLesson = useMemo(
     () => lessons.find(l => l.id === activeLessonId) || lessons[0],

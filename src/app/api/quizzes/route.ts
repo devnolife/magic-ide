@@ -25,41 +25,51 @@ export async function GET(request: NextRequest) {
     const userId = session.user.id;
     const { searchParams } = new URL(request.url);
     const chapterId = searchParams.get('chapterId');
+    const page = parseInt(searchParams.get('page') || '1');
+    const pageSize = parseInt(searchParams.get('pageSize') || '50');
+    const skip = (page - 1) * pageSize;
 
-    const quizzes = await prisma.quiz.findMany({
-      where: {
-        isActive: true,
-        ...(chapterId ? { chapterId } : {}),
-      },
-      include: {
-        chapter: {
-          select: {
-            id: true,
-            title: true,
+    const where = {
+      isActive: true,
+      ...(chapterId ? { chapterId } : {}),
+    };
+
+    const [quizzes, total] = await Promise.all([
+      prisma.quiz.findMany({
+        where,
+        include: {
+          chapter: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+          questions: {
+            select: {
+              id: true,
+              points: true,
+            },
+          },
+          attempts: {
+            where: { userId },
+            orderBy: { percentage: 'desc' },
+            take: 1,
+            select: {
+              id: true,
+              totalScore: true,
+              maxScore: true,
+              percentage: true,
+              status: true,
+              createdAt: true,
+            },
           },
         },
-        questions: {
-          select: {
-            id: true,
-            points: true,
-          },
-        },
-        attempts: {
-          where: { userId },
-          orderBy: { percentage: 'desc' },
-          take: 1,
-          select: {
-            id: true,
-            totalScore: true,
-            maxScore: true,
-            percentage: true,
-            status: true,
-            createdAt: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'asc' },
-    });
+        orderBy: { createdAt: 'asc' },
+        skip,
+        take: pageSize,
+      }),
+      prisma.quiz.count({ where }),
+    ]);
 
     const result = quizzes.map((quiz) => ({
       id: quiz.id,
@@ -75,7 +85,10 @@ export async function GET(request: NextRequest) {
       bestAttempt: quiz.attempts[0] || null,
     }));
 
-    return NextResponse.json({ quizzes: result });
+    return NextResponse.json({
+      quizzes: result,
+      pagination: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    });
 
   } catch (error) {
     console.error('Quiz list error:', error);

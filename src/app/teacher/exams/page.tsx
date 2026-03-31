@@ -29,6 +29,27 @@ import {
 import { LottieAnimation } from "@/components/animations/LottieAnimation";
 import { examQuestions } from "@/data/examQuestions";
 
+interface ExamSessionItem {
+  id: string;
+  status: string;
+  classroom?: { id: string; name: string };
+  quiz?: { id: string; title: string };
+  _count?: { attempts: number };
+  attemptCount?: number;
+}
+
+interface ClassroomItem {
+  id: string;
+  name: string;
+}
+
+interface QuizItem {
+  id: string;
+  title: string;
+  chapterId?: string;
+  chapter?: { title: string };
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
@@ -70,11 +91,11 @@ function statusBadge(status: string) {
 }
 
 export default function TeacherExamsPage() {
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [classrooms, setClassrooms] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<ExamSessionItem[]>([]);
+  const [classrooms, setClassrooms] = useState<ClassroomItem[]>([]);
   const [selectedClassroom, setSelectedClassroom] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState("");
-  const [quizzes, setQuizzes] = useState<any[]>([]);
+  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [creating, setCreating] = useState(false);

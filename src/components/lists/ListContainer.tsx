@@ -128,7 +128,7 @@ export function ListContainer() {
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('lessons');
   const { completedLessonNumbers, saveLesson, loading } = useChapterProgress(1);
-  const { saveChallengeResult, attempts: challengeAttempts, isChallengeCompleted, getBestScore } = useChallengeProgress(1);
+  const { saveChallengeResult } = useChallengeProgress(1);
 
   // Sync DB progress to local lessonProgress state
   useEffect(() => {
