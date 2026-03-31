@@ -32,11 +32,13 @@ import {
   BookOpen,
   User,
   LogOut,
+  ClipboardList,
 } from "lucide-react";
 
 const sidebarLinks = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
   { href: "/teacher/materials", label: "Materi", icon: BookOpen },
+  { href: "/teacher/exams", label: "Ujian", icon: ClipboardList },
   { href: "/teacher/classrooms", label: "Kelas", icon: School },
 ];
 
@@ -45,6 +47,8 @@ function getPageTitle(pathname: string): string {
   if (pathname === "/teacher/materials") return "Materi Pembelajaran";
   if (pathname.endsWith("/present")) return "Mode Presentasi";
   if (pathname.startsWith("/teacher/materials/")) return "Detail Materi";
+  if (pathname === "/teacher/exams") return "Manajemen Ujian";
+  if (pathname.startsWith("/teacher/exams/")) return "Hasil Ujian";
   if (pathname === "/teacher/classrooms/new") return "Buat Kelas Baru";
   if (pathname.startsWith("/teacher/classrooms/")) return "Detail Kelas";
   if (pathname === "/teacher/classrooms") return "Kelas";

@@ -204,8 +204,9 @@ model Classroom {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  teacher     User               @relation("TeacherClassrooms", fields: [teacherId], references: [id], onDelete: Cascade)
-  students    ClassroomStudent[]
+  teacher      User               @relation("TeacherClassrooms", fields: [teacherId], references: [id], onDelete: Cascade)
+  students     ClassroomStudent[]
+  examSessions ExamSession[]
 
   @@map("classrooms")
 }
@@ -233,9 +234,10 @@ model Quiz {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  chapter     Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  questions   Question[]
-  attempts    QuizAttempt[]
+  chapter      Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  questions    Question[]
+  attempts     QuizAttempt[]
+  examSessions ExamSession[]
 
   @@map("quizzes")
 }
@@ -280,4 +282,30 @@ enum QuestionType {
   CODING
   TRUE_FALSE
   SHORT_ANSWER
+  ESSAY
+  MATCHING
+}
+
+enum ExamStatus {
+  SCHEDULED
+  ACTIVE
+  CLOSED
+}
+
+model ExamSession {
+  id          String     @id @default(cuid())
+  classroomId String
+  quizId      String
+  status      ExamStatus @default(SCHEDULED)
+  duration    Int?       // in minutes, overrides quiz timeLimit
+  startedAt   DateTime?
+  closedAt    DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  classroom   Classroom  @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  quiz        Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@unique([classroomId, quizId])
+  @@map("exam_sessions")
 }
