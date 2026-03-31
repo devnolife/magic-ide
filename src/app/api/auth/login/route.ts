@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
       userId: user.id,
       username: user.username,
       role: user.role,
+      isActivated: user.isActivated,
     });
 
     // Create session

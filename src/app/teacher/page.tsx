@@ -27,6 +27,7 @@ import {
   BarChart3,
   UserCheck,
   AlertTriangle,
+  KeyRound,
 } from "lucide-react";
 import { chaptersData } from '@/data/dashboardData';
 
@@ -386,6 +387,28 @@ export default function TeacherDashboard() {
           </div>
         </div>
       </motion.div>
+
+      {/* Activation Banner — shown for non-activated teachers */}
+      {user && !user.isActivated && user.role === 'TEACHER' && (
+        <motion.div variants={itemVariants}>
+          <Link href="/teacher/activate">
+            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 hover:border-amber-300 hover:shadow-md transition-all cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-100 rounded-lg shrink-0">
+                  <KeyRound className="h-5 w-5 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-amber-900">⚡ Aktivasi Akun untuk Akses Penuh</p>
+                  <p className="text-sm text-amber-700">Anda hanya bisa mengakses materi Chapter 0 & 1. Masukkan kode aktivasi untuk membuka semua fitur.</p>
+                </div>
+                <Button variant="outline" size="sm" className="border-amber-300 text-amber-700 hover:bg-amber-100 shrink-0">
+                  Aktivasi Sekarang
+                </Button>
+              </div>
+            </div>
+          </Link>
+        </motion.div>
+      )}
 
       {/* Stats */}
       <motion.div

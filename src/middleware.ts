@@ -17,6 +17,7 @@ interface JWTPayload {
   userId: string;
   username: string;
   role: string;
+  isActivated?: boolean;
 }
 
 async function verifyJWT(token: string): Promise<JWTPayload | null> {
@@ -84,10 +85,31 @@ export async function middleware(request: NextRequest) {
       }
     }
 
+    // Restrict non-activated TEACHER access
+    if (userRole === 'TEACHER' && !payload.isActivated) {
+      const allowedPaths = [
+        '/teacher',
+        '/teacher/materials',
+        '/teacher/materials/0',
+        '/teacher/materials/1',
+        '/teacher/activate',
+        '/teacher/profile',
+      ];
+
+      const isAllowed = allowedPaths.some(path => pathname === path) ||
+        pathname.startsWith('/teacher/materials/0/') ||
+        pathname.startsWith('/teacher/materials/1/');
+
+      if (!isAllowed && pathname.startsWith('/teacher')) {
+        return NextResponse.redirect(new URL('/teacher/activate', request.url));
+      }
+    }
+
     // Add user info to headers for downstream use
     const response = NextResponse.next();
     response.headers.set('x-user-id', payload.userId);
     response.headers.set('x-user-role', payload.role);
+    response.headers.set('x-user-activated', String(payload.isActivated ?? false));
 
     return response;
   }

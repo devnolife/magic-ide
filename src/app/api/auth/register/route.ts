@@ -4,9 +4,8 @@ import { hashPassword, generateToken, createUserSession } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, email, password, name } = await request.json();
+    const { username, email, password, name, activationCode } = await request.json();
 
-    // Validate input
     if (!username || !email || !password) {
       return NextResponse.json(
         { error: 'Username, email, and password are required' },
@@ -21,14 +20,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email },
-          { username }
-        ]
-      }
+        OR: [{ email }, { username }],
+      },
     });
 
     if (existingUser) {
@@ -38,16 +33,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password
+    // Validate activation code if provided
+    let validCode = null;
+    let isActivated = false;
+    if (activationCode && activationCode.trim()) {
+      validCode = await prisma.activationCode.findUnique({
+        where: { code: activationCode.trim().toUpperCase() },
+      });
+
+      if (!validCode) {
+        return NextResponse.json({ error: 'Kode aktivasi tidak ditemukan' }, { status: 400 });
+      }
+      if (!validCode.isActive) {
+        return NextResponse.json({ error: 'Kode aktivasi sudah tidak aktif' }, { status: 400 });
+      }
+      if (validCode.currentUses >= validCode.maxUses) {
+        return NextResponse.json({ error: 'Kode aktivasi sudah mencapai batas penggunaan' }, { status: 400 });
+      }
+      if (validCode.expiresAt && validCode.expiresAt < new Date()) {
+        return NextResponse.json({ error: 'Kode aktivasi sudah kadaluarsa' }, { status: 400 });
+      }
+      isActivated = true;
+    }
+
     const hashedPassword = await hashPassword(password);
 
-    // Create user
     const user = await prisma.user.create({
       data: {
         username,
         email,
         password: hashedPassword,
         name,
+        isActivated,
       },
       select: {
         id: true,
@@ -55,18 +72,31 @@ export async function POST(request: NextRequest) {
         email: true,
         name: true,
         role: true,
+        isActivated: true,
         createdAt: true,
       },
     });
 
-    // Generate JWT token
+    // If activation code was valid, record usage and increment counter
+    if (validCode) {
+      await prisma.$transaction([
+        prisma.activationCodeUsage.create({
+          data: { codeId: validCode.id, userId: user.id },
+        }),
+        prisma.activationCode.update({
+          where: { id: validCode.id },
+          data: { currentUses: { increment: 1 } },
+        }),
+      ]);
+    }
+
     const token = generateToken({
       userId: user.id,
       username: user.username,
       role: user.role,
+      isActivated: user.isActivated,
     });
 
-    // Create session
     await createUserSession(user.id, token);
 
     const response = NextResponse.json({
@@ -75,10 +105,9 @@ export async function POST(request: NextRequest) {
       token,
     });
 
-    // Set auth cookie so middleware can read it on page navigations
     response.cookies.set('auth-token', token, {
       path: '/',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 7 * 24 * 60 * 60,
       sameSite: 'lax',
       httpOnly: false,
     });

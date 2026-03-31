@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Eye, EyeOff, User, Mail, Lock, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Lock, UserPlus, KeyRound } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface RegisterFormProps {
@@ -21,6 +21,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
     password: '',
     confirmPassword: '',
     name: '',
+    activationCode: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -62,7 +63,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
     }
 
     try {
-      await register(formData.username, formData.email, formData.password, formData.name || undefined);
+      await register(formData.username, formData.email, formData.password, formData.name || undefined, formData.activationCode || undefined);
       toast.success('Akun berhasil dibuat! Selamat belajar! 🎉');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Gagal membuat akun';
@@ -159,6 +160,24 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
               />
             </div>
             {errors.email && <p id="reg-email-error" role="alert" className="mt-0.5 text-xs text-red-500">⚠️ {errors.email}</p>}
+          </div>
+
+          {/* Kode Aktivasi — optional */}
+          <div>
+            <label htmlFor="activationCode" className="block text-xs font-semibold text-gray-600 mb-1">
+              Kode Aktivasi <span className="text-gray-400">(opsional)</span>
+            </label>
+            <div className="relative">
+              <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400 h-4 w-4" />
+              <Input
+                id="activationCode" name="activationCode" type="text"
+                value={formData.activationCode} onChange={handleChange}
+                className="pl-9 h-10 text-sm rounded-xl border-2 border-emerald-100 bg-emerald-50/50 focus:bg-white focus:border-emerald-400 transition-colors uppercase"
+                placeholder="Contoh: GURU2025"
+                disabled={isLoading}
+              />
+            </div>
+            <p className="mt-0.5 text-xs text-gray-400">Masukkan kode dari admin untuk akses penuh</p>
           </div>
 
           {/* Row 2: Password + Confirm side by side */}

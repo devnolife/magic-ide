@@ -103,6 +103,24 @@ interface RoleCounts {
   ALL: number;
 }
 
+interface ActivationCodeData {
+  id: string;
+  code: string;
+  description: string | null;
+  maxUses: number;
+  currentUses: number;
+  isActive: boolean;
+  expiresAt: string | null;
+  createdAt: string;
+  _count: { usages: number };
+}
+
+interface CodeUsageDetail {
+  id: string;
+  activatedAt: string;
+  user: { id: string; username: string; name: string | null; email: string };
+}
+
 const USERS_PER_PAGE = 10;
 
 const ROLE_LABELS: Record<string, string> = {
@@ -162,6 +180,13 @@ export default function AdminDashboard() {
   const [roleCounts, setRoleCounts] = useState<RoleCounts | null>(null);
   const [usersLoading, setUsersLoading] = useState(false);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Activation codes state
+  const [activationCodes, setActivationCodes] = useState<ActivationCodeData[]>([]);
+  const [showCreateCode, setShowCreateCode] = useState(false);
+  const [newCode, setNewCode] = useState({ code: '', description: '', maxUses: 50, expiresAt: '' });
+  const [codeUsageDetail, setCodeUsageDetail] = useState<{ code: ActivationCodeData; usages: CodeUsageDetail[] } | null>(null);
+  const [showCodeUsage, setShowCodeUsage] = useState(false);
 
   useEffect(() => {
     if (user?.role !== 'ADMIN') {
@@ -237,6 +262,7 @@ export default function AdminDashboard() {
       await Promise.all([
         fetchUsers(1, '', ''),
         fetchAuditLogs(1),
+        fetchActivationCodes(),
       ]);
 
     } catch (error) {
@@ -245,6 +271,99 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchActivationCodes = async () => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      const res = await fetch('/api/admin/activation-codes', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setActivationCodes(data.codes || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch activation codes:', error);
+    }
+  };
+
+  const handleCreateCode = async () => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      const res = await fetch('/api/admin/activation-codes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          code: newCode.code,
+          description: newCode.description || null,
+          maxUses: newCode.maxUses,
+          expiresAt: newCode.expiresAt || null,
+        }),
+      });
+      if (res.ok) {
+        toast.success('Kode aktivasi berhasil dibuat');
+        setShowCreateCode(false);
+        setNewCode({ code: '', description: '', maxUses: 50, expiresAt: '' });
+        fetchActivationCodes();
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Gagal membuat kode');
+      }
+    } catch {
+      toast.error('Gagal membuat kode aktivasi');
+    }
+  };
+
+  const handleToggleCode = async (id: string, isActive: boolean) => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      await fetch(`/api/admin/activation-codes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ isActive: !isActive }),
+      });
+      fetchActivationCodes();
+      toast.success(isActive ? 'Kode dinonaktifkan' : 'Kode diaktifkan');
+    } catch {
+      toast.error('Gagal mengubah status kode');
+    }
+  };
+
+  const handleDeleteCode = async (id: string) => {
+    if (!confirm('Yakin hapus kode ini?')) return;
+    try {
+      const token = localStorage.getItem('auth-token');
+      await fetch(`/api/admin/activation-codes/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchActivationCodes();
+      toast.success('Kode berhasil dihapus');
+    } catch {
+      toast.error('Gagal menghapus kode');
+    }
+  };
+
+  const handleViewUsage = async (id: string) => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      const res = await fetch(`/api/admin/activation-codes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCodeUsageDetail({ code: data.code, usages: data.code.usages || [] });
+        setShowCodeUsage(true);
+      }
+    } catch {
+      toast.error('Gagal memuat detail penggunaan');
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Kode disalin ke clipboard');
   };
 
   // Debounced search and role filter
@@ -590,6 +709,65 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* Kode Aktivasi Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <KeyRound className="h-5 w-5 text-amber-600" />
+            Kode Aktivasi
+          </h2>
+          <Button onClick={() => setShowCreateCode(true)} size="sm">
+            + Buat Kode Baru
+          </Button>
+        </div>
+
+        {activationCodes.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <KeyRound className="h-10 w-10 mx-auto mb-2 opacity-50" />
+            <p>Belum ada kode aktivasi.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {activationCodes.map((ac) => (
+              <div key={ac.id} className="flex items-center justify-between p-4 rounded-xl border bg-card">
+                <div className="flex items-center gap-4">
+                  <div className="font-mono text-lg font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-lg cursor-pointer hover:bg-amber-100 transition-colors" onClick={() => copyToClipboard(ac.code)}>
+                    {ac.code}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">{ac.description || 'Tanpa deskripsi'}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant={ac.isActive ? 'default' : 'secondary'} className={ac.isActive ? 'bg-emerald-600' : ''}>
+                        {ac.isActive ? 'Aktif' : 'Nonaktif'}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        {ac.currentUses}/{ac.maxUses} digunakan
+                      </span>
+                      {ac.expiresAt && (
+                        <span className="text-xs text-muted-foreground">
+                          Exp: {new Date(ac.expiresAt).toLocaleDateString('id-ID')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => handleViewUsage(ac.id)}>
+                    Detail
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => handleToggleCode(ac.id, ac.isActive)}>
+                    {ac.isActive ? 'Nonaktifkan' : 'Aktifkan'}
+                  </Button>
+                  <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700" onClick={() => handleDeleteCode(ac.id)}>
+                    Hapus
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Audit Log Section */}
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -670,6 +848,88 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {/* Create Activation Code Dialog */}
+      <Dialog open={showCreateCode} onOpenChange={setShowCreateCode}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Buat Kode Aktivasi Baru</DialogTitle>
+            <DialogDescription>Kode akan diubah ke huruf besar otomatis.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Kode</label>
+              <Input
+                value={newCode.code}
+                onChange={(e) => setNewCode({ ...newCode, code: e.target.value })}
+                placeholder="Contoh: GURU2025"
+                className="mt-1 uppercase"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Deskripsi</label>
+              <Input
+                value={newCode.description}
+                onChange={(e) => setNewCode({ ...newCode, description: e.target.value })}
+                placeholder="Kode untuk guru tahun ajaran 2025"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Maksimal Penggunaan</label>
+              <Input
+                type="number"
+                value={newCode.maxUses}
+                onChange={(e) => setNewCode({ ...newCode, maxUses: parseInt(e.target.value) || 1 })}
+                min={1}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Tanggal Kedaluwarsa (opsional)</label>
+              <Input
+                type="date"
+                value={newCode.expiresAt}
+                onChange={(e) => setNewCode({ ...newCode, expiresAt: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateCode(false)}>Batal</Button>
+            <Button onClick={handleCreateCode} disabled={!newCode.code.trim()}>Buat Kode</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Code Usage Detail Dialog */}
+      <Dialog open={showCodeUsage} onOpenChange={setShowCodeUsage}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Detail Penggunaan: {codeUsageDetail?.code.code}</DialogTitle>
+            <DialogDescription>
+              {codeUsageDetail?.code.currentUses}/{codeUsageDetail?.code.maxUses} penggunaan
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 max-h-80 overflow-y-auto">
+            {codeUsageDetail?.usages.length === 0 ? (
+              <p className="text-center text-muted-foreground py-4">Belum ada yang menggunakan kode ini.</p>
+            ) : (
+              codeUsageDetail?.usages.map((usage) => (
+                <div key={usage.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                  <div>
+                    <p className="text-sm font-medium">{usage.user.name || usage.user.username}</p>
+                    <p className="text-xs text-muted-foreground">{usage.user.email}</p>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(usage.activatedAt).toLocaleDateString('id-ID')}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Password Reset Dialog */}
       <Dialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>

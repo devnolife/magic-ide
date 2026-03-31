@@ -195,13 +195,14 @@ export async function seedDatabase() {
     const adminPassword = await hashPassword('admin123');
     await prisma.user.upsert({
       where: { username: 'admin' },
-      update: {},
+      update: { isActivated: true },
       create: {
         username: 'admin',
         email: 'admin@pythonlearning.com',
         password: adminPassword,
         name: 'Administrator',
         role: 'ADMIN',
+        isActivated: true,
       },
     });
 
@@ -209,13 +210,14 @@ export async function seedDatabase() {
     const teacherPassword = await hashPassword('guru123');
     const teacher = await prisma.user.upsert({
       where: { username: 'guru1' },
-      update: {},
+      update: { isActivated: true },
       create: {
         username: 'guru1',
         email: 'guru1@pythonlearning.com',
         password: teacherPassword,
         name: 'Pak Budi',
         role: 'TEACHER',
+        isActivated: true,
       },
     });
 
@@ -231,6 +233,50 @@ export async function seedDatabase() {
         name: 'Andi Pratama',
         role: 'USER',
       },
+    });
+
+    // Create sample activation codes
+    const sampleCode = await prisma.activationCode.upsert({
+      where: { code: 'GURU2025' },
+      update: {},
+      create: {
+        code: 'GURU2025',
+        description: 'Kode aktivasi guru tahun ajaran 2025/2026',
+        maxUses: 50,
+        isActive: true,
+      },
+    });
+
+    await prisma.activationCode.upsert({
+      where: { code: 'TRIALCODE' },
+      update: {},
+      create: {
+        code: 'TRIALCODE',
+        description: 'Kode trial untuk demo',
+        maxUses: 5,
+        isActive: true,
+      },
+    });
+
+    // Record activation usage for guru1
+    await prisma.activationCodeUsage.upsert({
+      where: {
+        codeId_userId: {
+          codeId: sampleCode.id,
+          userId: teacher.id,
+        },
+      },
+      update: {},
+      create: {
+        codeId: sampleCode.id,
+        userId: teacher.id,
+      },
+    });
+
+    // Update activation code usage count
+    await prisma.activationCode.update({
+      where: { code: 'GURU2025' },
+      data: { currentUses: 1 },
     });
 
     // Create sample classroom and assign student

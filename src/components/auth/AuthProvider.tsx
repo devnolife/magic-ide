@@ -8,6 +8,7 @@ interface User {
   email: string;
   name?: string;
   role: string;
+  isActivated?: boolean;
   currentStreak?: number;
   longestStreak?: number;
 }
@@ -18,7 +19,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (username: string, email: string, password: string, name?: string) => Promise<void>;
+  register: (username: string, email: string, password: string, name?: string, activationCode?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -154,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (username: string, email: string, password: string, name?: string) => {
+  const register = async (username: string, email: string, password: string, name?: string, activationCode?: string) => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/auth/register', {
@@ -162,7 +163,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password, name }),
+        body: JSON.stringify({ username, email, password, name, activationCode }),
       });
 
       if (response.ok) {
